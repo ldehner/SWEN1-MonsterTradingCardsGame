@@ -1,0 +1,34 @@
+@startuml
+
+User <|-- LoginUser
+User <|-- RegisterUser
+Card <|-- Monster
+Card <|-- Spell
+
+class Server {}
+
+abstract class Card {
+    - String data
+    + void Card()
+    + String getString()
+    + void setString()
+
+}
+class Monster {
+
+}
+
+class Battle{}
+
+class Spell {}
+
+class User {}
+
+' ?
+class LoginUser{}
+
+class RegisterUser{}
+
+class DatabaseConnector {}
+
+@enduml
