@@ -1,4 +1,4 @@
-@startuml
+@startuml MonsterTradingCardsGame
 
 User <|-- LoginUser
 User <|-- RegisterUser
