@@ -1,34 +1,133 @@
 @startuml MonsterTradingCardsGame
 
-User <|-- LoginUser
-User <|-- RegisterUser
 Card <|-- Monster
 Card <|-- Spell
 
-class Server {}
+UserManagement "1" o-- "*" User
+
+User "1" --> "1" Stack
+
+Stack "1" *-- "1" Deck
+
+Stack "1" --> "*" Card
+
+Deck "1" --> "4" Card
+
+Server --> DatabaseConnector
+Server --> UserManagement
+Server --> ScoreBoard
+
+Trade <|-- CoinTrade
+Trade <|-- CardTrade
+
+Monster -- MonsterType
+Card -- Modification
+User --> Trade
+Trade -- User
+
+User -- Battle
+Battle -- User
+
+Battle <|-- QueueBattle
+Battle <|-- TargetedBattle
+
+class Server {
+    
+
+}
 
 abstract class Card {
-    - String data
-    + void Card()
-    + String getString()
-    + void setString()
+    + <<readonly>> int damage
+    + <<readonly>> Modification modification
+    + void Card(int damage, Modification modification)
 
 }
 class Monster {
+    + <<readonly>> MonsterType type
+    + void Monster(int damage, MonsterType type, Modification modification)
+}
+
+class Spell {
+    + void Spell(int damage, Modification modification)
+}
+
+class UserManagement{
+    + <<get, set>> Dictionary<Token, User> users
+    + boolean loginUser()
+    + boolean registerUser()
+}
+
+class User{
+    + <<readonly>> String username
+    + <<readonly>> String password
+    + <<get, set>> int wins
+    + <<get, set>> int losses
+    + <<get, set>> String bio
+
+    + void User(int wins, int losses, String bio)
+}
+
+class Stack{
+    + <<get,set>> List<Card> cards
+}
+
+class Deck{
+    + <<get,set>> List<Card> cards
+}
+
+enum Modification {
+    normal
+    water
+    fire
+}
+
+abstract class Trade{
 
 }
 
-class Battle{}
+class CardTrade{}
 
-class Spell {}
+class CoinTrade{
+}
 
-class User {}
 
-' ?
-class LoginUser{}
 
-class RegisterUser{}
 
-class DatabaseConnector {}
+class ScoreBoard{
+
+}
+
+enum MonsterType{
+    Goblin
+    FireGoblin
+    WaterGoblin
+    Dragon
+    Wizard
+    Org
+    Knight
+    Kraken
+    Elve
+}
+
+
+abstract class Battle{}
+
+class QueueBattle{}
+
+class TargetedBattle{}
+
+class DatabaseConnector {
+    - String url
+    + void DatabaseConnector(String url)
+    + boolean validatecredentials(String username, String password)
+    + String getProfile(User user)
+    + List<Card> getStack(User user)
+    + List<Card> getDeck(User user)
+    + Dictionary<User, int[]> getScoreBoard() 
+    + void registerUser
+    + void setMinusCoins(User user, int amount)
+    + void setStack(User user, List<Card> cards)
+    + void setDeck(User user, List<Card> cards)
+}
 
 @enduml
