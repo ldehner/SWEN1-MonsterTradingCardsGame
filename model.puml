@@ -3,7 +3,7 @@
 Card <|-- Monster
 Card <|-- Spell
 
-UserManagement "1" o-- "*" User
+UserManager "1" o-- "*" User
 
 User "1" --> "1" Stack
 
@@ -11,25 +11,38 @@ Stack "1" *-- "1" Deck
 
 Stack "1" --> "*" Card
 
+User --> Package
+
+Package "1" --> "4" Card
+
 Deck "1" --> "4" Card
 
 Server --> DatabaseConnector
-Server --> UserManagement
+Server --> UserManager
 Server --> ScoreBoard
+UserManager --> DatabaseConnector
+
+ScoreBoard --> DatabaseConnector
 
 Trade <|-- CoinTrade
 Trade <|-- CardTrade
 
-Monster -- MonsterType
-Card -- Modification
+Monster --> MonsterType
+Card --> Modification
+
 User --> Trade
 Trade -- User
+Trade --> DatabaseConnector
 
 User -- Battle
 Battle -- User
 
+
+
 Battle <|-- QueueBattle
 Battle <|-- TargetedBattle
+Battle --> DatabaseConnector
+
 
 class Server {
     
@@ -48,46 +61,69 @@ class Monster {
 }
 
 class Spell {
+    + <<readonly>> String type
     + void Spell(int damage, Modification modification)
 }
 
-class UserManagement{
+class UserManager{
     + <<get, set>> Dictionary<Token, User> users
-    + boolean loginUser()
-    + boolean registerUser()
+    + boolean loginUser(String username, User user)
+    + boolean registerUser(String username, String password)
+    + void UserManager()
 }
 
 class User{
     + <<readonly>> String username
-    + <<readonly>> String password
+    + <<get, set>> int coins
     + <<get, set>> int wins
     + <<get, set>> int losses
     + <<get, set>> String bio
+    + <<get, set>> Stack stack
+    + <<get, set>> Deck deck
 
-    + void User(int wins, int losses, String bio)
+    + void User(string username, int coins, int[] stats, string bio, Stack stack, Deck deck)
 }
 
 class Stack{
     + <<get,set>> List<Card> cards
+    + void Stack(List<Card> cards)
+    + void addCard(Card card)
 }
 
 class Deck{
     + <<get,set>> List<Card> cards
+    + void Deck(List<Card> cards)
+    + void addCard(Card card)
+}
+
+class Package{
+    + <<readonly>> List<Card> cards
+    + List<Card> getPackage(User user)
 }
 
 enum Modification {
-    normal
-    water
-    fire
+    NORMAL
+    WATER
+    FIRE
 }
 
 abstract class Trade{
-
+    + <<readonly>> User user1
+    + <<readonly>> Card card
+    + <<readonly>> Guid tradeID
+    + void Trade(Card card, User user1)
+    + {abstract} void acceptTrade(User user2)
 }
 
-class CardTrade{}
+class CardTrade{
+    + <<readonly>> int minLvl
+    + void CardTrade(Card card, User user1, int minLvl)
+    
+}
 
 class CoinTrade{
+    + <<readonly>> int amount
+    + void CoinTrade(Card card, User user1, int amount)
 }
 
 
@@ -98,23 +134,35 @@ class ScoreBoard{
 }
 
 enum MonsterType{
-    Goblin
-    FireGoblin
-    WaterGoblin
-    Dragon
-    Wizard
-    Org
-    Knight
-    Kraken
-    Elve
+    GOBLIN
+    DRAGON
+    WIZARD
+    ORG
+    KNIGHT
+    KRAKEN
+    ELVE
 }
 
 
-abstract class Battle{}
+abstract class Battle{
+    + User user1
+    + <<readonly>> Guid battleID
+    + int MAX_ROUNDS = 100
+    + void Battle(User user1)
+    + {abstract} void start()
+}
 
-class QueueBattle{}
+class QueueBattle{
+    + <<get, set>> Queue<User> userq
+    + void QueueBattle(User user)
 
-class TargetedBattle{}
+}
+
+class TargetedBattle{
+    + <<readonly>> User user2
+    + void TargetedBattle(User user1, User user2)
+    + void acceptBattle()
+}
 
 class DatabaseConnector {
     - String url
