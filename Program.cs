@@ -12,20 +12,26 @@ namespace MonsterTradingCardsGame
             // manager.RegisterUser("bla", "123", "fosdfojds");
             // Console.WriteLine("Hello World!");
             Card card = new Monster(10,Modification.Fire, MonsterType.Dragon);
+            Console.WriteLine(card.GetCardName());
             Card card2 = new Spell(10, Modification.Water);
             Console.WriteLine(card.GetType().IsInstanceOfType(new Monster(11,Modification.Water, MonsterType.Goblin)));
             Console.WriteLine(card.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
             Console.WriteLine(card2.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
             Console.WriteLine(((Monster) card).Type);
 
-            var user1 = GenerateUser();
-            var user2 = GenerateUser();
+            var manager = new UserManager();
+            var battle_manager = new BattleManager();
 
-            var battle = new Battle(user1, user2);
-            foreach (var Card in user1.Deck.Cards)
-            {
-                Console.WriteLine(Card.GetType());
-            }
+            var token1 = manager.TempLogin(GenerateUser());
+            var token2 = manager.TempLogin(GenerateUser());
+            
+            battle_manager.NewBattle(manager.users[token1]);
+            battle_manager.NewBattle(manager.users[token2]);
+            
+            Console.WriteLine(manager.users[token1].Wins+" "+manager.users[token1].Losses);
+            Console.WriteLine(manager.users[token2].Wins+" "+manager.users[token2].Losses);
+            
+            
         }
 
         static User GenerateUser()
@@ -63,7 +69,7 @@ namespace MonsterTradingCardsGame
             }
 
             var stats = new int[] {1, 1};
-            return new User("test 1", 40, stats, "bio", new Stack(cards1), new Deck(cards1));
+            return new User("test 1", 40, stats, "bio", new Stack(new List<Card>(cards1)), new Deck(new List<Card>(cards1)));
         }
         
     }
