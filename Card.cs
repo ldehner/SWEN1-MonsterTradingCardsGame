@@ -2,7 +2,7 @@ namespace MonsterTradingCardsGame
 {
     public abstract class Card
     {
-        public readonly int Damage;
+        public int Damage { get; set; }
         public readonly Modification Mod;
 
         public Card(int damage, Modification mod)
