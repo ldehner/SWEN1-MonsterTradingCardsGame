@@ -5,10 +5,10 @@ namespace MonsterTradingCardsGame
 {
     public class UserManager
     {
-        public Dictionary<Guid, User> users { get; set; }
+        public Dictionary<string, User> users { get; set; }
         public UserManager()
         {
-            users = new Dictionary<Guid, User>();
+            users = new Dictionary<string, User>();
         }
         /**
          Logs the user in
@@ -18,10 +18,17 @@ namespace MonsterTradingCardsGame
             var user = DatabaseConnector.ValidateUser(username, password);
             if (user != null)
             {
-                users.Add(Guid.NewGuid(), user); 
+                users.Add(GenerateToken(username), user); 
                 return true;
             }
             return false;
+        }
+
+        public string TempLogin(User user)
+        {
+            var token = GenerateToken(user.Username);
+            users.Add(token, user);
+            return token;
         }
 
         public bool RegisterUser(string username, string password, string bio)
@@ -29,6 +36,12 @@ namespace MonsterTradingCardsGame
             var user = DatabaseConnector.RegisterUser(username, password, bio);
             if (user != null) return true;
             return false;
+        }
+
+        public string GenerateToken(string username)
+        {
+            var rand = new Random();
+            return $"mtcg-{username}-{rand.Next(9999)}";
         }
     }
 }
