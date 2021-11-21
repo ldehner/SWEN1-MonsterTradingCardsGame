@@ -6,5 +6,10 @@ namespace MonsterTradingCardsGame
         {
             
         }
+
+        public override string GetCardName()
+        {
+            return Mod + "-Spell";
+        }
     }
 }

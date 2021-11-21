@@ -8,5 +8,10 @@ namespace MonsterTradingCardsGame
         {
             Type = type;
         }
+
+        public override string GetCardName()
+        {
+            return Mod + "-" + Type;
+        }
     }
 }

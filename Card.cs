@@ -1,3 +1,5 @@
+using System;
+
 namespace MonsterTradingCardsGame
 {
     public abstract class Card
@@ -10,6 +12,8 @@ namespace MonsterTradingCardsGame
             Damage = damage;
             Mod = mod;
         }
-        
+
+        public abstract string GetCardName();
+
     }
 }
