@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace MonsterTradingCardsGame
 {
     public class User
@@ -20,6 +22,19 @@ namespace MonsterTradingCardsGame
             Bio = bio;
             Stack = stack;
             Deck = deck;
+        }
+
+        public List<Card> AquirePackage()
+        {
+            if (Coins > 5)
+            {
+                List<Card> added = new List<Card>(new Package().Cards);
+                Stack.Cards.AddRange(added);
+                Coins -= 5;
+                return added;
+            }
+
+            return new List<Card>();
         }
     }
 }
