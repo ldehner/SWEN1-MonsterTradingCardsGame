@@ -8,4 +8,4 @@ namespace MonsterTradingCardsGame.Http
         Delete,
         Patch
     }
-}
+} 
