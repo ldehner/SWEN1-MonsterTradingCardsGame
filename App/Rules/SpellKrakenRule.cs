@@ -1,0 +1,14 @@
+namespace MonsterTradingCardsGame.App.Rules
+{
+    public class KrakenSpellRule:Rule
+    {
+        public override void CalculateDamage(Card card1, Card card2)
+        {
+            if (card2.GetType() != typeof(Monster)) return;
+            if (((Monster) card2).Type == MonsterType.Kraken)
+            {
+                card1.Damage *= 0;
+            }
+        }
+    }
+}
