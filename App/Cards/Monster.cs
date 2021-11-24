@@ -1,4 +1,4 @@
-namespace MonsterTradingCardsGame.App
+namespace MonsterTradingCardsGame.App.Cards
 {
     public class Monster:Card
     {
@@ -12,11 +12,6 @@ namespace MonsterTradingCardsGame.App
         public override string GetCardName()
         {
             return Mod + "-" + Type;
-        }
-
-        public override void CalculateDamage()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace MonsterTradingCardsGame.App
+namespace MonsterTradingCardsGame.App.Battles
 {
     public interface IBattleConnector
     {

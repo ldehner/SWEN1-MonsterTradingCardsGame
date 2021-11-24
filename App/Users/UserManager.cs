@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MonsterTradingCardsGame.App.User
+namespace MonsterTradingCardsGame.App.Users
 {
     public class UserManager
     {

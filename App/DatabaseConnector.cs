@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using MonsterTradingCardsGame.App.Cards;
+using MonsterTradingCardsGame.App.Users;
 
 namespace MonsterTradingCardsGame.App
 {

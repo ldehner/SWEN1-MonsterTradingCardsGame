@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using MonsterTradingCardsGame.App.Battles;
+using MonsterTradingCardsGame.App.Cards;
+using MonsterTradingCardsGame.App.Rules;
+using MonsterTradingCardsGame.App.Users;
 
 namespace MonsterTradingCardsGame.App
 {
@@ -11,22 +15,22 @@ namespace MonsterTradingCardsGame.App
             // manager.LoginUser("bla", "123");
             // manager.RegisterUser("bla", "123", "fosdfojds");
             // Console.WriteLine("Hello World!");
-            Card card1 = new Spell(10, Modification.Normal);
+            /*Card card1 = new Spell(10, Modification.Normal);
             Card card2 = new Spell(10, Modification.Water);
             Card card3 = new Monster(20, Modification.Fire, MonsterType.Knight);
             Rule rule = new FireRule();
-            Rule rule2 = new KnightRule();
+            Rule rule2 = new KnightWaterRule();
             rule.CalculateDamage(card3, card1);
             rule2.CalculateDamage(card3, card2);
             Console.WriteLine(card1.Damage);
-            Console.WriteLine(card3.Damage);
-            /**
-            Console.WriteLine(card.GetCardName());
+            Console.WriteLine(card3.Damage);*/
+            
+            /*Console.WriteLine(card.GetCardName());
             Card card2 = new Spell(10, Modification.Water);
             Console.WriteLine(card.GetType().IsInstanceOfType(new Monster(11,Modification.Water, MonsterType.Goblin)));
             Console.WriteLine(card.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
             Console.WriteLine(card2.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
-            Console.WriteLine(((Monster) card).Type);
+            Console.WriteLine(((Monster) card).Type);*/
 
             var manager = new UserManager();
             var battle_manager = new BattleManager();
@@ -39,7 +43,7 @@ namespace MonsterTradingCardsGame.App
             
             Console.WriteLine(manager.users[token1].Wins+" "+manager.users[token1].Losses);
             Console.WriteLine(manager.users[token2].Wins+" "+manager.users[token2].Losses);
-            **/
+            
 
 
         }
@@ -66,18 +70,21 @@ namespace MonsterTradingCardsGame.App
             var rand = new Random();
 
             var cards1 = new List<Card>();
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
+                Card tempCard;
                 if (rand.Next(10) > 5)
                 {
-                    cards1.Add(new Spell(rand.Next(20), modifications[rand.Next(modifications.Count)]));
+                    tempCard = new Spell(rand.Next(20), modifications[rand.Next(modifications.Count)]);
                 }
                 else
                 {
-                    cards1.Add(new Monster(rand.Next(20), modifications[rand.Next(modifications.Count)], monsterTypes[rand.Next(monsterTypes.Count)]));
+                    tempCard = new Monster(rand.Next(20), modifications[rand.Next(modifications.Count)], monsterTypes[rand.Next(monsterTypes.Count)]);
                 }
-            }
+                (new CardRuleAdder(tempCard)).AddRules();
+                cards1.Add(tempCard);
 
+            }
             var stats = new int[] {1, 1};
             return new User("test 1", 40, stats, "bio", new Stack(new List<Card>(cards1)), new Deck(new List<Card>(cards1)));
         }

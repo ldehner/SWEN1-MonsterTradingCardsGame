@@ -1,4 +1,4 @@
-namespace MonsterTradingCardsGame.App
+namespace MonsterTradingCardsGame.App.Cards
 {
     public class Spell:Card
     {
@@ -10,11 +10,6 @@ namespace MonsterTradingCardsGame.App
         public override string GetCardName()
         {
             return Mod + "-Spell";
-        }
-
-        public override void CalculateDamage()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -18,6 +18,5 @@ namespace MonsterTradingCardsGame.App.Cards
 
         public abstract string GetCardName();
 
-        public abstract void CalculateDamage();
     }
 }

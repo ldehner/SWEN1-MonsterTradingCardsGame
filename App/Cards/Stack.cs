@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MonsterTradingCardsGame.App
+namespace MonsterTradingCardsGame.App.Cards
 {
     public class Stack
     {
