@@ -1,4 +1,6 @@
-namespace MonsterTradingCardsGame.App
+using MonsterTradingCardsGame.App.Cards;
+
+namespace MonsterTradingCardsGame.App.Rules
 {
     public class FireRule : Rule
     {

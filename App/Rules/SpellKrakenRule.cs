@@ -1,6 +1,8 @@
+using MonsterTradingCardsGame.App.Cards;
+
 namespace MonsterTradingCardsGame.App.Rules
 {
-    public class KrakenSpellRule:Rule
+    public class SpellKrakenRule:Rule
     {
         public override void CalculateDamage(Card card1, Card card2)
         {

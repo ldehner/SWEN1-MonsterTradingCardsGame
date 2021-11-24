@@ -1,8 +1,9 @@
 using System;
+using MonsterTradingCardsGame.App.Cards;
 
 namespace MonsterTradingCardsGame.App.Rules
 {
-    public class KnightRule : Rule
+    public class KnightWaterRule : Rule
     {
         public override void CalculateDamage(Card card1, Card card2)
         {

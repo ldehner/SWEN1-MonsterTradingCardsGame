@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
+using MonsterTradingCardsGame.App.Cards;
 
-namespace MonsterTradingCardsGame.App
+namespace MonsterTradingCardsGame.App.Rules
 {
     public abstract class Rule
     {
