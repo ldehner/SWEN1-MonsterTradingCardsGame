@@ -75,14 +75,16 @@ namespace MonsterTradingCardsGameServer.Battles
 
         private void _checkRules()
         {
-            foreach (var rule in _c1.Rules)
+            _c1.Rules.ForEach(rule => rule.CalculateDamage(_c1, _c2));
+            _c2.Rules.ForEach(rule => rule.CalculateDamage(_c2, _c1));
+            /*foreach (var rule in _c1.Rules)
             {
                 rule.CalculateDamage(_c1, _c2); 
             }
             foreach (var rule in _c2.Rules)
             {
                 rule.CalculateDamage(_c2, _c1); 
-            }
+            }*/
         }
         
     }
