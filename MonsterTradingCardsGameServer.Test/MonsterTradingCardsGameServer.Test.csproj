@@ -17,11 +17,4 @@
       <ProjectReference Include="..\MonsterTradingCardsGameServer\MonsterTradingCardsGameServer.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Battles" />
-      <Folder Include="Cards" />
-      <Folder Include="Rules" />
-      <Folder Include="Users" />
-    </ItemGroup>
-
 </Project>
