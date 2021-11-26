@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardsGameServer", "MonsterTradingCardsGameServer\MonsterTradingCardsGameServer.csproj", "{62E7289E-69F6-40D5-83B3-3DA0464E4205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardsGameServer.Test", "MonsterTradingCardsGameServer.Test\MonsterTradingCardsGameServer.Test.csproj", "{3CC0EB96-5FE1-42C6-99D2-1CCFCA688E76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonsterTradingCardsGameServer.Core", "MonsterTradingCardsGameServer.Core\MonsterTradingCardsGameServer.Core.csproj", "{02667390-E6A5-4C52-9C4C-9A1D00A6A16A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62E7289E-69F6-40D5-83B3-3DA0464E4205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62E7289E-69F6-40D5-83B3-3DA0464E4205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62E7289E-69F6-40D5-83B3-3DA0464E4205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62E7289E-69F6-40D5-83B3-3DA0464E4205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC0EB96-5FE1-42C6-99D2-1CCFCA688E76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC0EB96-5FE1-42C6-99D2-1CCFCA688E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC0EB96-5FE1-42C6-99D2-1CCFCA688E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC0EB96-5FE1-42C6-99D2-1CCFCA688E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02667390-E6A5-4C52-9C4C-9A1D00A6A16A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02667390-E6A5-4C52-9C4C-9A1D00A6A16A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02667390-E6A5-4C52-9C4C-9A1D00A6A16A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02667390-E6A5-4C52-9C4C-9A1D00A6A16A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
