@@ -1,0 +1,181 @@
+@startuml MonsterTradingCardsGame
+
+Card <|-- Monster
+Card <|-- Spell
+
+UserManager "1" o-- "*" User
+
+User "1" --> "1" Stack
+
+Stack "1" *-- "1" Deck
+
+Stack "1" --> "*" Card
+
+User --> Package
+
+Package "1" --> "4" Card
+
+Deck "1" --> "4" Card
+
+Server --> DatabaseConnector
+Server --> UserManager
+Server --> ScoreBoard
+UserManager --> DatabaseConnector
+
+ScoreBoard --> DatabaseConnector
+
+Trade <|-- CoinTrade
+Trade <|-- CardTrade
+
+Monster --> MonsterType
+Card --> Modification
+
+User --> Trade
+Trade -- User
+Trade --> DatabaseConnector
+
+User -- Battle
+Battle -- User
+
+
+
+Battle <|-- QueueBattle
+Battle <|-- TargetedBattle
+Battle --> DatabaseConnector
+
+
+class Server {
+    
+
+}
+
+abstract class Card {
+    + <<readonly>> int damage
+    + <<readonly>> Modification modification
+    + void Card(int damage, Modification modification)
+
+}
+class Monster {
+    + <<readonly>> MonsterType type
+    + void Monster(int damage, MonsterType type, Modification modification)
+}
+
+class Spell {
+    + <<readonly>> String type
+    + void Spell(int damage, Modification modification)
+}
+
+class UserManager{
+    + <<get, set>> Dictionary<Token, User> users
+    + boolean loginUser(String username, User user)
+    + boolean registerUser(String username, String password)
+    + void UserManager()
+}
+
+class User{
+    + <<readonly>> String username
+    + <<get, set>> int coins
+    + <<get, set>> int wins
+    + <<get, set>> int losses
+    + <<get, set>> String bio
+    + <<get, set>> Stack stack
+    + <<get, set>> Deck deck
+
+    + void User(string username, int coins, int[] stats, string bio, Stack stack, Deck deck)
+}
+
+class Stack{
+    + <<get,set>> List<Card> cards
+    + void Stack(List<Card> cards)
+    + void addCard(Card card)
+}
+
+class Deck{
+    + <<get,set>> List<Card> cards
+    + void Deck(List<Card> cards)
+    + void addCard(Card card)
+}
+
+class Package{
+    + <<readonly>> List<Card> cards
+    + List<Card> getPackage(User user)
+}
+
+enum Modification {
+    NORMAL
+    WATER
+    FIRE
+}
+
+abstract class Trade{
+    + <<readonly>> User user1
+    + <<readonly>> Card card
+    + <<readonly>> Guid tradeID
+    + void Trade(Card card, User user1)
+    + {abstract} void acceptTrade(User user2)
+}
+
+class CardTrade{
+    + <<readonly>> int minLvl
+    + void CardTrade(Card card, User user1, int minLvl)
+    
+}
+
+class CoinTrade{
+    + <<readonly>> int amount
+    + void CoinTrade(Card card, User user1, int amount)
+}
+
+
+
+
+class ScoreBoard{
+
+}
+
+enum MonsterType{
+    GOBLIN
+    DRAGON
+    WIZARD
+    ORG
+    KNIGHT
+    KRAKEN
+    ELVE
+}
+
+
+abstract class Battle{
+    + User user1
+    + <<readonly>> Guid battleID
+    + int MAX_ROUNDS = 100
+    + void Battle(User user1)
+    + {abstract} void start()
+}
+
+class QueueBattle{
+    + <<get, set>> Queue<User> userq
+    + void QueueBattle(User user)
+
+}
+
+class TargetedBattle{
+    + <<readonly>> User user2
+    + void TargetedBattle(User user1, User user2)
+    + void acceptBattle()
+}
+
+class DatabaseConnector {
+    - String url
+    + void DatabaseConnector(String url)
+    + boolean validatecredentials(String username, String password)
+    + String getProfile(User user)
+    + List<Card> getStack(User user)
+    + List<Card> getDeck(User user)
+    + Dictionary<User, int[]> getScoreBoard() 
+    + void registerUser
+    + void setMinusCoins(User user, int amount)
+    + void setStack(User user, List<Card> cards)
+    + void setDeck(User user, List<Card> cards)
+}
+
+@enduml
