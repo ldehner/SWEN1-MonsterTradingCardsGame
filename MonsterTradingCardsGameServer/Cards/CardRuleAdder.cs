@@ -36,6 +36,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     case MonsterType.Wizard:
                         break;
                     default:
+                        throw new CardNotFoundException();
                         break;
                 }
             }
