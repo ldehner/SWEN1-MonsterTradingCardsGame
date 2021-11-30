@@ -14,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Battles
         private Card _current1, _current2;
         private Card _currentBackup1, _currentBackup2;
         private List<Card> _tmpDeck1, _tmpDeck2;
-        private Random _rand = new Random();
+        private Random _rand = new();
         
         public Battle(User user1, User user2)
         {
@@ -29,10 +29,7 @@ namespace MonsterTradingCardsGameServer.Battles
         {
             while (_roundCounter <= MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0)
             {
-                _current1 = _tmpDeck1[_rand.Next(_tmpDeck1.Count)];
-                _current2 = _tmpDeck2[_rand.Next(_tmpDeck2.Count)];
-                _currentBackup1 = _current1;
-                _currentBackup2 = _current2;
+                _pickRandomCard();
                 switch ((new Round(_current1, _current2)).Calculate())
                 {
                     case BattleStatus.Draw:
@@ -53,30 +50,45 @@ namespace MonsterTradingCardsGameServer.Battles
             Console.WriteLine(_roundCounter);
             Console.WriteLine(_tmpDeck1.Count);
             Console.WriteLine(_tmpDeck2.Count);
+            
+            _checkOutcome();
+            
+        }
 
+        private void _pickRandomCard()
+        {
+            _current1 = _tmpDeck1[_rand.Next(_tmpDeck1.Count)];
+            _current2 = _tmpDeck2[_rand.Next(_tmpDeck2.Count)];
+            _currentBackup1 = _current1;
+            _currentBackup2 = _current2;
+        }
+
+        private void _checkOutcome()
+        {
             if (_roundCounter > MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0)
             {
                 Console.WriteLine("Draw");
             } else if (_tmpDeck1.Count > 0 && _tmpDeck2.Count <= 0)
             {
                 _user1.Stack.Cards.AddRange(_user2.Deck.Cards);
-                RemoveCards(_user2);
+                _removeCards(_user2);
                 _user1.Wins++;
             }
             else if (_tmpDeck1.Count <= 0 && _tmpDeck2.Count > 0)
             {
                 _user2.Stack.Cards.AddRange(_user1.Deck.Cards);
-                RemoveCards(_user1);
+                _removeCards(_user1);
                 _user2.Wins++;
             }
         }
 
-        private void RemoveCards(User user)
+        private static void _removeCards(User user)
         {
-            foreach (var card in user.Deck.Cards.ToList())
-            {
-                user.Stack.Cards.Remove(card);
-            }
+            user.Deck.Cards.ToList().ForEach(card => user.Stack.Cards.Remove(card));
+            // foreach (var card in user.Deck.Cards.ToList())
+            // {
+            //     user.Stack.Cards.Remove(card);
+            // }
             user.Deck.Cards = new List<Card>();
             user.Losses++;
         }
