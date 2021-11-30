@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Cards
 {
@@ -9,6 +10,19 @@ namespace MonsterTradingCardsGameServer.Cards
         public Package()
         {
             Cards = new List<Card>();
+        }
+
+        public void AddCardsToUser(User user)
+        {
+            if (user.Coins >= 5)
+            {
+                user.Stack.Cards.AddRange(Cards);
+                user.Coins -= 5;
+            }
+            else
+            {
+                throw new TooFewCoinsException();
+            }
         }
     }
 }
