@@ -32,13 +32,13 @@ namespace MonsterTradingCardsGameServer
             Console.WriteLine(((Monster) card).Type);*/
 
             var manager = new UserManager();
-            var battle_manager = new BattleManager();
+            var battleManager = new BattleManager();
 
             var token1 = manager.TempLogin(GenerateUser());
             var token2 = manager.TempLogin(GenerateUser());
             
-            battle_manager.NewBattle(manager.users[token1]);
-            battle_manager.NewBattle(manager.users[token2]);
+            battleManager.NewBattle(manager.users[token1]);
+            battleManager.NewBattle(manager.users[token2]);
             
             Console.WriteLine(manager.users[token1].Wins+" "+manager.users[token1].Losses);
             Console.WriteLine(manager.users[token2].Wins+" "+manager.users[token2].Losses);
@@ -47,14 +47,11 @@ namespace MonsterTradingCardsGameServer
 
         }
 
-        static User GenerateUser()
+        private static User GenerateUser()
         {
             var monsterTypes = new List<MonsterType>();
             var modifications = new List<Modification>();
 
-            int lvl;
-            
-            
             monsterTypes.Add(MonsterType.Dragon);
             monsterTypes.Add(MonsterType.Goblin);
             monsterTypes.Add(MonsterType.Org);
