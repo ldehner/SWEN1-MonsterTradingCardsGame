@@ -1,4 +1,4 @@
-namespace MonsterTradingCardsGameServer.Core.Routing
+﻿namespace MonsterTradingCardsGameServer.Core.Routing
 {
     public interface IRouteCommand
     {

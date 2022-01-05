@@ -1,4 +1,4 @@
-namespace MonsterTradingCardsGameServer.Core.Response
+﻿namespace MonsterTradingCardsGameServer.Core.Response
 {
     public enum StatusCode
     {
@@ -13,6 +13,5 @@ namespace MonsterTradingCardsGameServer.Core.Response
         Conflict = 409,
         InternalServerError = 500,
         NotImplemented = 501
-
     }
 }
