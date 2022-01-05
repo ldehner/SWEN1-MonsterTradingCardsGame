@@ -72,13 +72,13 @@ namespace MonsterTradingCardsGameServer.Battles
             {
                 _user1.Stack.Cards.AddRange(_user2.Deck.Cards);
                 _removeCards(_user2);
-                _user1.Wins++;
+                _user1.Stats.Wins++;
             }
             else if (_tmpDeck1.Count <= 0 && _tmpDeck2.Count > 0)
             {
                 _user2.Stack.Cards.AddRange(_user1.Deck.Cards);
                 _removeCards(_user1);
-                _user2.Wins++;
+                _user2.Stats.Wins++;
             }
         }
 
@@ -90,7 +90,7 @@ namespace MonsterTradingCardsGameServer.Battles
             //     user.Stack.Cards.Remove(card);
             // }
             user.Deck.Cards = new List<Card>();
-            user.Losses++;
+            user.Stats.Losses++;
         }
 
         /*private void CheckMods()

@@ -1,37 +1,35 @@
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
+using IIdentity = MonsterTradingCardsGameServer.Core.Authentication.IIdentity;
 
 namespace MonsterTradingCardsGameServer.Users
 {
-    public class User
+    public class User : IIdentity
     {
         public readonly string Username;
-        
-        public int Coins { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public string Bio { get; set; }
+        public string HashedPassword { get; set; }
+        public string Token => $"{Username}-msgToken";
+        public Stats Stats { get; set; }
+        public UserData UserData { get; set; }
         public Stack Stack { get; set; }
         public Deck Deck { get; set; }
         
-        public User(string username, int coins, int[] stats, string bio, Stack stack, Deck deck)
+        public User(string username, Stats stats, UserData userData, Stack stack, Deck deck)
         {
             Username = username;
-            Coins = coins;
-            Wins = stats[0];
-            Losses = stats[1];
-            Bio = bio;
+            UserData = userData;
+            Stats = stats;
             Stack = stack;
             Deck = deck;
         }
 
         public List<Card> AquirePackage()
         {
-            if (Coins > 5)
+            if (UserData.Coins > 5)
             {
-                List<Card> added = new List<Card>(new Package().Cards);
+                var added = new List<Card>(new Package().Cards);
                 Stack.Cards.AddRange(added);
-                Coins -= 5;
+                UserData.Coins -= 5;
                 return added;
             }
 

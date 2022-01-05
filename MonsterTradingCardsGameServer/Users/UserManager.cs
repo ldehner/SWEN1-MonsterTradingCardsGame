@@ -13,7 +13,7 @@ namespace MonsterTradingCardsGameServer.Users
         /**
          Logs the user in
          */
-        public bool LoginUser(string username, string password)
+        /**public bool LoginUser(string username, string password)
         {
             var user = DatabaseConnector.ValidateUser(username, password);
             if (user != null)
@@ -30,6 +30,7 @@ namespace MonsterTradingCardsGameServer.Users
             users.Add(token, user);
             return token;
         }
+       
 
         public bool RegisterUser(string username, string password, string bio)
         {
@@ -37,11 +38,6 @@ namespace MonsterTradingCardsGameServer.Users
             if (user != null) return true;
             return false;
         }
-
-        public string GenerateToken(string username)
-        {
-            var rand = new Random();
-            return $"mtcg-{username}-{rand.Next(9999)}";
-        }
+         **/
     }
 }

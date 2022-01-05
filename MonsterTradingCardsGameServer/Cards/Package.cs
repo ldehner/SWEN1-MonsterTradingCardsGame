@@ -14,10 +14,10 @@ namespace MonsterTradingCardsGameServer.Cards
 
         public void AddCardsToUser(User user)
         {
-            if (user.Coins >= 5)
+            if (user.UserData.Coins >= 5)
             {
                 user.Stack.Cards.AddRange(Cards);
-                user.Coins -= 5;
+                user.UserData.Coins -= 5;
             }
             else
             {
