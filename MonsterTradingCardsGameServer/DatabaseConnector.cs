@@ -6,7 +6,8 @@ namespace MonsterTradingCardsGameServer
 {
     public class DatabaseConnector
     {
-        public static User ValidateUser(string username, string password)
+        /**
+         public static User ValidateUser(string username, string password)
         {
             var stats = new int[] {1, 2};
             var cards = new List<Card>();
@@ -19,5 +20,7 @@ namespace MonsterTradingCardsGameServer
             var cards = new List<Card>();
             return new User("bla",40,stats,"fsdfdfs", new Stack(cards), new Deck(cards));
         }
+        
+         */
     }
 }

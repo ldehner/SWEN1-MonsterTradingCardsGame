@@ -9,4 +9,14 @@
       <ProjectReference Include="..\MonsterTradingCardsGameServer.Core\MonsterTradingCardsGameServer.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="RouteCommands\Battles" />
+      <Folder Include="RouteCommands\Cards" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Npgsql" Version="6.0.2" />
+    </ItemGroup>
+
 </Project>
