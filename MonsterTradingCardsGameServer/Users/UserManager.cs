@@ -1,43 +1,83 @@
 using System;
 using System.Collections.Generic;
+using MonsterTradingCardsGameServer.Cards;
+using MonsterTradingCardsGameServer.DAL;
+using Npgsql;
 
 namespace MonsterTradingCardsGameServer.Users
 {
-    public class UserManager
+    public class UserManager : IUserManager
     {
-        public Dictionary<string, User> users { get; set; }
-        public UserManager()
+        public Dictionary<string, User> ActiveUsers { get; set; }
+        public readonly IUserRepository UserRepository;
+
+        public UserManager(IUserRepository userRepository)
         {
-            users = new Dictionary<string, User>();
+            UserRepository = userRepository;
+            ActiveUsers = new Dictionary<string, User>();
         }
-        /**
-         Logs the user in
-         */
-        /**public bool LoginUser(string username, string password)
+
+        public User LoginUser(Credentials credentials)
         {
-            var user = DatabaseConnector.ValidateUser(username, password);
-            if (user != null)
+            return UserRepository.GetUserByCredentials(credentials.Username, credentials.Password) ??
+                   throw new UserNotFoundException();
+        }
+
+        public User GetUser(string username)
+        {
+            return UserRepository.GetUserByUsername(username) ?? throw new UserNotFoundException();
+        }
+
+        public UserData GetUserData(string username)
+        {
+            return UserRepository.GetUserByUsername(username).UserData ?? throw new UserNotFoundException();
+        }
+
+
+        public void EditUserData(string username, UserData userData)
+        {
+            if (!UserRepository.UpdateUserData(username, userData)) throw new UserNotFoundException();
+        }
+
+        public List<Score> GetScores()
+        {
+            return UserRepository.GetScoreBoard();
+        }
+
+        public List<Card> GetStack(string username)
+        {
+            return UserRepository.GetStack(username);
+        }
+
+        public List<Card> GetDeck(string username)
+        {
+            return UserRepository.GetDeck(username);
+        }
+
+        public bool SetDeck(string username, List<string> ids)
+        {
+            var stack = GetStack(username);
+            var newDeck = new List<Card>();
+            ids.ForEach(cardId => stack.ForEach(card =>
             {
-                users.Add(GenerateToken(username), user); 
-                return true;
-            }
-            return false;
+                var result = card.Id == Guid.Parse(cardId);
+                if (result) newDeck.Add(card);
+            }));
+            if (newDeck.Count != 4) return false;
+            return UserRepository.SetDeck(username, newDeck);
         }
 
-        public string TempLogin(User user)
+        public Stats GetUserStats(string username)
         {
-            var token = GenerateToken(user.Username);
-            users.Add(token, user);
-            return token;
+            return UserRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
         }
-       
 
-        public bool RegisterUser(string username, string password, string bio)
+        public void RegisterUser(Credentials credentials)
         {
-            var user = DatabaseConnector.RegisterUser(username, password, bio);
-            if (user != null) return true;
-            return false;
+            var user = new User(credentials.Username, new Stats(0, 0),
+                new UserData(credentials.Username, "Tolle Bio", ":-)"),
+                new Stack(new List<Card>()), new Deck(new List<Card>()), 20);
+            if (!UserRepository.InsertUser(user, credentials.Password)) throw new DuplicateUserException();
         }
-         **/
     }
 }
