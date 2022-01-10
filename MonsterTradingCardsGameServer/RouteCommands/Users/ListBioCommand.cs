@@ -29,7 +29,6 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             {
                 userdata = null;
             }
-            Console.WriteLine("UserData 2: "+userdata.Bio);
 
             var response = new Response();
             if (userdata == null)
@@ -38,8 +37,15 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             }
             else
             {
+                var sb = new StringBuilder();
+                sb.Append("Name: ");
+                sb.Append(userdata.Name);
+                sb.Append("\nBio: ");
+                sb.Append(userdata.Bio);
+                sb.Append("\nImage: ");
+                sb.Append(userdata.Image);
+                response.Payload = sb.ToString();
                 response.StatusCode = StatusCode.Ok;
-                response.Payload = userdata.Bio;
             }
 
             return response;
