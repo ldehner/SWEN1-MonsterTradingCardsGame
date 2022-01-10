@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
 
@@ -15,6 +16,8 @@ namespace MonsterTradingCardsGameServer.Battles
         private Card _currentBackup1, _currentBackup2;
         private List<Card> _tmpDeck1, _tmpDeck2;
         private Random _rand = new();
+        private User _winner, _loser;
+        private List<string> _battleLog = new();
         
         public Battle(User user1, User user2)
         {
@@ -22,15 +25,15 @@ namespace MonsterTradingCardsGameServer.Battles
             _user2 = user2;
             _tmpDeck1 = new List<Card>(_user1.Deck.Cards);
             _tmpDeck2 = new List<Card>(_user2.Deck.Cards);
-            StartBattle();
         }
 
-        public void StartBattle()
+        public BattleResult StartBattle()
         {
             while (_roundCounter <= MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0)
             {
                 _pickRandomCard();
-                switch ((new Round(_current1, _current2)).Calculate())
+                _battleLog.Add("### Round " + _roundCounter + " ###");
+                switch ((new Round(_current1, _current2, _battleLog)).Calculate())
                 {
                     case BattleStatus.Draw:
                         break;
@@ -46,13 +49,10 @@ namespace MonsterTradingCardsGameServer.Battles
 
                 _roundCounter++;
             }
-            
-            Console.WriteLine(_roundCounter);
-            Console.WriteLine(_tmpDeck1.Count);
-            Console.WriteLine(_tmpDeck2.Count);
+
             
             _checkOutcome();
-            
+            return new BattleResult(_winner.ToSimpleUser(), _loser.ToSimpleUser(), _battleLog);
         }
 
         private void _pickRandomCard()
@@ -65,21 +65,33 @@ namespace MonsterTradingCardsGameServer.Battles
 
         private void _checkOutcome()
         {
+            _battleLog.Add("-------------------");
+            _battleLog.Add("### Game Result ###");
             if (_roundCounter > MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0)
             {
-                Console.WriteLine("Draw");
+                _battleLog.Add("DRAW");
             } else if (_tmpDeck1.Count > 0 && _tmpDeck2.Count <= 0)
             {
                 _user1.Stack.Cards.AddRange(_user2.Deck.Cards);
                 _removeCards(_user2);
                 _user1.Stats.Wins++;
+                _user1.Stats.Elo += 3;
+                _winner = _user1;
+                _loser = _user2;
             }
             else if (_tmpDeck1.Count <= 0 && _tmpDeck2.Count > 0)
             {
                 _user2.Stack.Cards.AddRange(_user1.Deck.Cards);
                 _removeCards(_user1);
                 _user2.Stats.Wins++;
+                _user2.Stats.Elo += 3;
+                _winner = _user2;
+                _loser = _user1;
             }
+            _battleLog.Add(_winner.Username);
+            _battleLog.Add(" won");
+            _battleLog.Add(_loser.Username);
+            _battleLog.Add(" lost");
         }
 
         private static void _removeCards(User user)
@@ -91,6 +103,14 @@ namespace MonsterTradingCardsGameServer.Battles
             // }
             user.Deck.Cards = new List<Card>();
             user.Stats.Losses++;
+            if (user.Stats.Elo < 5)
+            {
+                user.Stats.Elo = 0;
+            }
+            else
+            {
+                user.Stats.Elo -= 5;
+            }
         }
 
         /*private void CheckMods()

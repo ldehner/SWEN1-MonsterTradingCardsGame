@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using MonsterTradingCardsGameServer.Cards;
 
 namespace MonsterTradingCardsGameServer.Battles
@@ -6,10 +9,12 @@ namespace MonsterTradingCardsGameServer.Battles
     public class Round
     {
         private Card _c1, _c2;
-        public Round(Card c1, Card c2)
+        private List<string> BattleLog { get; set; }
+        public Round(Card c1, Card c2, List<string> battleLog)
         {
             _c1 = c1;
             _c2 = c2;
+            BattleLog = battleLog;
         }
 
         public BattleStatus Calculate()
@@ -34,39 +39,41 @@ namespace MonsterTradingCardsGameServer.Battles
             {
                 if (winner.GetType() == typeof(Monster))
                 {
-                    Console.WriteLine(winner.Mod+"-"+((Monster) winner).Type+" won with " + winner.Damage + " Damage");
+                    BattleLog.Add(winner.Mod + "-" + ((Monster) winner).Type + " won with " + winner.Damage +
+                                    " Damage");
                 }
                 else
                 {
-                    Console.WriteLine(winner.Mod+ "-Spell won with " + winner.Damage + " Damage");
+                    BattleLog.Add(winner.Mod + "-Spell won with " + winner.Damage + " Damage");
                 }
                 if (loser.GetType() == typeof(Monster))
                 {
-                    Console.WriteLine(loser.Mod+"-"+((Monster) loser).Type+" lost with " + loser.Damage + " Damage");
+                    BattleLog.Add(loser.Mod + "-" + ((Monster) loser).Type + " lost with " + loser.Damage +
+                                     " Damage");
                 }
                 else
                 {
-                    Console.WriteLine(loser.Mod+ "-Spell lost with " + loser.Damage + " Damage");
+                    BattleLog.Add(loser.Mod + "-Spell lost with " + loser.Damage + " Damage");
                 }
             }
             else
             {
-                Console.WriteLine("###DRAW###");
+                BattleLog.Add("Draw:");
                 if (winner.GetType() == typeof(Monster))
                 {
-                    Console.WriteLine(winner.Mod+"-"+((Monster) winner).Type+" with " + winner.Damage + " Damage");
+                    BattleLog.Add(winner.Mod + "-" + ((Monster) winner).Type + " with " + winner.Damage + " Damage");
                 }
                 else
                 {
-                    Console.WriteLine(winner.Mod+ "-Spell with " + winner.Damage + " Damage");
+                    BattleLog.Add(winner.Mod + "-Spell with " + winner.Damage + " Damage");
                 }
                 if (loser.GetType() == typeof(Monster))
                 {
-                    Console.WriteLine(loser.Mod+"-"+((Monster) loser).Type+" with " + loser.Damage + " Damage");
+                    BattleLog.Add(loser.Mod + "-" + ((Monster) loser).Type + " with " + loser.Damage + " Damage");
                 }
                 else
                 {
-                    Console.WriteLine(loser.Mod+ "-Spell with " + loser.Damage + " Damage");
+                    BattleLog.Add(loser.Mod + "-Spell with " + loser.Damage + " Damage");
                 }
             }
             
