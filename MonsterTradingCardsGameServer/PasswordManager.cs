@@ -3,14 +3,12 @@ using System.Security.Cryptography;
 
 namespace MonsterTradingCardsGameServer
 {
-    public class PasswordManager
+    public static class PasswordManager
     {
         public static bool ComparePasswords(string storedpw, string userpw)
         {
-            /* Fetch the stored value */
-            var savedPasswordHash = storedpw;
             /* Extract the bytes */
-            var hashBytes = Convert.FromBase64String(savedPasswordHash);
+            var hashBytes = Convert.FromBase64String(storedpw);
             /* Get the salt */
             var salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
