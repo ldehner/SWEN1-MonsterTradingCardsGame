@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
+using Npgsql;
 
 namespace MonsterTradingCardsGameServer.DAL
 {
@@ -9,8 +11,20 @@ namespace MonsterTradingCardsGameServer.DAL
 
         User GetUserByAuthToken(string authToken);
 
-        UserData GetUserDataByUsername(string username);
+        User GetUserByUsername(string username);
+
+        User GetUser(NpgsqlDataReader reader);
+
+        bool UpdateUserData(string username, UserData userData);
 
         bool InsertUser(User user, string password);
+
+        public List<Score> GetScoreBoard();
+        
+        public List<Card> GetStack(string username);
+        
+        public List<Card> GetDeck(string username);
+        
+        public bool SetDeck (string username, List<Card> cards);
     }
 }
