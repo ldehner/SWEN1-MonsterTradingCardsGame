@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using MonsterTradingCardsGameServer.Core.Client;
 using MonsterTradingCardsGameServer.Core.Listener;
 using MonsterTradingCardsGameServer.Core.Routing;
@@ -24,8 +25,10 @@ namespace MonsterTradingCardsGameServer.Core.Server
 
             while (isListening)
             {
+                
                 var client = listener.AcceptClient();
-                HandleClient(client);
+                //HandleClient(client);
+                new Thread(() => HandleClient(client)).Start();
             }
         }
 
