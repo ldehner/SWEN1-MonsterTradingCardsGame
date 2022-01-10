@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Net;
 using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
+using MonsterTradingCardsGameServer.Core.Authentication;
 using MonsterTradingCardsGameServer.Core.Request;
 using MonsterTradingCardsGameServer.Core.Routing;
 using MonsterTradingCardsGameServer.Core.Server;
 using MonsterTradingCardsGameServer.DAL;
+using MonsterTradingCardsGameServer.RouteCommands.Battles;
+using MonsterTradingCardsGameServer.RouteCommands.Cards;
 using MonsterTradingCardsGameServer.RouteCommands.Users;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
@@ -15,6 +18,7 @@ namespace MonsterTradingCardsGameServer
 {
     class Program
     {
+        public static IIdentityProvider identityProvider;
         static void Main(string[] args)
         {
             // var manager = new UserManager();
@@ -53,22 +57,24 @@ namespace MonsterTradingCardsGameServer
             **/
 
             var userRepository =
-                new InDatabaseUserRepository(
-                    "Host=localhost;Username=postgres;Password=mysecretpassword;Database=postgres");
+                new InDatabaseUserRepository();
+            var battleRepository = new InDatabaseBattleRepository();
             var userManager = new UserManager(userRepository);
+            var battleManager = new BattleManager(userManager, battleRepository);
             
-            var identityProvider = new UserIdentityProvider(userRepository);
+            identityProvider = new UserIdentityProvider(userRepository);
             var routeParser = new UsernameRouteParser();
 
             var router = new Router(routeParser, identityProvider);
-            RegisterRoutes(router, userManager);
+            RegisterUserRoutes(router, userManager);
+            RegisterBattleRoutes(router, battleManager);
             
             var httpServer = new HttpServer(IPAddress.Any, 10001, router);
             httpServer.Start();
 
 
         }
-        private static void RegisterRoutes(Router router, IUserManager userManager)
+        private static void RegisterUserRoutes(Router router, IUserManager userManager)
         {
             // public routes
             router.AddRoute(HttpMethod.Post, "/sessions", (r, p) => new LoginCommand(userManager, Deserialize<Credentials>(r.Payload)));
@@ -76,11 +82,22 @@ namespace MonsterTradingCardsGameServer
 
             // protected routes
             router.AddProtectedRoute(HttpMethod.Get, "/users/{username}", (r, p) => new ListBioCommand(userManager, p["username"]));
+            router.AddProtectedRoute(HttpMethod.Put, "/users/{username}", (r, p) => new EditBioCommand(userManager, p["username"], GetUserIdentity(r), Deserialize<UserData>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/stats", (r, p) => new GetStatsCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/score", (r, p) => new GetScoreBoardCommand(userManager));
+            router.AddProtectedRoute(HttpMethod.Get, "/cards", (r, p) => new GetStackCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/deck", (r, p) => new GetDeckCommand(userManager,GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Put, "/deck", (r, p) => new SetDeckCommand(userManager,GetUserIdentity(r), r.Payload));
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));
             // router.AddProtectedRoute(HttpMethod.Get, "/messages/{id}", (r, p) => new ShowMessageCommand(messageManager, int.Parse(p["id"])));
             // router.AddProtectedRoute(HttpMethod.Put, "/messages/{id}", (r, p) => new UpdateMessageCommand(messageManager, int.Parse(p["id"]), r.Payload));
-            // router.AddProtectedRoute(HttpMethod.Delete, "/messages/{id}", (r, p) => new RemoveMessageCommand(messageManager, int.Parse(p["id"])));
+            // router.AddProtectedRoute(HttpMethod.Delete, "/messages/{id}", (r, p) => new RemoveMessageCommand(messageManager, int.Parsex(p["id"])));
+        }
+
+        private static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
+        {
+            router.AddProtectedRoute(HttpMethod.Post, "/battles", (r, p) => new StartBattleCommand(battleManager, r, identityProvider));
         }
 
         private static T Deserialize<T>(string payload) where T : class
@@ -89,43 +106,9 @@ namespace MonsterTradingCardsGameServer
             return deserializedData;
         }
 
-        private static User GenerateUser()
+        private static User GetUserIdentity(RequestContext request)
         {
-            var monsterTypes = new List<MonsterType>();
-            var modifications = new List<Modification>();
-
-            monsterTypes.Add(MonsterType.Dragon);
-            monsterTypes.Add(MonsterType.Goblin);
-            monsterTypes.Add(MonsterType.Org);
-            monsterTypes.Add(MonsterType.Knight);
-            monsterTypes.Add(MonsterType.Kraken);
-            monsterTypes.Add(MonsterType.Elve);
-            
-            modifications.Add(Modification.Fire);
-            modifications.Add(Modification.Water);
-            modifications.Add(Modification.Normal);
-            
-            var rand = new Random();
-
-            var cards1 = new List<Card>();
-            for (var i = 0; i < 4; i++)
-            {
-                Card tempCard;
-                if (rand.Next(10) > 5)
-                {
-                    tempCard = new Spell(rand.Next(20), modifications[rand.Next(modifications.Count)]);
-                }
-                else
-                {
-                    tempCard = new Monster(rand.Next(20), modifications[rand.Next(modifications.Count)], monsterTypes[rand.Next(monsterTypes.Count)]);
-                }
-                (new CardRuleAdder(tempCard)).AddRules();
-                cards1.Add(tempCard);
-
-            }
-            var stats = new int[] {1, 1};
-            return new User("test 1", new Stats(0,0), new UserData(20,"Coole Bio"), new Stack(new List<Card>(cards1)), new Deck(new List<Card>(cards1)));
+            return (User) identityProvider.GetIdentyForRequest(request);
         }
-        
     }
 }
