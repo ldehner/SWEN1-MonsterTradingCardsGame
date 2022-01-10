@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Users;
 
@@ -6,23 +7,12 @@ namespace MonsterTradingCardsGameServer.Cards
     public class Package
     {
         public List<Card> Cards { get; private set; }
+        public readonly Guid Guid;
 
-        public Package()
+        public Package(List<Card> cards)
         {
-            Cards = new List<Card>();
-        }
-
-        public void AddCardsToUser(User user)
-        {
-            if (user.UserData.Coins >= 5)
-            {
-                user.Stack.Cards.AddRange(Cards);
-                user.UserData.Coins -= 5;
-            }
-            else
-            {
-                throw new TooFewCoinsException();
-            }
+            Cards = cards;
+            Guid = Guid.NewGuid();
         }
     }
 }
