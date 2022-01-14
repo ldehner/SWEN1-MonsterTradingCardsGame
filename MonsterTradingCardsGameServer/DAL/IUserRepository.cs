@@ -43,5 +43,7 @@ namespace MonsterTradingCardsGameServer.DAL
         public bool AcceptTrade(string tradeId, User seller, User buyer);
 
         public bool SetStack(User user);
+
+        public bool LogoutUser(string token);
     }
 }

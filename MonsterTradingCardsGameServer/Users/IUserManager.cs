@@ -30,5 +30,7 @@ namespace MonsterTradingCardsGameServer.Users
         public bool AcceptTrade(string username, string tradeId, string cardId);
 
         public bool DeleteTrade(string username, string tradeId);
+
+        public bool LogoutUser(string token);
     }
 }

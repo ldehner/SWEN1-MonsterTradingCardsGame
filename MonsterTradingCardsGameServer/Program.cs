@@ -104,6 +104,7 @@ namespace MonsterTradingCardsGameServer
             router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(userManager));
             router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}", (r, p) => new AcceptTradeCommand(userManager,GetUserIdentity(r), p["appendix"],Deserialize<string>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}", (r, p) => new DeleteTradeCommand(userManager,GetUserIdentity(r), p["appendix"]));
+            router.AddProtectedRoute(HttpMethod.Post, "/logout", (r, p) => new LogoutUserCommand(userManager, GetUserIdentity(r)));
             
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));

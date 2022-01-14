@@ -280,6 +280,14 @@ namespace MonsterTradingCardsGameServer.DAL
             return _updateStack(user.Stack.ToUniversalCardList(), user.Coins,0,user.Username);
         }
 
+        public bool LogoutUser(string token)
+        {
+            if (!_activeUsers.ContainsKey(token)) return false;
+            _activeUsers.Remove(token);
+            return true;
+
+        }
+
         private bool _deleteTrade(string tradeId)
         {
             return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);

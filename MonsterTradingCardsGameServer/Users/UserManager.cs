@@ -151,5 +151,10 @@ namespace MonsterTradingCardsGameServer.Users
             var trade = UserRepository.GetTrade(tradeId);
             return trade.Trader.Equals(username) ? UserRepository.DeleteTrade(tradeId) : false;
         }
+
+        public bool LogoutUser(string token)
+        {
+            return UserRepository.LogoutUser(token);
+        }
     }
 }
