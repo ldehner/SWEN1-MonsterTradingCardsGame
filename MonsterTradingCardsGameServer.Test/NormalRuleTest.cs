@@ -1,3 +1,4 @@
+using System;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Rules;
 using NUnit.Framework;
@@ -13,8 +14,8 @@ namespace MonsterTradingCardsGameServer.Test
         public void CheckIfNormalDamageIsHalvedWhenOtherCardHasFireMod(int Dmg1, int Dmg2)
         {
             // arrange
-            var card1 = new Spell(Dmg1, Modification.Normal);
-            var card2 = new Spell(Dmg2, Modification.Fire);
+            var card1 = new Spell(Guid.NewGuid(), Dmg1, Modification.Normal);
+            var card2 = new Spell(Guid.NewGuid(), Dmg2, Modification.Fire);
             
             // act
             new NormalRule().CalculateDamage(card1, card2);
@@ -29,8 +30,8 @@ namespace MonsterTradingCardsGameServer.Test
         public void CheckIfNormalDamageIsDoubledWhenOtherCardHasWaterMod(int Dmg1, int Dmg2)
         {
             // arrange
-            var card1 = new Spell(Dmg1, Modification.Normal);
-            var card2 = new Spell(Dmg2, Modification.Water);
+            var card1 = new Spell(Guid.NewGuid(), Dmg1, Modification.Normal);
+            var card2 = new Spell(Guid.NewGuid(), Dmg2, Modification.Water);
             
             // act
             new NormalRule().CalculateDamage(card1, card2);
@@ -45,8 +46,8 @@ namespace MonsterTradingCardsGameServer.Test
         public void CheckIfNormalDamageIsSameWhenOtherCardHasNormalMod(int Dmg1, int Dmg2)
         {
             // arrange
-            var card1 = new Spell(Dmg1, Modification.Normal);
-            var card2 = new Spell(Dmg2, Modification.Normal);
+            var card1 = new Spell(Guid.NewGuid(), Dmg1, Modification.Normal);
+            var card2 = new Spell(Guid.NewGuid(), Dmg2, Modification.Normal);
             
             // act
             new NormalRule().CalculateDamage(card1, card2);
