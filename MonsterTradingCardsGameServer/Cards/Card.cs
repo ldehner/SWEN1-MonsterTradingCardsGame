@@ -24,6 +24,11 @@ namespace MonsterTradingCardsGameServer.Cards
 
         public abstract string GetCardName();
 
+        public ReadableCard ToReadableCard()
+        {
+            return new ReadableCard(Id.ToString(), GetCardName(), Damage);
+        }
+
         public virtual void SetRules()
         {
             switch (Mod)
