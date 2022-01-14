@@ -50,7 +50,7 @@ namespace MonsterTradingCardsGameServer.Battles
             }
             
             _checkOutcome();
-            return new BattleResult(Winner.ToSimpleUser(), Loser.ToSimpleUser(), BattleLog);
+            return new BattleResult(Guid.NewGuid().ToString(), Winner.ToSimpleUser(), Loser.ToSimpleUser(), BattleLog);
         }
 
         private void _pickRandomCard()

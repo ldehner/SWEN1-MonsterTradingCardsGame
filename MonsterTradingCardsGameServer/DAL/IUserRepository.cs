@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
 using Npgsql;

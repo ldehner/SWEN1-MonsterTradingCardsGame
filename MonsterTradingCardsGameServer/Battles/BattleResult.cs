@@ -11,12 +11,12 @@ namespace MonsterTradingCardsGameServer.Battles
         public List<string> BattleLog { get; set; }
         public readonly Guid Guid;
 
-        public BattleResult(SimpleUser winner, SimpleUser loser, List<string> battleLog)
+        public BattleResult(string guid, SimpleUser winner, SimpleUser loser, List<string> battleLog)
         {
             Winner = winner;
             Loser = loser;
             BattleLog = battleLog;
-            Guid = Guid.NewGuid();
+            Guid = Guid.Parse(guid);
         }
     }
 }

@@ -63,6 +63,22 @@ namespace MonsterTradingCardsGameServer.Battles
             _battleRepository.NewBattle(user);
             return battleResult;
         }
-        
+
+        public BattleResult GetBattle(string username, string battleId)
+        {
+            var user = _userManager.GetUser(username);
+            BattleResult battleResult = null;
+            user.Battles.ForEach(battle =>
+            {
+                if (battle.Guid.ToString().Equals(battleId)) battleResult = battle;
+            });
+            if (battleResult is null) throw new BattleNotFoundException();
+            return battleResult;
+        }
+
+        public List<BattleResult> ListBattles(string username)
+        {
+            return _userManager.GetUser(username).Battles;
+        }
     }
 }

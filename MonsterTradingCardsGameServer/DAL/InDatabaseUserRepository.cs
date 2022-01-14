@@ -288,6 +288,16 @@ namespace MonsterTradingCardsGameServer.DAL
 
         }
 
+        public BattleResult GetBattle(string battleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BattleResult> ListBattles(string username)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool _deleteTrade(string tradeId)
         {
             return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);

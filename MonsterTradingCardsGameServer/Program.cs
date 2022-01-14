@@ -116,6 +116,8 @@ namespace MonsterTradingCardsGameServer
         private static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
         {
             router.AddProtectedRoute(HttpMethod.Post, "/battles", (r, p) => new StartBattleCommand(battleManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/battles", (r, p) => new ListBattlesCommand(battleManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/battles/{appendix}", (r, p) => new GetBattleCommand(battleManager, GetUserIdentity(r), p["appendix"]));
         }
 
         private static T Deserialize<T>(string payload) where T : class
