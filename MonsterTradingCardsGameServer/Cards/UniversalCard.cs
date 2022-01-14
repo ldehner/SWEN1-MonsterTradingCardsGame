@@ -7,9 +7,9 @@ namespace MonsterTradingCardsGameServer.Cards
         public Guid Id { get; set; }
         public Modification Modification { get; set; }
         public MonsterType MonsterType { get; set; }
-        public int Damage { get; set; }
+        public double Damage { get; set; }
 
-        public UniversalCard(string id, Modification modification, MonsterType monsterType, int damage)
+        public UniversalCard(string id, Modification modification, MonsterType monsterType, double damage)
         {
             Id = Guid.Parse(id);
             Modification = modification;

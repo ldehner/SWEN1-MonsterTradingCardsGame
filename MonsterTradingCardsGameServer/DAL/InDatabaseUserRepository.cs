@@ -40,7 +40,7 @@ namespace MonsterTradingCardsGameServer.DAL
             command.CommandText = DatabaseData.GetScoreBoard;
 
             var c = command as NpgsqlCommand;
-
+            c.Parameters.Add("@admin", NpgsqlDbType.Varchar).Value = "admin";
             using var reader = c.ExecuteReader();
             var scoreList = new List<Score>();
             while (reader.Read()) scoreList.Add(new Score(reader["username"].ToString(), JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString())));
@@ -95,6 +95,96 @@ namespace MonsterTradingCardsGameServer.DAL
             try
             {
                 command.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
+            }
+        }
+
+        public bool AddPackage(string username, List<UniversalCard> package, Guid id)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = DatabaseData.AddPackageCommand;
+
+            var c = command as NpgsqlCommand;
+
+            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("package", NpgsqlDbType.Jsonb);
+
+            c.Prepare();
+
+            c.Parameters["id"].Value = id.ToString();
+            c.Parameters["package"].Value = JsonConvert.SerializeObject(package);
+            try
+            {
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
+            }
+        }
+
+        public bool AquirePackage(string username, int coins, Stack stack)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = DatabaseData.AquirePackageCommand;
+
+            var c = command as NpgsqlCommand;
+
+            using var reader = c.ExecuteReader();
+            var id = "";
+            var package = new List<UniversalCard>();
+            while (reader.Read())
+            {
+                id = reader["id"].ToString();
+                package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString());
+            }
+            reader.Close();
+            stack.Cards.ForEach(card => package?.Add(card.ToUniversalCard()));
+  
+            return _deletePackage(id, c) && _updateStack(package, coins, username, c);
+
+
+        }
+
+        private bool _deletePackage(string id, NpgsqlCommand c)
+        {
+            c.CommandText = DatabaseData.DeletePackageCommand;
+            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = id;
+
+            c.Prepare();
+
+            try
+            {
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
+            }
+        }
+
+        private bool _updateStack(List<UniversalCard> stack, int coins, string username, NpgsqlCommand c)
+        {
+            c.CommandText = DatabaseData.UpdateUserAfterPackageBuy;
+            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+            c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("coins", NpgsqlDbType.Integer);
+
+            c.Prepare();
+            
+            
+
+            c.Parameters["stack"].Value = JsonConvert.SerializeObject(stack);
+            c.Parameters["coins"].Value = coins-5;
+            try
+            {
+                c.ExecuteNonQuery();
                 return true;
             }
             catch (PostgresException)

@@ -67,6 +67,14 @@ namespace MonsterTradingCardsGameServer.Users
             return UserRepository.SetDeck(username, new Deck(newDeck));
         }
 
+        public bool AddPackage(string username, List<UserRequestCard> package)
+        {
+            if (package.Count != 5) return false;
+            var tmp = new List<UniversalCard>();
+            package.ForEach(card => tmp.Add(card.ToUniversalCard()));
+            return UserRepository.AddPackage(username, tmp, Guid.NewGuid());
+        }
+
         public Stats GetUserStats(string username)
         {
             return UserRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
@@ -78,6 +86,12 @@ namespace MonsterTradingCardsGameServer.Users
                 new UserData(credentials.Username, "Tolle Bio", ":-)"),
                 new Stack(new List<Card>()), new Deck(new List<Card>()), 20);
             if (!UserRepository.InsertUser(user, credentials.Password)) throw new DuplicateUserException();
+        }
+
+        public bool AquirePackage(string username)
+        {
+            var user = GetUser(username);
+            return user.Coins >= 5 && UserRepository.AquirePackage(username, user.Coins, user.Stack);
         }
     }
 }

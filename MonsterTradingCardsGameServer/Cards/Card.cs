@@ -6,12 +6,12 @@ namespace MonsterTradingCardsGameServer.Cards
 {
     public abstract class Card
     {
-        public int Damage { get; set; }
+        public double Damage { get; set; }
         public Modification Mod { get; set; }
         public List<Rule> Rules { get; set; }
         public Guid Id { get; set; }
 
-        public Card(Guid id, int damage, Modification mod)
+        public Card(Guid id, double damage, Modification mod)
         {
             Id = id;
             Damage = damage;

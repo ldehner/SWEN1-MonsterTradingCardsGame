@@ -4,7 +4,7 @@ namespace MonsterTradingCardsGameServer.Cards
 {
     public class Spell:Card
     {
-        public Spell(Guid id, int damage, Modification mod):base(id, damage, mod)
+        public Spell(Guid id, double damage, Modification mod):base(id, damage, mod)
         {
             base.SetRules();
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
@@ -26,5 +27,9 @@ namespace MonsterTradingCardsGameServer.DAL
         public Deck GetDeck(string username);
         
         public bool SetDeck (string username, Deck deck);
+
+        public bool AddPackage(string username, List<UniversalCard> package, Guid id);
+
+        public bool AquirePackage(string username, int coins, Stack stack);
     }
 }

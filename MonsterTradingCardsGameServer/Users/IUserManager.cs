@@ -18,5 +18,9 @@ namespace MonsterTradingCardsGameServer.Users
         public Deck GetDeck(string username);
 
         public bool SetDeck(string username, List<string> ids);
+
+        public bool AddPackage(string username, List<UserRequestCard> package);
+
+        public bool AquirePackage(string username);
     }
 }

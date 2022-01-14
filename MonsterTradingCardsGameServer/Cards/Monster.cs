@@ -7,7 +7,7 @@ namespace MonsterTradingCardsGameServer.Cards
     {
         public MonsterType Type { get; }
         
-        public Monster(Guid id, int damage, Modification mod, MonsterType type) : base(id, damage, mod)
+        public Monster(Guid id, double damage, Modification mod, MonsterType type) : base(id, damage, mod)
         {
             Type = type;
             SetRules();

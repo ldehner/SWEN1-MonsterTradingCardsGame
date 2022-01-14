@@ -1,17 +1,26 @@
-using System;
-
 namespace MonsterTradingCardsGameServer.Cards
 {
-    public static class RequestToCardConverter
+    public class UserRequestCard
     {
-        public static UniversalCard ConvertToUniversalCard(string id, int damage, string card)
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public double Damage { get; set; }
+
+        public UserRequestCard(string id, string name, double damage)
+        {
+            Id = id;
+            Name = name;
+            Damage = damage;
+        }
+        
+        public UniversalCard ToUniversalCard()
         {
             var modification = Modification.None;
             var monsterType = MonsterType.None;
-            if (card.Contains("Spell"))
+            if (Name.Contains("Spell"))
             {
-                card = card.Replace("Spell", "");
-                modification = card switch
+                Name = Name.Replace("Spell", "");
+                modification = Name switch
                 {
                     "Regular" => Modification.Normal,
                     "Fire" => Modification.Fire,
@@ -21,14 +30,14 @@ namespace MonsterTradingCardsGameServer.Cards
             }
             else
             {
-                modification = card switch
+                modification = Name switch
                 {
                     { } a when a.Contains("Fire") => Modification.Fire,
                     { } b when b.Contains("Water") => Modification.Water,
                     _ => Modification.Normal
                 };
-                card = card.Replace(modification.ToString(), "");
-                monsterType = card switch
+                Name = Name.Replace(modification.ToString(), "");
+                monsterType = Name switch
                 {
                     "Goblin" => MonsterType.Goblin,
                     "Dragon" => MonsterType.Dragon,
@@ -40,7 +49,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     _ => monsterType
                 };
             }
-            return new UniversalCard(id, modification, monsterType, damage);
+            return new UniversalCard(Id, modification, monsterType, Damage);
         }
     }
 }

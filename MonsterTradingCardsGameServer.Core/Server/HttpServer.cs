@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using MonsterTradingCardsGameServer.Core.Client;
 using MonsterTradingCardsGameServer.Core.Listener;
@@ -11,11 +12,13 @@ namespace MonsterTradingCardsGameServer.Core.Server
         private readonly IListener listener;
         private readonly IRouter router;
         private bool isListening;
+        private List<Thread> threads;
 
         public HttpServer(IPAddress address, int port, IRouter router)
         {
             listener = new Listener.HttpListener(address, port);
             this.router = router;
+            threads = new List<Thread>();
         }
 
         public void Start()
@@ -28,8 +31,12 @@ namespace MonsterTradingCardsGameServer.Core.Server
                 
                 var client = listener.AcceptClient();
                 //HandleClient(client);
-                new Thread(() => HandleClient(client)).Start();
+                var thread = new Thread(() => HandleClient(client));
+                threads.Add(thread);
+                thread.Start();
             }
+            
+            threads.ForEach(thread => thread.Join());
         }
 
         public void Stop()
