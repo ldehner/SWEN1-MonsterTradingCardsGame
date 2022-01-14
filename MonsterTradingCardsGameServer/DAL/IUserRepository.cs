@@ -32,6 +32,6 @@ namespace MonsterTradingCardsGameServer.DAL
 
         public bool AquirePackage(string username, int coins, Stack stack);
 
-        public bool CreateTrade(string username, Card card, double minDmg, string tradeId);
+        public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type);
     }
 }

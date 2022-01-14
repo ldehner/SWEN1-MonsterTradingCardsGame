@@ -151,7 +151,7 @@ namespace MonsterTradingCardsGameServer.DAL
 
         }
 
-        public bool CreateTrade(string username, Card card, double minDmg, string tradeId)
+        public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type)
         {
             var command = _connection.CreateCommand();
             command.CommandText = DatabaseData.AddTrade;
@@ -162,6 +162,7 @@ namespace MonsterTradingCardsGameServer.DAL
             c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
             c.Parameters.Add("card", NpgsqlDbType.Jsonb);
             c.Parameters.Add("minDmg", NpgsqlDbType.Double);
+            c.Parameters.Add("cardType", NpgsqlDbType.Integer);
 
             c.Prepare();
 
@@ -169,6 +170,7 @@ namespace MonsterTradingCardsGameServer.DAL
             c.Parameters["username"].Value = username;
             c.Parameters["card"].Value = JsonConvert.SerializeObject(card);
             c.Parameters["minDmg"].Value = minDmg;
+            c.Parameters["cardType"].Value = type;
             
             try
             {
