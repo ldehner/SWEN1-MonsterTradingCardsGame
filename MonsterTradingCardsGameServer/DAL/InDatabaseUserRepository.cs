@@ -151,6 +151,36 @@ namespace MonsterTradingCardsGameServer.DAL
 
         }
 
+        public bool CreateTrade(string username, Card card, double minDmg, string tradeId)
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = DatabaseData.AddTrade;
+
+            var c = command as NpgsqlCommand;
+
+            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("card", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("minDmg", NpgsqlDbType.Double);
+
+            c.Prepare();
+
+            c.Parameters["id"].Value = tradeId;
+            c.Parameters["username"].Value = username;
+            c.Parameters["card"].Value = JsonConvert.SerializeObject(card);
+            c.Parameters["minDmg"].Value = minDmg;
+            
+            try
+            {
+                command.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
+            }
+        }
+
         private bool _deletePackage(string id, NpgsqlCommand c)
         {
             c.CommandText = DatabaseData.DeletePackageCommand;

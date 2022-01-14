@@ -11,6 +11,7 @@ using MonsterTradingCardsGameServer.DAL;
 using MonsterTradingCardsGameServer.RouteCommands.Admin;
 using MonsterTradingCardsGameServer.RouteCommands.Battles;
 using MonsterTradingCardsGameServer.RouteCommands.Cards;
+using MonsterTradingCardsGameServer.RouteCommands.Trades;
 using MonsterTradingCardsGameServer.RouteCommands.Users;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
@@ -99,6 +100,8 @@ namespace MonsterTradingCardsGameServer
             router.AddProtectedRoute(HttpMethod.Put, "/deck", (r, p) => new SetDeckCommand(userManager,GetUserIdentity(r), r.Payload));
             router.AddProtectedRoute(HttpMethod.Post, "/packages", (r, p) => new AddPackageCommand(userManager,GetUserIdentity(r), Deserialize<List<UserRequestCard>>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Get, "/packages", (r, p) => new AquirePackageCommand(userManager,GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings", (r, p) => new CreateTradeCommand(userManager, GetUserIdentity(r), Deserialize<TradingDeal>(r.Payload)));
+            
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));
             // router.AddProtectedRoute(HttpMethod.Get, "/messages/{id}", (r, p) => new ShowMessageCommand(messageManager, int.Parse(p["id"])));

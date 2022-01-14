@@ -93,5 +93,22 @@ namespace MonsterTradingCardsGameServer.Users
             var user = GetUser(username);
             return user.Coins >= 5 && UserRepository.AquirePackage(username, user.Coins, user.Stack);
         }
+
+        public bool CreateTrade(string username, TradingDeal tradingDeal)
+        {
+            var user = GetUser(username);
+            var cardInDeck = false;
+            Card tradingCard = null;
+            user.Stack.Cards.ForEach(card =>
+            {
+                if (card.Id.ToString().Equals(tradingDeal.CardToTrade)) tradingCard = card;
+            });
+            user.Deck.Cards.ForEach(card =>
+            {
+                if (card.Id.ToString().Equals(tradingDeal.CardToTrade)) cardInDeck = true;
+            });
+            return !cardInDeck && tradingCard is not null &&
+                   UserRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id);
+        }
     }
 }
