@@ -145,5 +145,11 @@ namespace MonsterTradingCardsGameServer.Users
             buyer.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
             return UserRepository.AcceptTrade(tradeId, seller, buyer);
         }
+
+        public bool DeleteTrade(string username, string tradeId)
+        {
+            var trade = UserRepository.GetTrade(tradeId);
+            return trade.Trader.Equals(username) ? UserRepository.DeleteTrade(tradeId) : false;
+        }
     }
 }

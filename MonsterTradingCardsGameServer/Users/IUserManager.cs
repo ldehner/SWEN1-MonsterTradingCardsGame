@@ -28,5 +28,7 @@ namespace MonsterTradingCardsGameServer.Users
         public List<TradingOffer> ListTrades();
 
         public bool AcceptTrade(string username, string tradeId, string cardId);
+
+        public bool DeleteTrade(string username, string tradeId);
     }
 }

@@ -38,6 +38,8 @@ namespace MonsterTradingCardsGameServer.DAL
 
         public Trade GetTrade(string tradeId);
         
+        public bool DeleteTrade(string tradeId);
+        
         public bool AcceptTrade(string tradeId, User seller, User buyer);
 
         public bool SetStack(User user);

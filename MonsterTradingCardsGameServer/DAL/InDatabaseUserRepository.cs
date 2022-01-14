@@ -261,6 +261,11 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        public bool DeleteTrade(string tradeId)
+        {
+            return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);
+        }
+
         public bool AcceptTrade(string tradeId, User seller, User buyer)
         {
             var a1 = _deleteTrade(tradeId);
