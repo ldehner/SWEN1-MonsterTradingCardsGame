@@ -59,7 +59,8 @@ namespace MonsterTradingCardsGameServer.Battles
             
             user.Battles.Add(battleResult);
             if (!_battleRepository.NewBattle(user)) throw new BattleFailedException();
-            
+
+            _battleRepository.NewBattle(user);
             return battleResult;
         }
         

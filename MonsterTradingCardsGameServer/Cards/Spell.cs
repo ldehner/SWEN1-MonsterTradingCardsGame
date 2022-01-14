@@ -6,7 +6,7 @@ namespace MonsterTradingCardsGameServer.Cards
     {
         public Spell(Guid id, int damage, Modification mod):base(id, damage, mod)
         {
-            
+            base.SetRules();
         }
         
         public override UniversalCard ToUniversalCard()

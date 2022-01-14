@@ -11,22 +11,19 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
     public class StartBattleCommand : ProtectedRouteCommand
     {
         private IBattleManager _battleManager;
-        private readonly string _currentUsername;
-        private readonly IIdentityProvider _identityProvider;
+        private User _currentUser;
         
-        public StartBattleCommand(IBattleManager battleManager, RequestContext request, IIdentityProvider identityProvider)
+        public StartBattleCommand(IBattleManager battleManager, User currentUser)
         {
-            _identityProvider = identityProvider;
-            _currentUsername = ((User)_identityProvider.GetIdentyForRequest(request)).Username;
             _battleManager = battleManager;
+            _currentUser = currentUser;
         }
         public override Response Execute()
         {
-
             var response = new Response();
             try
             {
-                response.Payload = JsonConvert.SerializeObject(_battleManager.NewBattle(_currentUsername));
+                response.Payload = JsonConvert.SerializeObject(_battleManager.NewBattle(_currentUser.Username));
                 response.StatusCode = StatusCode.Ok;
             }
             catch (BattleFailedException)

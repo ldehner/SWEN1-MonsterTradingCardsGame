@@ -16,13 +16,32 @@ namespace MonsterTradingCardsGameServer.Cards
             Id = id;
             Damage = damage;
             Mod = mod;
-            Rules = CardRuleAdder.AddRules(this);
+            Rules = new List<Rule>();
             
         }
 
         public abstract UniversalCard ToUniversalCard();
 
         public abstract string GetCardName();
+
+        public virtual void SetRules()
+        {
+            switch (Mod)
+            {
+                case Modification.Water:
+                    Rules.Add(new WaterRule());
+                    break;
+                case Modification.Fire:
+                    Rules.Add(new FireRule());
+                    break;
+                case Modification.Normal:
+                    Rules.Add(new NormalRule());
+                    break;
+                case Modification.None:
+                default:
+                    break;
+            }
+        }
 
     }
 }

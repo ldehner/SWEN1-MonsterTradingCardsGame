@@ -33,11 +33,11 @@ namespace MonsterTradingCardsGameServer
                 Card tempCard;
                 if (rand.Next(10) > 5)
                 {
-                    tempCard = new Spell(Guid.NewGuid(),rand.Next(20), modifications[rand.Next(modifications.Count)]);
+                    tempCard = new Spell(Guid.NewGuid(),rand.Next(20), modifications[rand.Next(2, modifications.Count)]);
                 }
                 else
                 {
-                    tempCard = new Monster(Guid.NewGuid(),rand.Next(20), modifications[rand.Next(modifications.Count)], monsterTypes[rand.Next(monsterTypes.Count)]);
+                    tempCard = new Monster(Guid.NewGuid(),rand.Next(20), modifications[rand.Next(2, modifications.Count)], monsterTypes[rand.Next(2, monsterTypes.Count)]);
                 }
                 cards1.Add(tempCard);
 

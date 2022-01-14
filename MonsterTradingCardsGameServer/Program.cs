@@ -56,13 +56,13 @@ namespace MonsterTradingCardsGameServer
             Console.WriteLine(manager.users[token2].Wins+" "+manager.users[token2].Losses);
             **/
 
+            /**
             RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "RegularSpell");
             RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "WaterSpell");
             RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "FireDragon");
             RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "Elve");
             RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "WaterGoblin");
-
-            /**
+**/
             var userRepository =
                 new InDatabaseUserRepository();
             var battleRepository = new InDatabaseBattleRepository();
@@ -78,8 +78,7 @@ namespace MonsterTradingCardsGameServer
             
             var httpServer = new HttpServer(IPAddress.Any, 10001, router);
             httpServer.Start();
-            
-            **/
+   
 
 
         }
@@ -106,7 +105,7 @@ namespace MonsterTradingCardsGameServer
 
         private static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
         {
-            router.AddProtectedRoute(HttpMethod.Post, "/battles", (r, p) => new StartBattleCommand(battleManager, r, identityProvider));
+            router.AddProtectedRoute(HttpMethod.Post, "/battles", (r, p) => new StartBattleCommand(battleManager, GetUserIdentity(r)));
         }
 
         private static T Deserialize<T>(string payload) where T : class
