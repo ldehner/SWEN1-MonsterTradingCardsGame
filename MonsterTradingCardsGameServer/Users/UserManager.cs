@@ -110,5 +110,10 @@ namespace MonsterTradingCardsGameServer.Users
             return !cardInDeck && tradingCard is not null &&
                    UserRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id, tradingDeal.Type.Equals("Monster") ? 1 : 0 );
         }
+
+        public List<TradingOffer> ListTrades()
+        {
+            return UserRepository.ListTrades();
+        }
     }
 }

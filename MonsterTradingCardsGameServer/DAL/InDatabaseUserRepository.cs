@@ -168,7 +168,7 @@ namespace MonsterTradingCardsGameServer.DAL
 
             c.Parameters["id"].Value = tradeId;
             c.Parameters["username"].Value = username;
-            c.Parameters["card"].Value = JsonConvert.SerializeObject(card);
+            c.Parameters["card"].Value = JsonConvert.SerializeObject(card.ToUniversalCard());
             c.Parameters["minDmg"].Value = minDmg;
             c.Parameters["cardType"].Value = type;
             
@@ -181,6 +181,27 @@ namespace MonsterTradingCardsGameServer.DAL
             {
                 return false;
             }
+        }
+
+        public List<TradingOffer> ListTrades()
+        {
+            var command = _connection.CreateCommand();
+            command.CommandText = DatabaseData.GetTrades;
+
+            var c = command as NpgsqlCommand;
+
+            using var reader = c.ExecuteReader();
+            var offerts = new List<TradingOffer>();
+            while (reader.Read())
+            {
+                var id = reader["id"].ToString();
+                var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString());
+                var minDmg = double.Parse(reader["minDmg"].ToString());
+                var cardType = int.Parse(reader["cardType"].ToString()) == 1 ? "Monster" : "Spell";
+                offerts.Add(new TradingOffer(id, card.ToCard().GetCardName(), card.Damage, cardType, minDmg));
+            }
+
+            return offerts;
         }
 
         private bool _deletePackage(string id, NpgsqlCommand c)

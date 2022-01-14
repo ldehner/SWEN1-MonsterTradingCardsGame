@@ -24,5 +24,7 @@ namespace MonsterTradingCardsGameServer.Users
         public bool AquirePackage(string username);
 
         public bool CreateTrade(string username, TradingDeal tradingDeal);
+        
+        public List<TradingOffer> ListTrades();
     }
 }

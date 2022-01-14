@@ -101,6 +101,7 @@ namespace MonsterTradingCardsGameServer
             router.AddProtectedRoute(HttpMethod.Post, "/packages", (r, p) => new AddPackageCommand(userManager,GetUserIdentity(r), Deserialize<List<UserRequestCard>>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Get, "/packages", (r, p) => new AquirePackageCommand(userManager,GetUserIdentity(r)));
             router.AddProtectedRoute(HttpMethod.Post, "/tradings", (r, p) => new CreateTradeCommand(userManager, GetUserIdentity(r), Deserialize<TradingDeal>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(userManager));
             
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));
