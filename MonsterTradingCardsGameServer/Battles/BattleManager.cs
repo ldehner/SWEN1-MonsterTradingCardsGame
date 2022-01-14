@@ -26,7 +26,7 @@ namespace MonsterTradingCardsGameServer.Battles
         public BattleResult NewBattle(string username)
         {
             var user = _userManager.GetUser(username);
-            user.Deck = UserGenerator.GenerateUser("username").Deck;
+            if (user.Deck.Cards.Count != 4) throw new InvalidDeckException();
             User u1 = null;
             User u2 = null;
             lock (_battleLock)
