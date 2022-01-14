@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Cards
             else
             {
                 response.StatusCode = StatusCode.Ok;
-                response.Payload = JsonConvert.SerializeObject(result);
+                response.Payload = JsonConvert.SerializeObject(result.Cards);
             }
             return response;
         }

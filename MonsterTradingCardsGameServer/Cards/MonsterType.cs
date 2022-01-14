@@ -2,6 +2,7 @@ namespace MonsterTradingCardsGameServer.Cards
 {
     public enum MonsterType
     {
+        None,
         Goblin,
         Dragon,
         Wizard,

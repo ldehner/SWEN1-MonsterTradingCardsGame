@@ -13,9 +13,9 @@ namespace MonsterTradingCardsGameServer.Users
         Stats GetUserStats(string username);
         public List<Score> GetScores();
 
-        public List<Card> GetStack(string username);
+        public Stack GetStack(string username);
         
-        public List<Card> GetDeck(string username);
+        public Deck GetDeck(string username);
 
         public bool SetDeck(string username, List<string> ids);
     }

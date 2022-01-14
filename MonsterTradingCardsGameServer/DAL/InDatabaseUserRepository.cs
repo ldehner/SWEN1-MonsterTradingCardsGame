@@ -48,7 +48,7 @@ namespace MonsterTradingCardsGameServer.DAL
             return scoreList;
         }
 
-        public List<Card> GetStack(string username)
+        public Stack GetStack(string username)
         {
             var command = _connection.CreateCommand();
             command.CommandText = DatabaseData.GetUserStack;
@@ -56,14 +56,14 @@ namespace MonsterTradingCardsGameServer.DAL
             var c = command as NpgsqlCommand;
             c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
             using var reader = c.ExecuteReader();
-            List<Card> stack = null;
-            while (reader.Read()) stack = JsonConvert.DeserializeObject<Stack>(reader["stack"].ToString())?.Cards;
-            Console.WriteLine(stack.Count);
-            Console.WriteLine("hello");
-            return stack;
+            List<UniversalCard> temp = null;
+            var stack = new List<Card>();
+            while (reader.Read()) temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString());
+            temp?.ForEach(card => stack.Add(card.ToCard()));
+            return new Stack(stack);
         }
 
-        public List<Card> GetDeck(string username)
+        public Deck GetDeck(string username)
         {
             var command = _connection.CreateCommand();
             command.CommandText = DatabaseData.GetUserDeck;
@@ -72,13 +72,14 @@ namespace MonsterTradingCardsGameServer.DAL
             c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
 
             using var reader = c.ExecuteReader();
-            List<Card> deck = null;
-            while (reader.Read()) deck = JsonConvert.DeserializeObject<Deck>(reader["deck"].ToString())?.Cards;
-
-            return deck;
+            List<UniversalCard> temp = null;
+            var deck = new List<Card>();
+            while (reader.Read()) temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString());
+            temp?.ForEach(card => deck.Add(card.ToCard()));
+            return new Deck(deck);
         }
 
-        public bool SetDeck(string username, List<Card> cards)
+        public bool SetDeck(string username, Deck deck)
         {
             var command = _connection.CreateCommand();
             command.CommandText = DatabaseData.UpdateUserDeck;
@@ -90,7 +91,7 @@ namespace MonsterTradingCardsGameServer.DAL
 
             c.Prepare();
 
-            c.Parameters["deck"].Value = JsonConvert.SerializeObject(cards);
+            c.Parameters["deck"].Value = JsonConvert.SerializeObject(deck.ToUniversalCardList());
             try
             {
                 command.ExecuteNonQuery();
@@ -107,16 +108,22 @@ namespace MonsterTradingCardsGameServer.DAL
             try
             {
                 var dbUsername = reader["username"].ToString();
-                var dbStack = JsonConvert.DeserializeObject<Stack>(reader["stack"].ToString());
-                var dbDeck = JsonConvert.DeserializeObject<Deck>(reader["deck"].ToString());
+                var dbStack = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString());
+                var dbDeck = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString());
                 var dbStats = JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString());
                 var dbUserdata = JsonConvert.DeserializeObject<UserData>(reader["userdata"].ToString());
                 var coins = int.Parse(reader["coins"].ToString());
                 var pw = reader["password"].ToString();
                 var battles = JsonConvert.DeserializeObject<List<BattleResult>>(reader["battles"].ToString());
-                var user = new User(dbUsername, dbStats, dbUserdata, dbStack, dbDeck, coins);
-                user.HashedPassword = pw;
-                user.Battles = battles;
+                var stackList = new List<Card>();
+                var deckList = new List<Card>();
+                dbStack?.ForEach(card => stackList.Add(card.ToCard()));
+                dbDeck?.ForEach(card => deckList.Add(card.ToCard()));
+                var user = new User(dbUsername, dbStats, dbUserdata,new Stack(stackList), new Deck(deckList), coins)
+                    {
+                        HashedPassword = pw,
+                        Battles = battles
+                    };
                 return user;
             }
             catch (NullReferenceException)
@@ -195,8 +202,8 @@ namespace MonsterTradingCardsGameServer.DAL
 
             c.Parameters["username"].Value = user.Username;
             c.Parameters["pw"].Value = PasswordManager.CreatePwHash(password);
-            c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack);
-            c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck);
+            c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack.ToUniversalCardList());
+            c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck.ToUniversalCardList());
             c.Parameters["stats"].Value = JsonConvert.SerializeObject(user.Stats);
             c.Parameters["elo"].Value = user.Stats.Elo;
             c.Parameters["userdata"].Value = JsonConvert.SerializeObject(user.UserData);

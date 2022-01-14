@@ -11,13 +11,16 @@ namespace MonsterTradingCardsGameServer.Cards
         public List<Rule> Rules { get; set; }
         public Guid Id { get; set; }
 
-        public Card(int damage, Modification mod)
+        public Card(Guid id, int damage, Modification mod)
         {
+            Id = id;
             Damage = damage;
             Mod = mod;
-            Rules = new List<Rule>();
-            Id = Guid.NewGuid();
+            Rules = CardRuleAdder.AddRules(this);
+            
         }
+
+        public abstract UniversalCard ToUniversalCard();
 
         public abstract string GetCardName();
 

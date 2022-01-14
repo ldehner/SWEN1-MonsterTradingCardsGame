@@ -15,5 +15,12 @@ namespace MonsterTradingCardsGameServer.Cards
         {
             Cards.Add(card);
         }
+
+        public List<UniversalCard> ToUniversalCardList()
+        {
+            var list = new List<UniversalCard>();
+            Cards.ForEach(card => list.Add(card.ToUniversalCard()));
+            return list;
+        }
     }
 }

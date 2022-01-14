@@ -21,10 +21,10 @@ namespace MonsterTradingCardsGameServer.DAL
 
         public List<Score> GetScoreBoard();
         
-        public List<Card> GetStack(string username);
+        public Stack GetStack(string username);
         
-        public List<Card> GetDeck(string username);
+        public Deck GetDeck(string username);
         
-        public bool SetDeck (string username, List<Card> cards);
+        public bool SetDeck (string username, Deck deck);
     }
 }

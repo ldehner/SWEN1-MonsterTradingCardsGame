@@ -44,12 +44,12 @@ namespace MonsterTradingCardsGameServer.Users
             return UserRepository.GetScoreBoard();
         }
 
-        public List<Card> GetStack(string username)
+        public Stack GetStack(string username)
         {
             return UserRepository.GetStack(username);
         }
 
-        public List<Card> GetDeck(string username)
+        public Deck GetDeck(string username)
         {
             return UserRepository.GetDeck(username);
         }
@@ -58,13 +58,13 @@ namespace MonsterTradingCardsGameServer.Users
         {
             var stack = GetStack(username);
             var newDeck = new List<Card>();
-            ids.ForEach(cardId => stack.ForEach(card =>
+            ids.ForEach(cardId => stack.Cards.ForEach(card =>
             {
                 var result = card.Id == Guid.Parse(cardId);
                 if (result) newDeck.Add(card);
             }));
             if (newDeck.Count != 4) return false;
-            return UserRepository.SetDeck(username, newDeck);
+            return UserRepository.SetDeck(username, new Deck(newDeck));
         }
 
         public Stats GetUserStats(string username)
