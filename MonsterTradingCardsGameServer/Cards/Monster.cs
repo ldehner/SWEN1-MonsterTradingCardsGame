@@ -23,6 +23,11 @@ namespace MonsterTradingCardsGameServer.Cards
             return Mod + "-" + Type;
         }
 
+        public override string GetCardType()
+        {
+            return "Monster";
+        }
+
         public override void SetRules()
         {
             base.SetRules();

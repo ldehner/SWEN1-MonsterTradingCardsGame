@@ -18,5 +18,10 @@ namespace MonsterTradingCardsGameServer.Cards
         {
             return Mod + "-Spell";
         }
+
+        public override string GetCardType()
+        {
+            return "Spell";
+        }
     }
 }

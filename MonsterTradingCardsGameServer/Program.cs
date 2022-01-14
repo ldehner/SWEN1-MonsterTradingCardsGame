@@ -72,7 +72,7 @@ namespace MonsterTradingCardsGameServer
             var battleManager = new BattleManager(userManager, battleRepository);
             
             identityProvider = new UserIdentityProvider(userRepository);
-            var routeParser = new UsernameRouteParser();
+            var routeParser = new AppendixRouteParser();
 
             var router = new Router(routeParser, identityProvider);
             RegisterUserRoutes(router, userManager);
@@ -91,8 +91,8 @@ namespace MonsterTradingCardsGameServer
             router.AddRoute(HttpMethod.Post, "/users", (r, p) => new RegisterCommand(userManager, Deserialize<Credentials>(r.Payload)));
 
             // protected routes
-            router.AddProtectedRoute(HttpMethod.Get, "/users/{username}", (r, p) => new ListBioCommand(userManager, p["username"]));
-            router.AddProtectedRoute(HttpMethod.Put, "/users/{username}", (r, p) => new EditBioCommand(userManager, p["username"], GetUserIdentity(r), Deserialize<UserData>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/users/{appendix}", (r, p) => new ListBioCommand(userManager, p["appendix"]));
+            router.AddProtectedRoute(HttpMethod.Put, "/users/{appendix}", (r, p) => new EditBioCommand(userManager, p["appendix"], GetUserIdentity(r), Deserialize<UserData>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Get, "/stats", (r, p) => new GetStatsCommand(userManager, GetUserIdentity(r)));
             router.AddProtectedRoute(HttpMethod.Get, "/score", (r, p) => new GetScoreBoardCommand(userManager));
             router.AddProtectedRoute(HttpMethod.Get, "/cards", (r, p) => new GetStackCommand(userManager, GetUserIdentity(r)));
@@ -102,6 +102,7 @@ namespace MonsterTradingCardsGameServer
             router.AddProtectedRoute(HttpMethod.Get, "/packages", (r, p) => new AquirePackageCommand(userManager,GetUserIdentity(r)));
             router.AddProtectedRoute(HttpMethod.Post, "/tradings", (r, p) => new CreateTradeCommand(userManager, GetUserIdentity(r), Deserialize<TradingDeal>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(userManager));
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}", (r, p) => new AcceptTradeCommand(userManager,GetUserIdentity(r), p["appendix"],Deserialize<string>(r.Payload)));
             
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));

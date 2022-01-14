@@ -35,5 +35,11 @@ namespace MonsterTradingCardsGameServer.DAL
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type);
         
         public List<TradingOffer> ListTrades();
+
+        public Trade GetTrade(string tradeId);
+        
+        public bool AcceptTrade(string tradeId, User seller, User buyer);
+
+        public bool SetStack(User user);
     }
 }

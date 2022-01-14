@@ -107,13 +107,43 @@ namespace MonsterTradingCardsGameServer.Users
             {
                 if (card.Id.ToString().Equals(tradingDeal.CardToTrade)) cardInDeck = true;
             });
+            user.Stack.Cards.Remove(tradingCard);
             return !cardInDeck && tradingCard is not null &&
-                   UserRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id, tradingDeal.Type.Equals("Monster") ? 1 : 0 );
+                   UserRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id,
+                       tradingDeal.Type.Equals("Monster") ? 1 : 0) && UserRepository.SetStack(user);
         }
 
         public List<TradingOffer> ListTrades()
         {
             return UserRepository.ListTrades();
+        }
+
+        public bool AcceptTrade(string username, string tradeId, string cardId)
+        {
+            var cardInDeck = false;
+            Card tradingCard = null;
+            var buyer = UserRepository.GetUserByUsername(username);
+            buyer.Stack.Cards.ForEach(card =>
+            {
+                if (card.Id.ToString().Equals(cardId)) tradingCard = card;
+            });
+            buyer.Deck.Cards.ForEach(card =>
+            {
+                if (card.Id.ToString().Equals(cardId)) cardInDeck = true;
+            });
+            if (tradingCard is null || cardInDeck) return false;
+            var deal = UserRepository.GetTrade(tradeId);
+            if (deal.Trader.Equals(username) || tradingCard.Damage < deal.RequiredDamage ||
+                !tradingCard.GetCardType().Equals(deal.RequiredType)) return false;
+            var seller = UserRepository.GetUserByUsername(deal.Trader);
+            seller.Stack.Cards.Add(tradingCard);
+            buyer.Stack.Cards.Remove(tradingCard);
+            buyer.Stack.Cards.Add(deal.Card);
+            Console.WriteLine("Seller");
+            seller.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
+            Console.WriteLine("Buyer");
+            buyer.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
+            return UserRepository.AcceptTrade(tradeId, seller, buyer);
         }
     }
 }

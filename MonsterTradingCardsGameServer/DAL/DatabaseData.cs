@@ -26,5 +26,7 @@ namespace MonsterTradingCardsGameServer.DAL
         public const string UpdateUserAfterPackageBuy = @"UPDATE "+UserTable+" SET stack = @stack, coins = @coins WHERE username = @username";
         public const string AddTrade = @"INSERT INTO "+TradeTable+" (id, username, card, minDmg, cardType) VALUES (@id, @username, @card, @minDmg, @cardType)";
         public const string GetTrades = @"SELECT * FROM "+TradeTable+"";
+        public const string TradeById = @"SELECT * FROM "+TradeTable+" WHERE id = @id";
+        public const string DeleteTradeCommand = @"DELETE FROM "+TradeTable+" WHERE id = @id";
     }
 }
