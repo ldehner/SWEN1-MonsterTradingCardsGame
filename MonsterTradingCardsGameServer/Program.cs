@@ -19,62 +19,20 @@ namespace MonsterTradingCardsGameServer
 {
     internal class Program
     {
-        public static IIdentityProvider identityProvider;
+        private static IIdentityProvider _identityProvider;
 
         private static void Main(string[] args)
         {
-            // var manager = new UserManager();
-            // manager.LoginUser("bla", "123");
-            // manager.RegisterUser("bla", "123", "fosdfojds");
-            // Console.WriteLine("Hello World!");
-            /*Card card1 = new Spell(10, Modification.Normal);
-            Card card2 = new Spell(10, Modification.Water);
-            Card card3 = new Monster(20, Modification.Fire, MonsterType.Knight);
-            Rule rule = new FireRule();
-            Rule rule2 = new KnightWaterRule();
-            rule.CalculateDamage(card3, card1);
-            rule2.CalculateDamage(card3, card2);
-            Console.WriteLine(card1.Damage);
-            Console.WriteLine(card3.Damage);*/
-
-            /*Console.WriteLine(card.GetCardName());
-            Card card2 = new Spell(10, Modification.Water);
-            Console.WriteLine(card.GetType().IsInstanceOfType(new Monster(11,Modification.Water, MonsterType.Goblin)));
-            Console.WriteLine(card.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
-            Console.WriteLine(card2.GetType().IsInstanceOfType(new Spell(11,Modification.Water)));
-            Console.WriteLine(((Monster) card).Type);*/
-
-            /**
-            var manager = new UserManager();
-            var battleManager = new BattleManager();
-
-            var token1 = manager.TempLogin(GenerateUser());
-            var token2 = manager.TempLogin(GenerateUser());
-            
-            battleManager.NewBattle(manager.users[token1]);
-            battleManager.NewBattle(manager.users[token2]);
-            
-            Console.WriteLine(manager.users[token1].Wins+" "+manager.users[token1].Losses);
-            Console.WriteLine(manager.users[token2].Wins+" "+manager.users[token2].Losses);
-            **/
-
-            /**
-            RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "RegularSpell");
-            RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "WaterSpell");
-            RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "FireDragon");
-            RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "Elve");
-            RequestToCardConverter.ConvertToUniversalCard("02a9c76e-b17d-427f-9240-2dd49b0d3bfd", 10, "WaterGoblin");
-**/
             var userRepository =
                 new InDatabaseUserRepository();
             var battleRepository = new InDatabaseBattleRepository();
             var userManager = new UserManager(userRepository);
             var battleManager = new BattleManager(userManager, battleRepository);
 
-            identityProvider = new UserIdentityProvider(userRepository);
+            _identityProvider = new UserIdentityProvider(userRepository);
             var routeParser = new AppendixRouteParser();
 
-            var router = new Router(routeParser, identityProvider);
+            var router = new Router(routeParser, _identityProvider);
             RegisterUserRoutes(router, userManager);
             RegisterBattleRoutes(router, battleManager);
 
@@ -120,12 +78,6 @@ namespace MonsterTradingCardsGameServer
                 (r, p) => new DeleteTradeCommand(userManager, GetUserIdentity(r), p["appendix"]));
             router.AddProtectedRoute(HttpMethod.Post, "/logout",
                 (r, p) => new LogoutUserCommand(userManager, GetUserIdentity(r)));
-
-            // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
-            // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));
-            // router.AddProtectedRoute(HttpMethod.Get, "/messages/{id}", (r, p) => new ShowMessageCommand(messageManager, int.Parse(p["id"])));
-            // router.AddProtectedRoute(HttpMethod.Put, "/messages/{id}", (r, p) => new UpdateMessageCommand(messageManager, int.Parse(p["id"]), r.Payload));
-            // router.AddProtectedRoute(HttpMethod.Delete, "/messages/{id}", (r, p) => new RemoveMessageCommand(messageManager, int.Parsex(p["id"])));
         }
 
         private static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
@@ -146,7 +98,7 @@ namespace MonsterTradingCardsGameServer
 
         private static User GetUserIdentity(RequestContext request)
         {
-            return (User) identityProvider.GetIdentyForRequest(request);
+            return (User) _identityProvider.GetIdentityForRequest(request);
         }
     }
 }

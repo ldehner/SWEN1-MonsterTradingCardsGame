@@ -9,10 +9,9 @@ namespace MonsterTradingCardsGameServer.Users
         void RegisterUser(Credentials credentials);
         UserData GetUserData(string username);
         void EditUserData(string username, UserData userData);
-        public User GetUser(string username);
         Stats GetUserStats(string username);
         public List<Score> GetScores();
-
+        public User GetUser(string username);
         public Stack GetStack(string username);
 
         public Deck GetDeck(string username);

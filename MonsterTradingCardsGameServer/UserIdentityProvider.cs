@@ -7,23 +7,21 @@ namespace MonsterTradingCardsGameServer
 {
     public class UserIdentityProvider : IIdentityProvider
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserIdentityProvider(IUserRepository userRepository)
         {
-            this.userRepository = userRepository;
+            _userRepository = userRepository;
         }
 
-        public IIdentity GetIdentyForRequest(RequestContext request)
+        public IIdentity GetIdentityForRequest(RequestContext request)
         {
             User currentUser = null;
 
-            if (request.Header.TryGetValue("Authorization", out var authToken))
-            {
-                const string prefix = "Basic ";
-                if (authToken.StartsWith(prefix))
-                    currentUser = userRepository.GetUserByAuthToken(authToken.Substring(prefix.Length));
-            }
+            if (!request.Header.TryGetValue("Authorization", out var authToken)) return null;
+            const string prefix = "Basic ";
+            if (authToken.StartsWith(prefix))
+                currentUser = _userRepository.GetUserByAuthToken(authToken[prefix.Length..]);
 
             return currentUser;
         }

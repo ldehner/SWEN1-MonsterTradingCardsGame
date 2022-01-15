@@ -54,7 +54,6 @@ namespace MonsterTradingCardsGameServer.Cards
                     break;
                 default:
                     throw new CardNotFoundException();
-                    break;
             }
         }
     }

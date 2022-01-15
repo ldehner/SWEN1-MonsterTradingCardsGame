@@ -14,7 +14,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             _userManager = userManager;
         }
 
-        public Credentials Credentials { get; }
+        private Credentials Credentials { get; }
 
         public Response Execute()
         {

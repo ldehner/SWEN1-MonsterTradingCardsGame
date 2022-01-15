@@ -19,8 +19,7 @@ namespace MonsterTradingCardsGameServer.Users
             Coins = coins;
             Battles = new List<BattleResult>();
         }
-
-        //public readonly string Username;
+        
         public sealed override string Username { get; set; }
         public sealed override Stats Stats { get; set; }
         public int Coins { get; set; }

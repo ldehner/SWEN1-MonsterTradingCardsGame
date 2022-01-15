@@ -5,13 +5,13 @@ namespace MonsterTradingCardsGameServer.DAL
         public const string ConnectionString = "Host=" + Host + ";Username=" + Username + ";Password=" + Password +
                                                ";Database=" + Database;
 
-        public const string Password = "mysecretpassword";
-        public const string Username = "postgres";
-        public const string Database = "postgres";
-        public const string Host = "localhost";
-        public const string UserTable = "data";
-        public const string TradeTable = "trades";
-        public const string PackageTable = "packages";
+        private const string Password = "mysecretpassword";
+        private const string Username = "postgres";
+        private const string Database = "postgres";
+        private const string Host = "localhost";
+        private const string UserTable = "data";
+        private const string TradeTable = "trades";
+        private const string PackageTable = "packages";
 
         public const string UserByUsernameCommand = @"SELECT * FROM " + UserTable + " WHERE username = @uname";
 
@@ -46,9 +46,9 @@ namespace MonsterTradingCardsGameServer.DAL
         public const string GetTrades = @"SELECT * FROM " + TradeTable + "";
         public const string TradeById = @"SELECT * FROM " + TradeTable + " WHERE id = @id";
         public const string DeleteTradeCommand = @"DELETE FROM " + TradeTable + " WHERE id = @id";
-        public static object tradeLock = new();
-        public static object userLock = new();
-        public static object packageLock = new();
-        public static object activeUserLock = new();
+        public static object TradeLock = new();
+        public static object UserLock = new();
+        public static object PackageLock = new();
+        public static object ActiveUserLock = new();
     }
 }

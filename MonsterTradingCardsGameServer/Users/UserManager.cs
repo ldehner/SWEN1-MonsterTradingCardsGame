@@ -7,51 +7,51 @@ namespace MonsterTradingCardsGameServer.Users
 {
     public class UserManager : IUserManager
     {
-        public readonly IUserRepository UserRepository;
+        private readonly IUserRepository _userRepository;
 
         public UserManager(IUserRepository userRepository)
         {
-            UserRepository = userRepository;
+            _userRepository = userRepository;
             ActiveUsers = new Dictionary<string, User>();
         }
 
-        public Dictionary<string, User> ActiveUsers { get; set; }
+        private Dictionary<string, User> ActiveUsers { get; set; }
 
         public User LoginUser(Credentials credentials)
         {
-            return UserRepository.GetUserByCredentials(credentials.Username, credentials.Password) ??
+            return _userRepository.GetUserByCredentials(credentials.Username, credentials.Password) ??
                    throw new UserNotFoundException();
         }
 
         public User GetUser(string username)
         {
-            return UserRepository.GetUserByUsername(username) ?? throw new UserNotFoundException();
+            return _userRepository.GetUserByUsername(username) ?? throw new UserNotFoundException();
         }
 
         public UserData GetUserData(string username)
         {
-            return UserRepository.GetUserByUsername(username).UserData ?? throw new UserNotFoundException();
+            return _userRepository.GetUserByUsername(username).UserData ?? throw new UserNotFoundException();
         }
 
 
         public void EditUserData(string username, UserData userData)
         {
-            if (!UserRepository.UpdateUserData(username, userData)) throw new UserNotFoundException();
+            if (!_userRepository.UpdateUserData(username, userData)) throw new UserNotFoundException();
         }
 
         public List<Score> GetScores()
         {
-            return UserRepository.GetScoreBoard();
+            return _userRepository.GetScoreBoard();
         }
 
         public Stack GetStack(string username)
         {
-            return UserRepository.GetStack(username);
+            return _userRepository.GetStack(username);
         }
 
         public Deck GetDeck(string username)
         {
-            return UserRepository.GetDeck(username);
+            return _userRepository.GetDeck(username);
         }
 
         public bool SetDeck(string username, List<string> ids)
@@ -63,8 +63,7 @@ namespace MonsterTradingCardsGameServer.Users
                 var result = card.Id == Guid.Parse(cardId);
                 if (result) newDeck.Add(card);
             }));
-            if (newDeck.Count != 4) return false;
-            return UserRepository.SetDeck(username, new Deck(newDeck));
+            return newDeck.Count == 4 && _userRepository.SetDeck(username, new Deck(newDeck));
         }
 
         public bool AddPackage(string username, List<UserRequestCard> package)
@@ -72,26 +71,26 @@ namespace MonsterTradingCardsGameServer.Users
             if (package.Count != 5) return false;
             var tmp = new List<UniversalCard>();
             package.ForEach(card => tmp.Add(card.ToUniversalCard()));
-            return UserRepository.AddPackage(username, tmp, Guid.NewGuid());
+            return _userRepository.AddPackage(username, tmp, Guid.NewGuid());
         }
 
         public Stats GetUserStats(string username)
         {
-            return UserRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
+            return _userRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
         }
 
         public void RegisterUser(Credentials credentials)
         {
             var user = new User(credentials.Username, new Stats(0, 0),
-                new UserData(credentials.Username, "Tolle Bio", ":-)"),
+                new UserData(credentials.Username, "Hey, ich bin neu!", ":)"),
                 new Stack(new List<Card>()), new Deck(new List<Card>()), 20);
-            if (!UserRepository.InsertUser(user, credentials.Password)) throw new DuplicateUserException();
+            if (!_userRepository.InsertUser(user, credentials.Password)) throw new DuplicateUserException();
         }
 
         public bool AquirePackage(string username)
         {
             var user = GetUser(username);
-            return user.Coins >= 5 && UserRepository.AquirePackage(username, user.Coins, user.Stack);
+            return user.Coins >= 5 && _userRepository.AquirePackage(username, user.Coins, user.Stack);
         }
 
         public bool CreateTrade(string username, TradingDeal tradingDeal)
@@ -109,20 +108,20 @@ namespace MonsterTradingCardsGameServer.Users
             });
             user.Stack.Cards.Remove(tradingCard);
             return !cardInDeck && tradingCard is not null &&
-                   UserRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id,
-                       tradingDeal.Type.Equals("Monster") ? 1 : 0) && UserRepository.SetStack(user);
+                   _userRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id,
+                       tradingDeal.Type.Equals("Monster") ? 1 : 0) && _userRepository.SetStack(user);
         }
 
         public List<TradingOffer> ListTrades()
         {
-            return UserRepository.ListTrades();
+            return _userRepository.ListTrades();
         }
 
         public bool AcceptTrade(string username, string tradeId, string cardId)
         {
             var cardInDeck = false;
             Card tradingCard = null;
-            var buyer = UserRepository.GetUserByUsername(username);
+            var buyer = _userRepository.GetUserByUsername(username);
             buyer.Stack.Cards.ForEach(card =>
             {
                 if (card.Id.ToString().Equals(cardId)) tradingCard = card;
@@ -132,10 +131,10 @@ namespace MonsterTradingCardsGameServer.Users
                 if (card.Id.ToString().Equals(cardId)) cardInDeck = true;
             });
             if (tradingCard is null || cardInDeck) return false;
-            var deal = UserRepository.GetTrade(tradeId);
+            var deal = _userRepository.GetTrade(tradeId);
             if (deal.Trader.Equals(username) || tradingCard.Damage < deal.RequiredDamage ||
                 !tradingCard.GetCardType().Equals(deal.RequiredType)) return false;
-            var seller = UserRepository.GetUserByUsername(deal.Trader);
+            var seller = _userRepository.GetUserByUsername(deal.Trader);
             seller.Stack.Cards.Add(tradingCard);
             buyer.Stack.Cards.Remove(tradingCard);
             buyer.Stack.Cards.Add(deal.Card);
@@ -143,21 +142,21 @@ namespace MonsterTradingCardsGameServer.Users
             seller.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
             Console.WriteLine("Buyer");
             buyer.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
-            return UserRepository.AcceptTrade(tradeId, seller, buyer);
+            return _userRepository.AcceptTrade(tradeId, seller, buyer);
         }
 
         public bool DeleteTrade(string username, string tradeId)
         {
-            var trade = UserRepository.GetTrade(tradeId);
-            var user = UserRepository.GetUserByUsername(username);
+            var trade = _userRepository.GetTrade(tradeId);
+            var user = _userRepository.GetUserByUsername(username);
             user.Stack.Cards.Add(trade.Card);
-            return trade.Trader.Equals(username) && UserRepository.SetStack(user) &&
-                   UserRepository.DeleteTrade(tradeId);
+            return trade.Trader.Equals(username) && _userRepository.SetStack(user) &&
+                   _userRepository.DeleteTrade(tradeId);
         }
 
         public bool LogoutUser(string token)
         {
-            return UserRepository.LogoutUser(token);
+            return _userRepository.LogoutUser(token);
         }
     }
 }

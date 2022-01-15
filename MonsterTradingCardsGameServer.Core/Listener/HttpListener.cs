@@ -6,28 +6,28 @@ namespace MonsterTradingCardsGameServer.Core.Listener
 {
     public class HttpListener : IListener
     {
-        private readonly TcpListener listener;
+        private readonly TcpListener _listener;
 
         public HttpListener(IPAddress address, int port)
         {
-            listener = new TcpListener(address, port);
+            _listener = new TcpListener(address, port);
         }
 
 
         public IClient AcceptClient()
         {
-            var client = listener.AcceptTcpClient();
+            var client = _listener.AcceptTcpClient();
             return new HttpClient(client);
         }
 
         public void Start()
         {
-            listener.Start();
+            _listener.Start();
         }
 
         public void Stop()
         {
-            listener.Stop();
+            _listener.Stop();
         }
     }
 }

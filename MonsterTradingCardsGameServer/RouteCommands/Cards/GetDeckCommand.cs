@@ -20,11 +20,9 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Cards
             var result = _userManager.GetDeck(_currentUser.Username);
             var response = new Response();
             if (result is null) response.StatusCode = StatusCode.NoContent;
-            if (result is not null)
-            {
-                response.StatusCode = StatusCode.Ok;
-                response.Payload = JsonConvert.SerializeObject(result.ToReadableCardList());
-            }
+            if (result is null) return response;
+            response.StatusCode = StatusCode.Ok;
+            response.Payload = JsonConvert.SerializeObject(result.ToReadableCardList());
 
             return response;
         }

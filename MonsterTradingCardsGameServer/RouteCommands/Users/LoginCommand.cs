@@ -6,22 +6,22 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
 {
     public class LoginCommand : IRouteCommand
     {
-        private readonly IUserManager userManager;
+        private readonly IUserManager _userManager;
 
         public LoginCommand(IUserManager userManager, Credentials credentials)
         {
             Credentials = credentials;
-            this.userManager = userManager;
+            _userManager = userManager;
         }
 
-        public Credentials Credentials { get; }
+        private Credentials Credentials { get; }
 
         public Response Execute()
         {
             User user;
             try
             {
-                user = userManager.LoginUser(Credentials);
+                user = _userManager.LoginUser(Credentials);
             }
             catch (UserNotFoundException)
             {

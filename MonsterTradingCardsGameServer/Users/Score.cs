@@ -7,7 +7,7 @@ namespace MonsterTradingCardsGameServer.Users
             Username = username;
             Stats = stats;
         }
-
+        
         public string Username { get; set; }
         public Stats Stats { get; set; }
     }

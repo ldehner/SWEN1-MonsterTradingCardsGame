@@ -8,28 +8,28 @@ namespace MonsterTradingCardsGameServer.Core.Client
 {
     internal class HttpClient : IClient
     {
-        private readonly TcpClient connection;
+        private readonly TcpClient _connection;
 
         public HttpClient(TcpClient connection)
         {
-            this.connection = connection;
+            _connection = connection;
         }
 
         public RequestContext ReceiveRequest()
         {
-            var reader = new StreamReader(connection.GetStream());
+            var reader = new StreamReader(_connection.GetStream());
 
-            string line;
             string path = null;
             string version = null;
             var method = HttpMethod.Get;
             var isFirstLine = true;
             var header = new Dictionary<string, string>();
             var contentLength = 0;
-            string payload = null;
+            string payload;
 
             try
             {
+                string line;
                 while (!string.IsNullOrWhiteSpace(line = reader.ReadLine()))
                     if (isFirstLine)
                     {
@@ -55,31 +55,37 @@ namespace MonsterTradingCardsGameServer.Core.Client
                 return null;
             }
 
-            if (path == null || version == null) return null;
+            if (path == null) return null;
 
             // read HTTP body and check the payload
-            if (contentLength > 0 && header.ContainsKey("Content-Type"))
-            {
-                var data = new StringBuilder(200);
-                var buffer = new char[1024];
-                var totalBytesRead = 0;
-                while (totalBytesRead < contentLength)
-                    try
-                    {
-                        var bytesRead = reader.Read(buffer, 0, 1024);
-                        totalBytesRead += bytesRead;
-                        if (bytesRead == 0) break;
-                        data.Append(buffer, 0, bytesRead);
-                    }
-                    catch (IOException)
-                    {
-                        return null;
-                    }
+            if (contentLength <= 0 || !header.ContainsKey("Content-Type"))
+                return new RequestContext
+                {
+                    Method = method,
+                    ResourcePath = path,
+                    HttpVersion = version,
+                    Header = header,
+                    Payload = null
+                };
+            var data = new StringBuilder(200);
+            var buffer = new char[1024];
+            var totalBytesRead = 0;
+            while (totalBytesRead < contentLength)
+                try
+                {
+                    var bytesRead = reader.Read(buffer, 0, 1024);
+                    totalBytesRead += bytesRead;
+                    if (bytesRead == 0) break;
+                    data.Append(buffer, 0, bytesRead);
+                }
+                catch (IOException)
+                {
+                    return null;
+                }
 
-                payload = data.ToString();
+            payload = data.ToString();
 
-                // TODO: maybe check the content type for the payload
-            }
+            // TODO: maybe check the content type for the payload
 
             return new RequestContext
             {
@@ -93,7 +99,7 @@ namespace MonsterTradingCardsGameServer.Core.Client
 
         public void SendResponse(Response.Response response)
         {
-            var writer = new StreamWriter(connection.GetStream()) {AutoFlush = true};
+            var writer = new StreamWriter(_connection.GetStream()) {AutoFlush = true};
             writer.Write($"HTTP/1.1 {(int) response.StatusCode} {response.StatusCode}\r\n");
 
             if (!string.IsNullOrEmpty(response.Payload))

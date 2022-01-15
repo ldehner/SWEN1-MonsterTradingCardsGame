@@ -4,6 +4,6 @@ namespace MonsterTradingCardsGameServer.Core.Authentication
 {
     public interface IIdentityProvider
     {
-        IIdentity GetIdentyForRequest(RequestContext request);
+        IIdentity GetIdentityForRequest(RequestContext request);
     }
 }

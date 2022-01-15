@@ -5,15 +5,15 @@ namespace MonsterTradingCardsGameServer
 {
     public static class PasswordManager
     {
-        public static bool ComparePasswords(string storedpw, string userpw)
+        public static bool ComparePasswords(string storedPw, string userPw)
         {
             /* Extract the bytes */
-            var hashBytes = Convert.FromBase64String(storedpw);
+            var hashBytes = Convert.FromBase64String(storedPw);
             /* Get the salt */
             var salt = new byte[16];
             Array.Copy(hashBytes, 0, salt, 0, 16);
             /* Compute the hash on the password the user entered */
-            var pbkdf2 = new Rfc2898DeriveBytes(userpw, salt, 100000);
+            var pbkdf2 = new Rfc2898DeriveBytes(userPw, salt, 100000);
             var hash = pbkdf2.GetBytes(20);
             /* Compare the results */
             for (var i = 0; i < 20; i++)

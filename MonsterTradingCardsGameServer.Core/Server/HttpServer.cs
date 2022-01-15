@@ -11,39 +11,39 @@ namespace MonsterTradingCardsGameServer.Core.Server
 {
     public class HttpServer : IServer
     {
-        private readonly IListener listener;
-        private readonly IRouter router;
-        private bool isListening;
-        private readonly List<Thread> threads;
+        private readonly IListener _listener;
+        private readonly IRouter _router;
+        private bool _isListening;
+        private readonly List<Thread> _threads;
 
         public HttpServer(IPAddress address, int port, IRouter router)
         {
-            listener = new HttpListener(address, port);
-            this.router = router;
-            threads = new List<Thread>();
+            _listener = new HttpListener(address, port);
+            _router = router;
+            _threads = new List<Thread>();
         }
 
         public void Start()
         {
-            listener.Start();
-            isListening = true;
+            _listener.Start();
+            _isListening = true;
 
-            while (isListening)
+            while (_isListening)
             {
-                var client = listener.AcceptClient();
+                var client = _listener.AcceptClient();
                 //HandleClient(client);
                 var thread = new Thread(() => HandleClient(client));
-                threads.Add(thread);
+                _threads.Add(thread);
                 thread.Start();
             }
 
-            threads.ForEach(thread => thread.Join());
+            _threads.ForEach(thread => thread.Join());
         }
 
         public void Stop()
         {
-            isListening = false;
-            listener.Stop();
+            _isListening = false;
+            _listener.Stop();
         }
 
         private void HandleClient(IClient client)
@@ -53,7 +53,7 @@ namespace MonsterTradingCardsGameServer.Core.Server
             Response.Response response;
             try
             {
-                var command = router.Resolve(request);
+                var command = _router.Resolve(request);
                 if (command != null)
                     response = command.Execute();
                 else
