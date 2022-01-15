@@ -81,10 +81,8 @@ namespace MonsterTradingCardsGameServer.Battles
             loser.Stats.Losses++;
             if (loser.Stats.Elo < 5) loser.Stats.Elo = 0;
             else loser.Stats.Elo -= 5;
-            BattleLog.Add(Winner.Username);
-            BattleLog.Add(" won");
-            BattleLog.Add(Loser.Username);
-            BattleLog.Add(" lost");
+            BattleLog.Add($"{Winner.Username} won");
+            BattleLog.Add($"{Loser.Username} lost");
         }
     }
 }
