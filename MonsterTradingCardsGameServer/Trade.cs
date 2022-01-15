@@ -4,11 +4,6 @@ namespace MonsterTradingCardsGameServer
 {
     public class Trade
     {
-        public string Trader { get; set; }
-        public Card Card { get; set; }
-        public string RequiredType { get; set; }
-        public double RequiredDamage { get; set; }
-
         public Trade(string username, Card card, string requiredType, double requiredDamage)
         {
             Trader = username;
@@ -16,5 +11,10 @@ namespace MonsterTradingCardsGameServer
             RequiredType = requiredType;
             RequiredDamage = requiredDamage;
         }
+
+        public string Trader { get; set; }
+        public Card Card { get; set; }
+        public string RequiredType { get; set; }
+        public double RequiredDamage { get; set; }
     }
 }

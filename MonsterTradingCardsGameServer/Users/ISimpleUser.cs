@@ -1,5 +1,3 @@
-using MonsterTradingCardsGameServer.Cards;
-
 namespace MonsterTradingCardsGameServer.Users
 {
     public abstract class ISimpleUser

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
@@ -18,10 +17,11 @@ using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer
 {
-    class Program
+    internal class Program
     {
         public static IIdentityProvider identityProvider;
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             // var manager = new UserManager();
             // manager.LoginUser("bla", "123");
@@ -36,7 +36,7 @@ namespace MonsterTradingCardsGameServer
             rule2.CalculateDamage(card3, card2);
             Console.WriteLine(card1.Damage);
             Console.WriteLine(card3.Damage);*/
-            
+
             /*Console.WriteLine(card.GetCardName());
             Card card2 = new Spell(10, Modification.Water);
             Console.WriteLine(card.GetType().IsInstanceOfType(new Monster(11,Modification.Water, MonsterType.Goblin)));
@@ -70,42 +70,57 @@ namespace MonsterTradingCardsGameServer
             var battleRepository = new InDatabaseBattleRepository();
             var userManager = new UserManager(userRepository);
             var battleManager = new BattleManager(userManager, battleRepository);
-            
+
             identityProvider = new UserIdentityProvider(userRepository);
             var routeParser = new AppendixRouteParser();
 
             var router = new Router(routeParser, identityProvider);
             RegisterUserRoutes(router, userManager);
             RegisterBattleRoutes(router, battleManager);
-            
+
             var httpServer = new HttpServer(IPAddress.Any, 10001, router);
             httpServer.Start();
-   
-
-
         }
+
         private static void RegisterUserRoutes(Router router, IUserManager userManager)
         {
             // public routes
-            router.AddRoute(HttpMethod.Post, "/sessions", (r, p) => new LoginCommand(userManager, Deserialize<Credentials>(r.Payload)));
-            router.AddRoute(HttpMethod.Post, "/users", (r, p) => new RegisterCommand(userManager, Deserialize<Credentials>(r.Payload)));
+            router.AddRoute(HttpMethod.Post, "/sessions",
+                (r, p) => new LoginCommand(userManager, Deserialize<Credentials>(r.Payload)));
+            router.AddRoute(HttpMethod.Post, "/users",
+                (r, p) => new RegisterCommand(userManager, Deserialize<Credentials>(r.Payload)));
 
             // protected routes
-            router.AddProtectedRoute(HttpMethod.Get, "/users/{appendix}", (r, p) => new ListBioCommand(userManager, p["appendix"]));
-            router.AddProtectedRoute(HttpMethod.Put, "/users/{appendix}", (r, p) => new EditBioCommand(userManager, p["appendix"], GetUserIdentity(r), Deserialize<UserData>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Get, "/stats", (r, p) => new GetStatsCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/users/{appendix}",
+                (r, p) => new ListBioCommand(userManager, p["appendix"]));
+            router.AddProtectedRoute(HttpMethod.Put, "/users/{appendix}",
+                (r, p) => new EditBioCommand(userManager, p["appendix"], GetUserIdentity(r),
+                    Deserialize<UserData>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/stats",
+                (r, p) => new GetStatsCommand(userManager, GetUserIdentity(r)));
             router.AddProtectedRoute(HttpMethod.Get, "/score", (r, p) => new GetScoreBoardCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Get, "/cards", (r, p) => new GetStackCommand(userManager, GetUserIdentity(r)));
-            router.AddProtectedRoute(HttpMethod.Get, "/deck", (r, p) => new GetDeckCommand(userManager,GetUserIdentity(r)));
-            router.AddProtectedRoute(HttpMethod.Put, "/deck", (r, p) => new SetDeckCommand(userManager,GetUserIdentity(r), r.Payload));
-            router.AddProtectedRoute(HttpMethod.Post, "/packages", (r, p) => new AddPackageCommand(userManager,GetUserIdentity(r), Deserialize<List<UserRequestCard>>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Get, "/packages", (r, p) => new AquirePackageCommand(userManager,GetUserIdentity(r)));
-            router.AddProtectedRoute(HttpMethod.Post, "/tradings", (r, p) => new CreateTradeCommand(userManager, GetUserIdentity(r), Deserialize<TradingDeal>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/cards",
+                (r, p) => new GetStackCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/deck",
+                (r, p) => new GetDeckCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Put, "/deck",
+                (r, p) => new SetDeckCommand(userManager, GetUserIdentity(r), r.Payload));
+            router.AddProtectedRoute(HttpMethod.Post, "/packages",
+                (r, p) => new AddPackageCommand(userManager, GetUserIdentity(r),
+                    Deserialize<List<UserRequestCard>>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/packages",
+                (r, p) => new AquirePackageCommand(userManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings",
+                (r, p) => new CreateTradeCommand(userManager, GetUserIdentity(r), Deserialize<TradingDeal>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}", (r, p) => new AcceptTradeCommand(userManager,GetUserIdentity(r), p["appendix"],Deserialize<string>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}", (r, p) => new DeleteTradeCommand(userManager,GetUserIdentity(r), p["appendix"]));
-            router.AddProtectedRoute(HttpMethod.Post, "/logout", (r, p) => new LogoutUserCommand(userManager, GetUserIdentity(r)));
-            
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}",
+                (r, p) => new AcceptTradeCommand(userManager, GetUserIdentity(r), p["appendix"],
+                    Deserialize<string>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}",
+                (r, p) => new DeleteTradeCommand(userManager, GetUserIdentity(r), p["appendix"]));
+            router.AddProtectedRoute(HttpMethod.Post, "/logout",
+                (r, p) => new LogoutUserCommand(userManager, GetUserIdentity(r)));
+
             // router.AddProtectedRoute(HttpMethod.Get, "/messages", (r, p) => new ListMessagesCommand(messageManager));
             // router.AddProtectedRoute(HttpMethod.Post, "/messages", (r, p) => new AddMessageCommand(messageManager, r.Payload));
             // router.AddProtectedRoute(HttpMethod.Get, "/messages/{id}", (r, p) => new ShowMessageCommand(messageManager, int.Parse(p["id"])));
@@ -115,9 +130,12 @@ namespace MonsterTradingCardsGameServer
 
         private static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
         {
-            router.AddProtectedRoute(HttpMethod.Post, "/battles", (r, p) => new StartBattleCommand(battleManager, GetUserIdentity(r)));
-            router.AddProtectedRoute(HttpMethod.Get, "/battles", (r, p) => new ListBattlesCommand(battleManager, GetUserIdentity(r)));
-            router.AddProtectedRoute(HttpMethod.Get, "/battles/{appendix}", (r, p) => new GetBattleCommand(battleManager, GetUserIdentity(r), p["appendix"]));
+            router.AddProtectedRoute(HttpMethod.Post, "/battles",
+                (r, p) => new StartBattleCommand(battleManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/battles",
+                (r, p) => new ListBattlesCommand(battleManager, GetUserIdentity(r)));
+            router.AddProtectedRoute(HttpMethod.Get, "/battles/{appendix}",
+                (r, p) => new GetBattleCommand(battleManager, GetUserIdentity(r), p["appendix"]));
         }
 
         private static T Deserialize<T>(string payload) where T : class

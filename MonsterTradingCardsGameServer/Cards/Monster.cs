@@ -3,15 +3,15 @@ using MonsterTradingCardsGameServer.Rules;
 
 namespace MonsterTradingCardsGameServer.Cards
 {
-    public class Monster:Card
+    public class Monster : Card
     {
-        public MonsterType Type { get; }
-        
         public Monster(Guid id, double damage, Modification mod, MonsterType type) : base(id, damage, mod)
         {
             Type = type;
             SetRules();
         }
+
+        public MonsterType Type { get; }
 
         public override UniversalCard ToUniversalCard()
         {
@@ -45,6 +45,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     Rules.Add(new KnightWaterRule());
                     break;
                 case MonsterType.Kraken:
+                    Rules.Add(new KrakenSpellRule());
                     break;
                 case MonsterType.Org:
                     Rules.Add(new OrgWizardRule());

@@ -4,7 +4,7 @@ namespace MonsterTradingCardsGameServer.Cards
     {
         None,
         Normal,
-        Water, 
+        Water,
         Fire
     }
 }

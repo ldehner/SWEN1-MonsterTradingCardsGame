@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterTradingCardsGameServer.Cards
 {
-    public class TooFewCoinsException: Exception
+    public class TooFewCoinsException : Exception
     {
         public TooFewCoinsException()
         {
@@ -17,6 +17,5 @@ namespace MonsterTradingCardsGameServer.Cards
             : base(message, inner)
         {
         }
-        
     }
 }

@@ -5,7 +5,7 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer
 {
-    public class UserIdentityProvider: IIdentityProvider
+    public class UserIdentityProvider : IIdentityProvider
     {
         private readonly IUserRepository userRepository;
 
@@ -18,13 +18,11 @@ namespace MonsterTradingCardsGameServer
         {
             User currentUser = null;
 
-            if (request.Header.TryGetValue("Authorization", out string authToken))
+            if (request.Header.TryGetValue("Authorization", out var authToken))
             {
                 const string prefix = "Basic ";
                 if (authToken.StartsWith(prefix))
-                {
                     currentUser = userRepository.GetUserByAuthToken(authToken.Substring(prefix.Length));
-                }
             }
 
             return currentUser;

@@ -6,9 +6,10 @@ using MonsterTradingCardsGameServer.Core.Request;
 
 namespace MonsterTradingCardsGameServer.Core.Client
 {
-    class HttpClient : IClient
+    internal class HttpClient : IClient
     {
         private readonly TcpClient connection;
+
         public HttpClient(TcpClient connection)
         {
             this.connection = connection;
@@ -22,7 +23,7 @@ namespace MonsterTradingCardsGameServer.Core.Client
             string path = null;
             string version = null;
             var method = HttpMethod.Get;
-            bool isFirstLine = true;
+            var isFirstLine = true;
             var header = new Dictionary<string, string>();
             var contentLength = 0;
             string payload = null;
@@ -30,7 +31,6 @@ namespace MonsterTradingCardsGameServer.Core.Client
             try
             {
                 while (!string.IsNullOrWhiteSpace(line = reader.ReadLine()))
-                {
                     if (isFirstLine)
                     {
                         // read HTTP method, resource path, and HTTP version
@@ -47,52 +47,41 @@ namespace MonsterTradingCardsGameServer.Core.Client
                         // read HTTP header entries
                         var info = line.Split(":", 2);
                         header.Add(info[0].Trim(), info[1].Trim());
-                        if (info[0] == "Content-Length")
-                        {
-                            contentLength = int.Parse(info[1]);
-                        }
+                        if (info[0] == "Content-Length") contentLength = int.Parse(info[1]);
                     }
-                }           
             }
             catch (IOException)
             {
                 return null;
             }
 
-            if (path == null || version == null)
-            {
-                return null;
-            }
+            if (path == null || version == null) return null;
 
             // read HTTP body and check the payload
             if (contentLength > 0 && header.ContainsKey("Content-Type"))
             {
                 var data = new StringBuilder(200);
-                char[] buffer = new char[1024];
-                int totalBytesRead = 0;
+                var buffer = new char[1024];
+                var totalBytesRead = 0;
                 while (totalBytesRead < contentLength)
-                {
                     try
                     {
                         var bytesRead = reader.Read(buffer, 0, 1024);
                         totalBytesRead += bytesRead;
-                        if (bytesRead == 0)
-                        {
-                            break;
-                        }
+                        if (bytesRead == 0) break;
                         data.Append(buffer, 0, bytesRead);
                     }
                     catch (IOException)
                     {
                         return null;
                     }
-                }
+
                 payload = data.ToString();
 
                 // TODO: maybe check the content type for the payload
             }
 
-            return new RequestContext()
+            return new RequestContext
             {
                 Method = method,
                 ResourcePath = path,
@@ -104,9 +93,9 @@ namespace MonsterTradingCardsGameServer.Core.Client
 
         public void SendResponse(Response.Response response)
         {
-            var writer = new StreamWriter(connection.GetStream()) { AutoFlush = true };
-            writer.Write($"HTTP/1.1 {(int)response.StatusCode} {response.StatusCode}\r\n");
-            
+            var writer = new StreamWriter(connection.GetStream()) {AutoFlush = true};
+            writer.Write($"HTTP/1.1 {(int) response.StatusCode} {response.StatusCode}\r\n");
+
             if (!string.IsNullOrEmpty(response.Payload))
             {
                 var payload = Encoding.UTF8.GetBytes(response.Payload);
@@ -115,7 +104,7 @@ namespace MonsterTradingCardsGameServer.Core.Client
                 writer.Write(Encoding.UTF8.GetString(payload));
                 writer.Close();
             }
-            else 
+            else
             {
                 writer.Write("\r\n");
                 writer.Close();

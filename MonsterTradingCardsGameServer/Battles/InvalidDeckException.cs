@@ -4,7 +4,8 @@ namespace MonsterTradingCardsGameServer.Battles
 {
     public class InvalidDeckException : Exception
     {
-        public InvalidDeckException(){
+        public InvalidDeckException()
+        {
         }
 
         public InvalidDeckException(string message) : base(message)

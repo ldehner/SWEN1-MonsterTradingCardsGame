@@ -17,15 +17,11 @@ namespace MonsterTradingCardsGameServer
             var hash = pbkdf2.GetBytes(20);
             /* Compare the results */
             for (var i = 0; i < 20; i++)
-            {
                 if (hashBytes[i + 16] != hash[i])
-                {
                     return false;
-                }
-            }
             return true;
         }
-        
+
         public static string CreatePwHash(string password)
         {
             byte[] salt;

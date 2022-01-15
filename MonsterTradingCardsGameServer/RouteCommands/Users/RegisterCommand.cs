@@ -4,16 +4,17 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.RouteCommands.Users
 {
-    public class RegisterCommand: IRouteCommand
+    public class RegisterCommand : IRouteCommand
     {
         private readonly IUserManager _userManager;
-        public Credentials Credentials { get; private set; }
 
         public RegisterCommand(IUserManager userManager, Credentials credentials)
         {
             Credentials = credentials;
             _userManager = userManager;
         }
+
+        public Credentials Credentials { get; }
 
         public Response Execute()
         {
@@ -30,6 +31,5 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
 
             return response;
         }
-        
     }
 }

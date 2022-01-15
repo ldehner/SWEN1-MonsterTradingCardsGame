@@ -1,7 +1,4 @@
-using System.Text;
 using MonsterTradingCardsGameServer.Battles;
-using MonsterTradingCardsGameServer.Core.Authentication;
-using MonsterTradingCardsGameServer.Core.Request;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
@@ -10,14 +7,15 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
 {
     public class StartBattleCommand : ProtectedRouteCommand
     {
-        private IBattleManager _battleManager;
-        private User _currentUser;
-        
+        private readonly IBattleManager _battleManager;
+        private readonly User _currentUser;
+
         public StartBattleCommand(IBattleManager battleManager, User currentUser)
         {
             _battleManager = battleManager;
             _currentUser = currentUser;
         }
+
         public override Response Execute()
         {
             var response = new Response();
@@ -30,6 +28,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
             {
                 response.StatusCode = StatusCode.Conflict;
             }
+
             return response;
         }
     }

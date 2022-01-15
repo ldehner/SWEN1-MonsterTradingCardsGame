@@ -1,6 +1,3 @@
-using System;
-using System.Data;
-using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
 using Npgsql;

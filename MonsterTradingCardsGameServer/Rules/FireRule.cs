@@ -4,7 +4,6 @@ namespace MonsterTradingCardsGameServer.Rules
 {
     public class FireRule : Rule
     {
-
         public override void CalculateDamage(Card card1, Card card2)
         {
             switch (card2.Mod)

@@ -14,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Users
         public List<Score> GetScores();
 
         public Stack GetStack(string username);
-        
+
         public Deck GetDeck(string username);
 
         public bool SetDeck(string username, List<string> ids);
@@ -24,7 +24,7 @@ namespace MonsterTradingCardsGameServer.Users
         public bool AquirePackage(string username);
 
         public bool CreateTrade(string username, TradingDeal tradingDeal);
-        
+
         public List<TradingOffer> ListTrades();
 
         public bool AcceptTrade(string username, string tradeId, string cardId);

@@ -6,10 +6,7 @@ namespace MonsterTradingCardsGameServer.Rules
     {
         public override void CalculateDamage(Card card1, Card card2)
         {
-            if (card2.GetType() == typeof(Spell) && card2.Mod == Modification.Water)
-            {
-                card1.Damage *= 0;
-            }
+            if (card2.GetType() == typeof(Spell) && card2.Mod == Modification.Water) card1.Damage *= 0;
         }
     }
 }

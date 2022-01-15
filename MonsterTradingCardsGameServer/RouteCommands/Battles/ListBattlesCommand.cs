@@ -7,18 +7,20 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
 {
     public class ListBattlesCommand : ProtectedRouteCommand
     {
-        private IBattleManager _battleManager;
-        private User _currentUser;
+        private readonly IBattleManager _battleManager;
+        private readonly User _currentUser;
+
         public ListBattlesCommand(IBattleManager battleManager, User currentUser)
         {
             _battleManager = battleManager;
             _currentUser = currentUser;
         }
+
         public override Response Execute()
         {
             try
             {
-                return new Response()
+                return new Response
                 {
                     StatusCode = StatusCode.Ok,
                     Payload = JsonConvert.SerializeObject(_battleManager.ListBattles(_currentUser.Username))
@@ -26,7 +28,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
             }
             catch (UserNotFoundException)
             {
-                return new Response()
+                return new Response
                 {
                     StatusCode = StatusCode.Conflict
                 };

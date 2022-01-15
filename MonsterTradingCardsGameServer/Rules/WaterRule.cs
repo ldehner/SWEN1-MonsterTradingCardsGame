@@ -2,7 +2,7 @@ using MonsterTradingCardsGameServer.Cards;
 
 namespace MonsterTradingCardsGameServer.Rules
 {
-    public class WaterRule:Rule
+    public class WaterRule : Rule
     {
         public override void CalculateDamage(Card card1, Card card2)
         {

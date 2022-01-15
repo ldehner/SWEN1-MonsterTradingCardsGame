@@ -5,19 +5,22 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Trades
 {
     public class CreateTradeCommand : ProtectedRouteCommand
     {
-        private IUserManager _userManager;
-        private User _currentUser;
-        private TradingDeal _tradingDeal;
+        private readonly User _currentUser;
+        private readonly TradingDeal _tradingDeal;
+        private readonly IUserManager _userManager;
+
         public CreateTradeCommand(IUserManager userManager, User currentUser, TradingDeal tradingDeal)
         {
             _userManager = userManager;
             _currentUser = currentUser;
             _tradingDeal = tradingDeal;
         }
-        
+
         public override Response Execute()
         {
-            return _userManager.CreateTrade(_currentUser.Username, _tradingDeal) ? new Response() {StatusCode = StatusCode.Created} : new Response() {StatusCode = StatusCode.Conflict};
+            return _userManager.CreateTrade(_currentUser.Username, _tradingDeal)
+                ? new Response {StatusCode = StatusCode.Created}
+                : new Response {StatusCode = StatusCode.Conflict};
         }
     }
 }

@@ -5,11 +5,11 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.RouteCommands.Admin
 {
-    public class AddPackageCommand:ProtectedRouteCommand
+    public class AddPackageCommand : ProtectedRouteCommand
     {
-        private IUserManager _userManager;
-        private User _currentUser;
-        private List<UserRequestCard> _package;
+        private readonly User _currentUser;
+        private readonly List<UserRequestCard> _package;
+        private readonly IUserManager _userManager;
 
         public AddPackageCommand(IUserManager userManager, User currentUser, List<UserRequestCard> package)
         {
@@ -17,6 +17,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Admin
             _currentUser = currentUser;
             _package = package;
         }
+
         public override Response Execute()
         {
             var response = new Response

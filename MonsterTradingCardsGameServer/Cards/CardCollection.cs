@@ -4,13 +4,13 @@ namespace MonsterTradingCardsGameServer.Cards
 {
     public class CardCollection
     {
-        public List<Card> Cards { get; set; }
-
         public CardCollection(List<Card> cards)
         {
             Cards = cards;
         }
-        
+
+        public List<Card> Cards { get; set; }
+
         public List<UniversalCard> ToUniversalCardList()
         {
             var list = new List<UniversalCard>();

@@ -6,14 +6,11 @@ using MonsterTradingCardsGameServer.Core.Routing;
 
 namespace MonsterTradingCardsGameServer
 {
-    class IdRouteParser : IRouteParser
+    internal class IdRouteParser : IRouteParser
     {
         public bool IsMatch(RequestContext request, HttpMethod method, string routePattern)
         {
-            if (method != request.Method)
-            {
-                return false;
-            }
+            if (method != request.Method) return false;
 
             var pattern = "^" + routePattern.Replace("{username}", ".*").Replace("/", "\\/") + "$";
             return Regex.IsMatch(request.ResourcePath, pattern);
@@ -25,10 +22,7 @@ namespace MonsterTradingCardsGameServer
             var pattern = "^" + routePattern.Replace("{id}", "(?<id>.*)").Replace("/", "\\/") + "$";
 
             var result = Regex.Match(request.ResourcePath, pattern);
-            if (result.Groups["id"].Success)
-            {
-                parameters["id"] = result.Groups["id"].Captures[0].Value;
-            }
+            if (result.Groups["id"].Success) parameters["id"] = result.Groups["id"].Captures[0].Value;
             Console.WriteLine(parameters);
             return parameters;
         }

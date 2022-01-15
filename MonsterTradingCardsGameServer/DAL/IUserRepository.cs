@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
 using Npgsql;
@@ -22,25 +21,25 @@ namespace MonsterTradingCardsGameServer.DAL
         bool InsertUser(User user, string password);
 
         public List<Score> GetScoreBoard();
-        
+
         public Stack GetStack(string username);
-        
+
         public Deck GetDeck(string username);
-        
-        public bool SetDeck (string username, Deck deck);
+
+        public bool SetDeck(string username, Deck deck);
 
         public bool AddPackage(string username, List<UniversalCard> package, Guid id);
 
         public bool AquirePackage(string username, int coins, Stack stack);
 
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type);
-        
+
         public List<TradingOffer> ListTrades();
 
         public Trade GetTrade(string tradeId);
-        
+
         public bool DeleteTrade(string tradeId);
-        
+
         public bool AcceptTrade(string tradeId, User seller, User buyer);
 
         public bool SetStack(User user);

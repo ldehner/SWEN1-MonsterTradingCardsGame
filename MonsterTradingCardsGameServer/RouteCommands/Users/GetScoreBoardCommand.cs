@@ -7,10 +7,12 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
     public class GetScoreBoardCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
+
         public GetScoreBoardCommand(IUserManager userManager)
         {
             _userManager = userManager;
         }
+
         public override Response Execute()
         {
             var scoreBoard = _userManager.GetScores();
@@ -24,6 +26,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
                 response.Payload = JsonConvert.SerializeObject(scoreBoard);
                 response.StatusCode = StatusCode.Ok;
             }
+
             return response;
         }
     }

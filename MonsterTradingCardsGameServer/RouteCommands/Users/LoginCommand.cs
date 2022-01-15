@@ -1,4 +1,3 @@
-using MonsterTradingCardsGameServer.Core.Authentication;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Core.Routing;
 using MonsterTradingCardsGameServer.Users;
@@ -9,13 +8,14 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
     {
         private readonly IUserManager userManager;
 
-        public Credentials Credentials { get; private set; }
-
         public LoginCommand(IUserManager userManager, Credentials credentials)
         {
             Credentials = credentials;
             this.userManager = userManager;
         }
+
+        public Credentials Credentials { get; }
+
         public Response Execute()
         {
             User user;

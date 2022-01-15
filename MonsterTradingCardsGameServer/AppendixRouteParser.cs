@@ -9,10 +9,7 @@ namespace MonsterTradingCardsGameServer
     {
         public bool IsMatch(RequestContext request, HttpMethod method, string routePattern)
         {
-            if (method != request.Method)
-            {
-                return false;
-            }
+            if (method != request.Method) return false;
 
             var pattern = "^" + routePattern.Replace("{appendix}", ".*").Replace("/", "\\/") + "$";
             return Regex.IsMatch(request.ResourcePath, pattern);
@@ -24,10 +21,7 @@ namespace MonsterTradingCardsGameServer
             var pattern = "^" + routePattern.Replace("{appendix}", "(?<appendix>.*)").Replace("/", "\\/") + "$";
 
             var result = Regex.Match(request.ResourcePath, pattern);
-            if (result.Groups["appendix"].Success)
-            {
-                parameters["appendix"] = result.Groups["appendix"].Captures[0].Value;
-            }
+            if (result.Groups["appendix"].Success) parameters["appendix"] = result.Groups["appendix"].Captures[0].Value;
 
             return parameters;
         }

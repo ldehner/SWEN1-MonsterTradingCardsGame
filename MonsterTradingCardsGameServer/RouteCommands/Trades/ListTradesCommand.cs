@@ -6,12 +6,13 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Trades
 {
     public class ListTradesCommand : ProtectedRouteCommand
     {
-        private IUserManager _userManager;
+        private readonly IUserManager _userManager;
 
         public ListTradesCommand(IUserManager userManager)
         {
             _userManager = userManager;
         }
+
         public override Response Execute()
         {
             var response = new Response();

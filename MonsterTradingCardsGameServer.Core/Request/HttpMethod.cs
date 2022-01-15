@@ -14,7 +14,7 @@
         public static HttpMethod GetMethod(string method)
         {
             method = method.ToLower();
-            HttpMethod parsedMethod = method switch
+            var parsedMethod = method switch
             {
                 "get" => HttpMethod.Get,
                 "post" => HttpMethod.Post,

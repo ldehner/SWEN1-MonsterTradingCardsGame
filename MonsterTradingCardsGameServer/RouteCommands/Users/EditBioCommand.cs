@@ -1,6 +1,4 @@
 using System;
-using MonsterTradingCardsGameServer.Core.Authentication;
-using MonsterTradingCardsGameServer.Core.Request;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Users;
 
@@ -8,10 +6,10 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
 {
     public class EditBioCommand : ProtectedRouteCommand
     {
-        private readonly IUserManager _userManager;
-        private readonly string _username;
         private readonly User _currentUser;
         private readonly UserData _userData;
+        private readonly IUserManager _userManager;
+        private readonly string _username;
 
         public EditBioCommand(IUserManager userManager, string username, User currentUser, UserData userData)
         {
@@ -20,9 +18,9 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             _username = username;
             _currentUser = currentUser;
             _userData = userData;
-            Console.WriteLine("Current user "+_currentUser.Username);
-            
+            Console.WriteLine("Current user " + _currentUser.Username);
         }
+
         public override Response Execute()
         {
             var response = new Response();
@@ -41,7 +39,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             {
                 response.StatusCode = StatusCode.Conflict;
             }
-            
+
             return response;
         }
     }

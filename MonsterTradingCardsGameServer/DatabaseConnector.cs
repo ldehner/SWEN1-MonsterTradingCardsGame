@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using MonsterTradingCardsGameServer.Cards;
-using MonsterTradingCardsGameServer.Users;
-
 namespace MonsterTradingCardsGameServer
 {
     public class DatabaseConnector

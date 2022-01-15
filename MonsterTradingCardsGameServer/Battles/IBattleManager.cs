@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Battles
 {
@@ -10,7 +9,5 @@ namespace MonsterTradingCardsGameServer.Battles
         BattleResult GetBattle(string username, string battleId);
 
         List<BattleResult> ListBattles(string username);
-
-
     }
 }

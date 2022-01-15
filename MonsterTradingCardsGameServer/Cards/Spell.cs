@@ -2,13 +2,13 @@ using System;
 
 namespace MonsterTradingCardsGameServer.Cards
 {
-    public class Spell:Card
+    public class Spell : Card
     {
-        public Spell(Guid id, double damage, Modification mod):base(id, damage, mod)
+        public Spell(Guid id, double damage, Modification mod) : base(id, damage, mod)
         {
             base.SetRules();
         }
-        
+
         public override UniversalCard ToUniversalCard()
         {
             return new UniversalCard(Id.ToString(), Mod, MonsterType.None, Damage);

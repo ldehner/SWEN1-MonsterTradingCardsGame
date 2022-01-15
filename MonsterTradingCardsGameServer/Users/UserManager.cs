@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.DAL;
-using Npgsql;
 
 namespace MonsterTradingCardsGameServer.Users
 {
     public class UserManager : IUserManager
     {
-        public Dictionary<string, User> ActiveUsers { get; set; }
         public readonly IUserRepository UserRepository;
 
         public UserManager(IUserRepository userRepository)
@@ -16,6 +14,8 @@ namespace MonsterTradingCardsGameServer.Users
             UserRepository = userRepository;
             ActiveUsers = new Dictionary<string, User>();
         }
+
+        public Dictionary<string, User> ActiveUsers { get; set; }
 
         public User LoginUser(Credentials credentials)
         {
@@ -151,7 +151,8 @@ namespace MonsterTradingCardsGameServer.Users
             var trade = UserRepository.GetTrade(tradeId);
             var user = UserRepository.GetUserByUsername(username);
             user.Stack.Cards.Add(trade.Card);
-            return trade.Trader.Equals(username) && UserRepository.SetStack(user) && UserRepository.DeleteTrade(tradeId);
+            return trade.Trader.Equals(username) && UserRepository.SetStack(user) &&
+                   UserRepository.DeleteTrade(tradeId);
         }
 
         public bool LogoutUser(string token)

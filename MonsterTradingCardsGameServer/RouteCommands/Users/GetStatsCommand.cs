@@ -1,6 +1,3 @@
-using System.Text;
-using MonsterTradingCardsGameServer.Core.Authentication;
-using MonsterTradingCardsGameServer.Core.Request;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
@@ -9,14 +6,15 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
 {
     public class GetStatsCommand : ProtectedRouteCommand
     {
-        private readonly IUserManager _userManager;
         private readonly User _currentUser;
-        
+        private readonly IUserManager _userManager;
+
         public GetStatsCommand(IUserManager userManager, User currentUser)
         {
             _userManager = userManager;
             _currentUser = currentUser;
         }
+
         public override Response Execute()
         {
             Stats stats;
@@ -39,6 +37,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
                 response.Payload = JsonConvert.SerializeObject(stats);
                 response.StatusCode = StatusCode.Ok;
             }
+
             return response;
         }
     }

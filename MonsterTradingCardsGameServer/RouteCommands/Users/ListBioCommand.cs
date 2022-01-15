@@ -1,23 +1,22 @@
 using System;
 using System.Text;
 using MonsterTradingCardsGameServer.Core.Response;
-using MonsterTradingCardsGameServer.Core.Routing;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.RouteCommands.Users
 {
-    public class ListBioCommand: ProtectedRouteCommand
+    public class ListBioCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
         private readonly string _username;
-        
+
         public ListBioCommand(IUserManager userManager, string username)
         {
             Console.WriteLine("Username: " + username);
             _userManager = userManager;
             _username = username;
         }
-        
+
         public override Response Execute()
         {
             UserData userdata;
@@ -49,7 +48,6 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Users
             }
 
             return response;
-
         }
     }
 }

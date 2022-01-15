@@ -6,9 +6,6 @@ namespace MonsterTradingCardsGameServer.Battles
 {
     public class BattleResult
     {
-        public SimpleUser Winner { get; set; }
-        public SimpleUser Loser { get; set; }
-        public List<string> BattleLog { get; set; }
         public readonly Guid Guid;
 
         public BattleResult(string guid, SimpleUser winner, SimpleUser loser, List<string> battleLog)
@@ -18,5 +15,9 @@ namespace MonsterTradingCardsGameServer.Battles
             BattleLog = battleLog;
             Guid = Guid.Parse(guid);
         }
+
+        public SimpleUser Winner { get; set; }
+        public SimpleUser Loser { get; set; }
+        public List<string> BattleLog { get; set; }
     }
 }

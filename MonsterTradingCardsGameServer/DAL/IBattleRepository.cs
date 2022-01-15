@@ -1,4 +1,3 @@
-using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.DAL
@@ -6,6 +5,5 @@ namespace MonsterTradingCardsGameServer.DAL
     public interface IBattleRepository
     {
         bool NewBattle(User user);
-        
     }
 }

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Users;
 
@@ -10,15 +8,17 @@ namespace MonsterTradingCardsGameServer.Battles
     public class Battle
     {
         private const int MaxRounds = 100;
-        private int _roundCounter = 1;
-        private User _user1, _user2;
         private Card _current1, _current2;
         private Card _currentBackup1, _currentBackup2;
-        private List<Card> _tmpDeck1, _tmpDeck2;
-        private Random _rand = new();
-        public User Winner, Loser;
+        private readonly Random _rand = new();
+        private int _roundCounter = 1;
+        private readonly List<Card> _tmpDeck1;
+        private readonly List<Card> _tmpDeck2;
+        private readonly User _user1;
+        private readonly User _user2;
         public List<string> BattleLog = new();
-        
+        public User Winner, Loser;
+
         public Battle(User user1, User user2)
         {
             _user1 = user1;
@@ -33,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Battles
             {
                 _pickRandomCard();
                 BattleLog.Add("### Round " + _roundCounter + " ###");
-                switch ((new Round(_current1, _current2, BattleLog)).Calculate())
+                switch (new Round(_current1, _current2, BattleLog).Calculate())
                 {
                     case BattleStatus.Draw:
                         break;
@@ -46,9 +46,10 @@ namespace MonsterTradingCardsGameServer.Battles
                         _tmpDeck1.Remove(_currentBackup1);
                         break;
                 }
+
                 _roundCounter++;
             }
-            
+
             _checkOutcome();
             return new BattleResult(Guid.NewGuid().ToString(), Winner.ToSimpleUser(), Loser.ToSimpleUser(), BattleLog);
         }
@@ -65,9 +66,9 @@ namespace MonsterTradingCardsGameServer.Battles
         {
             BattleLog.Add("-------------------");
             BattleLog.Add("### Game Result ###");
-            
+
             if (_roundCounter > MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0) BattleLog.Add("DRAW");
-            else if (_tmpDeck1.Count > 0 && _tmpDeck2.Count <= 0)  _setWinnerLoser(_user1, _user2);
+            else if (_tmpDeck1.Count > 0 && _tmpDeck2.Count <= 0) _setWinnerLoser(_user1, _user2);
             else if (_tmpDeck1.Count <= 0 && _tmpDeck2.Count > 0) _setWinnerLoser(_user2, _user1);
         }
 

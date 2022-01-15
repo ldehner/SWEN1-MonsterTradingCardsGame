@@ -7,15 +7,17 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
 {
     public class GetBattleCommand : ProtectedRouteCommand
     {
-        private IBattleManager _battleManager;
-        private User _currentUser;
-        private string _battleId;
+        private readonly string _battleId;
+        private readonly IBattleManager _battleManager;
+        private readonly User _currentUser;
+
         public GetBattleCommand(IBattleManager battleManager, User currentUser, string battleId)
         {
             _battleManager = battleManager;
             _currentUser = currentUser;
             _battleId = battleId;
         }
+
         public override Response Execute()
         {
             var response = new Response();
@@ -29,6 +31,7 @@ namespace MonsterTradingCardsGameServer.RouteCommands.Battles
             {
                 response.StatusCode = StatusCode.NotFound;
             }
+
             return response;
         }
     }

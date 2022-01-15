@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterTradingCardsGameServer.Battles
 {
-    public class BattleFailedException: Exception
+    public class BattleFailedException : Exception
     {
         public BattleFailedException()
         {

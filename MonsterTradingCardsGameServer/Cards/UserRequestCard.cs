@@ -2,17 +2,17 @@ namespace MonsterTradingCardsGameServer.Cards
 {
     public class UserRequestCard
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public double Damage { get; set; }
-
         public UserRequestCard(string id, string name, double damage)
         {
             Id = id;
             Name = name;
             Damage = damage;
         }
-        
+
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public double Damage { get; set; }
+
         public UniversalCard ToUniversalCard()
         {
             var modification = Modification.None;
@@ -49,6 +49,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     _ => monsterType
                 };
             }
+
             return new UniversalCard(Id, modification, monsterType, Damage);
         }
     }

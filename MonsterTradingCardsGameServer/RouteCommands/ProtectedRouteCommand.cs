@@ -7,9 +7,8 @@ namespace MonsterTradingCardsGameServer.RouteCommands
 {
     public abstract class ProtectedRouteCommand : IProtectedRouteCommand
     {
+        public User User => (User) Identity;
         public IIdentity Identity { get; set; }
-
-        public User User => (User)Identity;
 
         public abstract Response Execute();
     }

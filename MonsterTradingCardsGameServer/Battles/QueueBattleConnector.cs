@@ -1,7 +1,6 @@
 namespace MonsterTradingCardsGameServer.Battles
 {
-    public class QueueBattleConnector:IBattleConnector
+    public class QueueBattleConnector : IBattleConnector
     {
-        
     }
 }
