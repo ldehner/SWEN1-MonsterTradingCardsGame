@@ -5,10 +5,17 @@ using MonsterTradingCardsGameServer.DAL;
 
 namespace MonsterTradingCardsGameServer.Users
 {
+    /// <summary>
+    /// UserManager
+    /// </summary>
     public class UserManager : IUserManager
     {
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Sets the repository
+        /// </summary>
+        /// <param name="userRepository"></param>
         public UserManager(IUserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -17,43 +24,82 @@ namespace MonsterTradingCardsGameServer.Users
 
         private Dictionary<string, User> ActiveUsers { get; set; }
 
+        /// <summary>
+        /// Loggs in User
+        /// </summary>
+        /// <param name="credentials">users credentials</param>
+        /// <returns>user</returns>
         public User LoginUser(Credentials credentials)
         {
             return _userRepository.GetUserByCredentials(credentials.Username, credentials.Password) ??
                    throw new UserNotFoundException();
         }
 
+        /// <summary>
+        /// gets user
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>user</returns>
         public User GetUser(string username)
         {
             return _userRepository.GetUserByUsername(username) ?? throw new UserNotFoundException();
         }
 
+        /// <summary>
+        /// gets users data
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>userdata of user</returns>
         public UserData GetUserData(string username)
         {
             return _userRepository.GetUserByUsername(username).UserData ?? throw new UserNotFoundException();
         }
 
-
+        /// <summary>
+        /// changes users data
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="userData">new userdata</param>
         public void EditUserData(string username, UserData userData)
         {
             if (!_userRepository.UpdateUserData(username, userData)) throw new UserNotFoundException();
         }
 
+        /// <summary>
+        /// Lists all scores
+        /// </summary>
+        /// <returns>the score list</returns>
         public List<Score> GetScores()
         {
             return _userRepository.GetScoreBoard();
         }
 
+        /// <summary>
+        /// Gets the stack of a user
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>users stack</returns>
         public Stack GetStack(string username)
         {
             return _userRepository.GetStack(username);
         }
 
+        /// <summary>
+        /// Gets the deck of a user
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>users deck</returns>
         public Deck GetDeck(string username)
         {
             return _userRepository.GetDeck(username);
         }
 
+        /// <summary>
+        /// sets users deck
+        /// </summary>
+        /// <param name="username">users deck</param>
+        /// <param name="ids">list of ids</param>
+        /// <returns>if query was successful</returns>
         public bool SetDeck(string username, List<string> ids)
         {
             var stack = GetStack(username);
@@ -66,19 +112,33 @@ namespace MonsterTradingCardsGameServer.Users
             return newDeck.Count == 4 && _userRepository.SetDeck(username, new Deck(newDeck));
         }
 
-        public bool AddPackage(string username, List<UserRequestCard> package)
+        /// <summary>
+        /// adds an package
+        /// </summary>
+        /// <param name="package">list of cards</param>
+        /// <returns>if query was successful</returns>
+        public bool AddPackage(List<UserRequestCard> package)
         {
             if (package.Count != 5) return false;
             var tmp = new List<UniversalCard>();
             package.ForEach(card => tmp.Add(card.ToUniversalCard()));
-            return _userRepository.AddPackage(username, tmp, Guid.NewGuid());
+            return _userRepository.AddPackage(tmp, Guid.NewGuid());
         }
 
+        /// <summary>
+        /// gets users stats
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>users stats</returns>
         public Stats GetUserStats(string username)
         {
             return _userRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
         }
 
+        /// <summary>
+        /// registers user
+        /// </summary>
+        /// <param name="credentials">users credentials</param>
         public void RegisterUser(Credentials credentials)
         {
             var user = new User(credentials.Username, new Stats(0, 0),
@@ -87,12 +147,25 @@ namespace MonsterTradingCardsGameServer.Users
             if (!_userRepository.InsertUser(user, credentials.Password)) throw new DuplicateUserException();
         }
 
+        /// <summary>
+        /// aquires an package
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>if query was successful</returns>
         public bool AquirePackage(string username)
         {
             var user = GetUser(username);
-            return user.Coins >= 5 && _userRepository.AquirePackage(username, user.Coins, user.Stack);
+            return user.Coins < 5
+                ? throw new TooFewCoinsException()
+                : _userRepository.AquirePackage(username, user.Coins, user.Stack);
         }
 
+        /// <summary>
+        /// creates a new trading offer
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="tradingDeal">trading deal</param>
+        /// <returns>if query was successful</returns>
         public bool CreateTrade(string username, TradingDeal tradingDeal)
         {
             var user = GetUser(username);
@@ -112,11 +185,22 @@ namespace MonsterTradingCardsGameServer.Users
                        tradingDeal.Type.Equals("Monster") ? 1 : 0) && _userRepository.SetStack(user);
         }
 
+        /// <summary>
+        /// lists all available trades
+        /// </summary>
+        /// <returns>all trades</returns>
         public List<TradingOffer> ListTrades()
         {
             return _userRepository.ListTrades();
         }
 
+        /// <summary>
+        /// Accepts a trade and trades cards
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="tradeId">id of the trade</param>
+        /// <param name="cardId">id of the card to trade</param>
+        /// <returns>if query was successful</returns>
         public bool AcceptTrade(string username, string tradeId, string cardId)
         {
             var cardInDeck = false;
@@ -145,6 +229,12 @@ namespace MonsterTradingCardsGameServer.Users
             return _userRepository.AcceptTrade(tradeId, seller, buyer);
         }
 
+        /// <summary>
+        /// Deletes a specific trade
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="tradeId">id of the trade</param>
+        /// <returns>if query was successful</returns>
         public bool DeleteTrade(string username, string tradeId)
         {
             var trade = _userRepository.GetTrade(tradeId);
@@ -154,6 +244,11 @@ namespace MonsterTradingCardsGameServer.Users
                    _userRepository.DeleteTrade(tradeId);
         }
 
+        /// <summary>
+        /// logs out user
+        /// </summary>
+        /// <param name="token">users token</param>
+        /// <returns>if query was successful</returns>
         public bool LogoutUser(string token)
         {
             return _userRepository.LogoutUser(token);

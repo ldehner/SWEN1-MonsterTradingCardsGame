@@ -5,8 +5,16 @@ using NpgsqlTypes;
 
 namespace MonsterTradingCardsGameServer.DAL
 {
+    /// <summary>
+    /// Stores the battles in a postgresql database
+    /// </summary>
     public class InDatabaseBattleRepository : IBattleRepository
     {
+        /// <summary>
+        /// stores a new battle into the calling users row
+        /// </summary>
+        /// <param name="user">requesting user</param>
+        /// <returns>if request was successful</returns>
         public bool NewBattle(User user)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);

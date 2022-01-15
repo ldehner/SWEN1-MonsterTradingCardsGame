@@ -1,7 +1,16 @@
 namespace MonsterTradingCardsGameServer.Users
 {
+    /// <summary>
+    /// Simple user class so that unneccessary data
+    /// isn't exposed
+    /// </summary>
     public class SimpleUser : ISimpleUser
     {
+        /// <summary>
+        /// Sets all attributes
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="stats">users stats</param>
         public SimpleUser(string username, Stats stats)
         {
             Username = username;

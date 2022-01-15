@@ -5,6 +5,9 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Battles
 {
+    /// <summary>
+    /// Handles battles of all users
+    /// </summary>
     public class BattleManager : IBattleManager
     {
         private readonly object _battleLock = new();

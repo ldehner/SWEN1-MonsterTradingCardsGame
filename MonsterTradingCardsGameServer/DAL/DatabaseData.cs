@@ -1,5 +1,8 @@
 namespace MonsterTradingCardsGameServer.DAL
 {
+    /// <summary>
+    /// Inherits all the neccessarry data for the db 
+    /// </summary>
     public static class DatabaseData
     {
         public const string ConnectionString = "Host=" + Host + ";Username=" + Username + ";Password=" + Password +

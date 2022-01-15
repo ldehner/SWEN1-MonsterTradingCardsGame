@@ -3,6 +3,9 @@ using MonsterTradingCardsGameServer.Cards;
 
 namespace MonsterTradingCardsGameServer.Battles
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Round
     {
         private readonly Card _c1;
@@ -17,6 +20,10 @@ namespace MonsterTradingCardsGameServer.Battles
 
         private List<string> BattleLog { get; }
 
+        /// <summary>
+        /// Calculates which user has won the round
+        /// </summary>
+        /// <returns>the result of the battle</returns>
         public BattleStatus Calculate()
         {
             _checkRules();
@@ -36,49 +43,34 @@ namespace MonsterTradingCardsGameServer.Battles
             return BattleStatus.Draw;
         }
 
+        /// <summary>
+        /// Adds the result of the current round to the battle log
+        /// </summary>
+        /// <param name="winner">the winning card</param>
+        /// <param name="loser">the losing card</param>
+        /// <param name="status">the status of the battle</param>
         private void _printRound(Card winner, Card loser, int status)
         {
             if (status == 1)
             {
-                if (winner.GetType() == typeof(Monster))
-                    BattleLog.Add(winner.Mod + "-" + ((Monster) winner).Type + " won with " + winner.Damage +
-                                  " Damage");
-                else
-                    BattleLog.Add(winner.Mod + "-Spell won with " + winner.Damage + " Damage");
-
-                if (loser.GetType() == typeof(Monster))
-                    BattleLog.Add(loser.Mod + "-" + ((Monster) loser).Type + " lost with " + loser.Damage +
-                                  " Damage");
-                else
-                    BattleLog.Add(loser.Mod + "-Spell lost with " + loser.Damage + " Damage");
+                BattleLog.Add($"{winner.GetCardName()} won with {winner.Damage} Damage");
+                BattleLog.Add($"{loser.GetCardName()} lost with {loser.Damage} Damage");
             }
             else
             {
                 BattleLog.Add("Draw:");
-                if (winner.GetType() == typeof(Monster))
-                    BattleLog.Add(winner.Mod + "-" + ((Monster) winner).Type + " with " + winner.Damage + " Damage");
-                else
-                    BattleLog.Add(winner.Mod + "-Spell with " + winner.Damage + " Damage");
-
-                if (loser.GetType() == typeof(Monster))
-                    BattleLog.Add(loser.Mod + "-" + ((Monster) loser).Type + " with " + loser.Damage + " Damage");
-                else
-                    BattleLog.Add(loser.Mod + "-Spell with " + loser.Damage + " Damage");
+                BattleLog.Add($"{winner.GetCardName()} with {winner.Damage} Damage");
+                BattleLog.Add($"{loser.GetCardName()} with {loser.Damage} Damage");
             }
         }
 
+        /// <summary>
+        /// applies the rules and sets the recalculated damage
+        /// </summary>
         private void _checkRules()
         {
             _c1.Rules.ForEach(rule => rule.CalculateDamage(_c1, _c2));
             _c2.Rules.ForEach(rule => rule.CalculateDamage(_c2, _c1));
-            /*foreach (var rule in _c1.Rules)
-            {
-                rule.CalculateDamage(_c1, _c2); 
-            }
-            foreach (var rule in _c2.Rules)
-            {
-                rule.CalculateDamage(_c2, _c1); 
-            }*/
         }
     }
 }

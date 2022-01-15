@@ -10,15 +10,27 @@ using NpgsqlTypes;
 
 namespace MonsterTradingCardsGameServer.DAL
 {
+    /// <summary>
+    /// Stores the users data in a postgresql database
+    /// </summary>
     public class InDatabaseUserRepository : IUserRepository
     {
         private readonly Dictionary<string, User> _activeUsers;
 
+        /// <summary>
+        /// Creates the new repository
+        /// </summary>
         public InDatabaseUserRepository()
         {
             _activeUsers = new Dictionary<string, User>();
         }
 
+        /// <summary>
+        /// Gets user out of db with credentials and compares password
+        /// </summary>
+        /// <param name="username">wanted user</param>
+        /// <param name="password">provided password</param>
+        /// <returns></returns>
         public User GetUserByCredentials(string username, string password)
         {
             var user = GetUserByUsername(username);
@@ -27,6 +39,10 @@ namespace MonsterTradingCardsGameServer.DAL
             return user;
         }
 
+        /// <summary>
+        /// Gets all users scores
+        /// </summary>
+        /// <returns>Returns a list of Scores if successful</returns>
         public List<Score> GetScoreBoard()
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -42,6 +58,11 @@ namespace MonsterTradingCardsGameServer.DAL
             return scoreList;
         }
 
+        /// <summary>
+        /// Gets the stack of the user
+        /// </summary>
+        /// <param name="username">wanted user</param>
+        /// <returns>the stack</returns>
         public Stack GetStack(string username)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -58,6 +79,11 @@ namespace MonsterTradingCardsGameServer.DAL
             return new Stack(stack);
         }
 
+        /// <summary>
+        /// Gets the deck of the user
+        /// </summary>
+        /// <param name="username">wanted user</param>
+        /// <returns>deck of the user</returns>
         public Deck GetDeck(string username)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -74,6 +100,12 @@ namespace MonsterTradingCardsGameServer.DAL
             return new Deck(deck);
         }
 
+        /// <summary>
+        /// sets the deck of the user
+        /// </summary>
+        /// <param name="username">wanted user</param>
+        /// <param name="deck">new deck</param>
+        /// <returns>if query was successful</returns>
         public bool SetDeck(string username, Deck deck)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -96,7 +128,13 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
-        public bool AddPackage(string username, List<UniversalCard> package, Guid id)
+        /// <summary>
+        /// Adds a new package into the db
+        /// </summary>
+        /// <param name="package">universal card list</param>
+        /// <param name="id">uid of the package</param>
+        /// <returns>if query was successful</returns>
+        public bool AddPackage(List<UniversalCard> package, Guid id)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
             using var c = new NpgsqlCommand(DatabaseData.AddPackageCommand, conn);
@@ -119,6 +157,13 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Adds an quicred package into the stack of the user and updates the number of coins
+        /// </summary>
+        /// <param name="username">wanted user</param>
+        /// <param name="coins">users number of coins</param>
+        /// <param name="stack">users stack</param>
+        /// <returns>if query was successful</returns>
         public bool AquirePackage(string username, int coins, Stack stack)
         {
             using (var conn = new NpgsqlConnection(DatabaseData.ConnectionString))
@@ -144,6 +189,15 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Creates a new trade offer
+        /// </summary>
+        /// <param name="username">traders username</param>
+        /// <param name="card">card trader wants to trade</param>
+        /// <param name="minDmg">min damage requirement</param>
+        /// <param name="tradeId">trade uid</param>
+        /// <param name="type">required card type</param>
+        /// <returns>if query was successful</returns>
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -175,6 +229,10 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Lists all trading offers
+        /// </summary>
+        /// <returns>all trading offers</returns>
         public List<TradingOffer> ListTrades()
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -187,6 +245,11 @@ namespace MonsterTradingCardsGameServer.DAL
             return offers;
         }
 
+        /// <summary>
+        /// Gets a specific trade
+        /// </summary>
+        /// <param name="tradeId">trade id</param>
+        /// <returns>the trade</returns>
         public Trade GetTrade(string tradeId)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -207,11 +270,23 @@ namespace MonsterTradingCardsGameServer.DAL
             return null;
         }
 
+        /// <summary>
+        /// deletes a trade
+        /// </summary>
+        /// <param name="tradeId">id of the trade</param>
+        /// <returns>if query was successful</returns>
         public bool DeleteTrade(string tradeId)
         {
             return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);
         }
 
+        /// <summary>
+        /// deletes the offer, and updates both users stacks
+        /// </summary>
+        /// <param name="tradeId">id of the trade</param>
+        /// <param name="seller">seller</param>
+        /// <param name="buyer">buyer</param>
+        /// <returns>if query was successful</returns>
         public bool AcceptTrade(string tradeId, User seller, User buyer)
         {
             var a1 = _deleteTrade(tradeId);
@@ -220,11 +295,21 @@ namespace MonsterTradingCardsGameServer.DAL
             return a1 && a2 && a3;
         }
 
+        /// <summary>
+        /// Sets the stack of an user
+        /// </summary>
+        /// <param name="user">wanted user</param>
+        /// <returns>if query was successful</returns>
         public bool SetStack(User user)
         {
             return _updateStack(user.Stack.ToUniversalCardList(), user.Coins, 0, user.Username);
         }
 
+        /// <summary>
+        /// deletes user out of active users
+        /// </summary>
+        /// <param name="token">token of the user</param>
+        /// <returns>if query was successful</returns>
         public bool LogoutUser(string token)
         {
             if (!_activeUsers.ContainsKey(token)) return false;
@@ -232,6 +317,11 @@ namespace MonsterTradingCardsGameServer.DAL
             return true;
         }
 
+        /// <summary>
+        /// Reads users data out ouf datareader
+        /// </summary>
+        /// <param name="reader">the data reader</param>
+        /// <returns>the user</returns>
         private static User _getUser(IDataRecord reader)
         {
             try
@@ -261,11 +351,21 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Gets an user by his auth token if he has signed in
+        /// </summary>
+        /// <param name="authToken">auth token of the user</param>
+        /// <returns>the user</returns>
         public User GetUserByAuthToken(string authToken)
         {
             return _activeUsers.ContainsKey(authToken) ? _activeUsers[authToken] : null;
         }
 
+        /// <summary>
+        /// Gets the user by his username
+        /// </summary>
+        /// <param name="username">username of user</param>
+        /// <returns>the user</returns>
         public User GetUserByUsername(string username)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -280,6 +380,12 @@ namespace MonsterTradingCardsGameServer.DAL
             return user;
         }
 
+        /// <summary>
+        /// Updates bio, name and icon of the user
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="userData">new user data</param>
+        /// <returns>if query was successful</returns>
         public bool UpdateUserData(string username, UserData userData)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -302,6 +408,12 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Inserts a user into the database
+        /// </summary>
+        /// <param name="user">user</param>
+        /// <param name="password">passsword of the user</param>
+        /// <returns>if query was successful</returns>
         public bool InsertUser(User user, string password)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -345,6 +457,11 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
+        /// <summary>
+        /// Converts result of reader into a trading offer
+        /// </summary>
+        /// <param name="reader">Data reader</param>
+        /// <returns>the trading offer</returns>
         private static TradingOffer _dbToTradingOffer(IDataRecord reader)
         {
             var id = reader["id"].ToString();
@@ -355,11 +472,22 @@ namespace MonsterTradingCardsGameServer.DAL
             return new TradingOffer(id, username, card?.ToCard().GetCardName(), card!.Damage, cardType, minDmg);
         }
 
+        /// <summary>
+        /// Deletes a trade
+        /// </summary>
+        /// <param name="tradeId"></param>
+        /// <returns></returns>
         private static bool _deleteTrade(string tradeId)
         {
             return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);
         }
 
+        /// <summary>
+        /// deletes an element by id
+        /// </summary>
+        /// <param name="id">id of the element</param>
+        /// <param name="command">the command</param>
+        /// <returns>if query was successful</returns>
         private static bool _deleteById(string id, string command)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
@@ -380,12 +508,24 @@ namespace MonsterTradingCardsGameServer.DAL
             }
         }
 
-
+        /// <summary>
+        /// Deletes a package
+        /// </summary>
+        /// <param name="id">id of the package</param>
+        /// <returns>if query was successful</returns>
         private static bool _deletePackage(string id)
         {
             return _deleteById(id, DatabaseData.DeletePackageCommand);
         }
 
+        /// <summary>
+        /// Updates users stack
+        /// </summary>
+        /// <param name="stack">new stack</param>
+        /// <param name="coins">users coins</param>
+        /// <param name="minusCoins">how many coins should be deducted</param>
+        /// <param name="username">users username</param>
+        /// <returns>if query was successful</returns>
         private static bool _updateStack(List<UniversalCard> stack, int coins, int minusCoins, string username)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);

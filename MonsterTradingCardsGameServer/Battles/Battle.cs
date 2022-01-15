@@ -19,6 +19,11 @@ namespace MonsterTradingCardsGameServer.Battles
         public List<string> BattleLog = new();
         public User Winner, Loser;
 
+        /// <summary>
+        /// Constructor for battle
+        /// </summary>
+        /// <param name="user1">the first required user</param>
+        /// <param name="user2">the second required user</param>
         public Battle(User user1, User user2)
         {
             _user1 = user1;
@@ -27,6 +32,11 @@ namespace MonsterTradingCardsGameServer.Battles
             _tmpDeck2 = new List<Card>(_user2.Deck.Cards);
         }
 
+        /// <summary>
+        /// Starts a battle till either one player has won or a
+        /// maximum round number of 100 was reached
+        /// </summary>
+        /// <returns>The result of the battle</returns>
         public BattleResult StartBattle()
         {
             while (_roundCounter <= MaxRounds && _tmpDeck1.Count > 0 && _tmpDeck2.Count > 0)
@@ -54,6 +64,9 @@ namespace MonsterTradingCardsGameServer.Battles
             return new BattleResult(Guid.NewGuid().ToString(), Winner.ToSimpleUser(), Loser.ToSimpleUser(), BattleLog);
         }
 
+        /// <summary>
+        /// Picks a random card out of the deck of both users
+        /// </summary>
         private void _pickRandomCard()
         {
             _current1 = _tmpDeck1[_rand.Next(_tmpDeck1.Count)];
@@ -62,6 +75,9 @@ namespace MonsterTradingCardsGameServer.Battles
             _currentBackup2 = _current2;
         }
 
+        /// <summary>
+        /// checks the outcome of the battle
+        /// </summary>
         private void _checkOutcome()
         {
             BattleLog.Add("-------------------");
@@ -72,6 +88,12 @@ namespace MonsterTradingCardsGameServer.Battles
             else if (_tmpDeck1.Count <= 0 && _tmpDeck2.Count > 0) _setWinnerLoser(_user2, _user1);
         }
 
+        /// <summary>
+        /// sets winner and loser, wins and losses
+        /// and recalculates the elo of both players
+        /// </summary>
+        /// <param name="winner">the user who won</param>
+        /// <param name="loser">the user who lost</param>
         private void _setWinnerLoser(User winner, User loser)
         {
             Winner = winner;
