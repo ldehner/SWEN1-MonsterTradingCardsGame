@@ -1,0 +1,7 @@
+@startuml
+class GetDeckCommand {
+    + GetDeckCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- GetDeckCommand
+@enduml

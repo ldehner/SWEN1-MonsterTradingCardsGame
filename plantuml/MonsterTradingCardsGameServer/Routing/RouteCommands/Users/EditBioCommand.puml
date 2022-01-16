@@ -1,0 +1,7 @@
+@startuml
+class EditBioCommand {
+    + EditBioCommand(userManager:IUserManager, username:string, userData:UserData)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- EditBioCommand
+@enduml

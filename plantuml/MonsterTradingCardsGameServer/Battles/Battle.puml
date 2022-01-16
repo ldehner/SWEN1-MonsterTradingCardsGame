@@ -1,0 +1,11 @@
+@startuml
+class Battle {
+    + Battle(user1:User, user2:User)
+    + StartBattle() : BattleResult
+}
+class "List`1"<T> {
+}
+Battle o-> "BattleLog<string>" "List`1"
+Battle --> "Winner" User
+Battle --> "Loser" User
+@enduml

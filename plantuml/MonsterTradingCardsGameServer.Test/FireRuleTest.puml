@@ -1,0 +1,7 @@
+@startuml
+class FireRuleTest {
+    + CheckIfFireDamageIsHalvedWhenOtherCardHasWaterMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfFireDamageIsDoubledWhenOtherCardHasNormalMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfFireDamageIsSameWhenOtherCardHasFireMod(Dmg1:int, Dmg2:int) : void
+}
+@enduml

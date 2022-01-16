@@ -1,0 +1,7 @@
+@startuml
+class RegisterCommand {
+    + RegisterCommand(userManager:IUserManager, credentials:Credentials)
+    + Execute() : Response
+}
+IRouteCommand <|-- RegisterCommand
+@enduml

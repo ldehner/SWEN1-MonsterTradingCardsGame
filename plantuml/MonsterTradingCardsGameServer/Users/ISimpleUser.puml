@@ -1,0 +1,6 @@
+@startuml
+abstract class ISimpleUser {
+    + {abstract} Username : string <<get>> <<set>>
+}
+ISimpleUser --> "Stats" Stats
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class GetStatsCommand {
+    + GetStatsCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- GetStatsCommand
+@enduml

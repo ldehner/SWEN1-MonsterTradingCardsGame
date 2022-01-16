@@ -1,0 +1,5 @@
+@startuml
+interface IIdentityProvider {
+    GetIdentityForRequest(request:RequestContext) : IIdentity
+}
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class ListBattlesCommand {
+    + ListBattlesCommand(battleManager:IBattleManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- ListBattlesCommand
+@enduml

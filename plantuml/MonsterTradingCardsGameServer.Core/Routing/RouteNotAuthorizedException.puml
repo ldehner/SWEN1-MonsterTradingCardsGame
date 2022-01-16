@@ -1,0 +1,8 @@
+@startuml
+class RouteNotAuthorizedException {
+    + RouteNotAuthorizedException()
+    + RouteNotAuthorizedException(message:string)
+    + RouteNotAuthorizedException(message:string, innerException:Exception)
+}
+Exception <|-- RouteNotAuthorizedException
+@enduml

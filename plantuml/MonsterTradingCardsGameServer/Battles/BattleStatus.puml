@@ -1,0 +1,7 @@
+@startuml
+enum BattleStatus {
+    Draw,
+    Player1,
+    Player2,
+}
+@enduml

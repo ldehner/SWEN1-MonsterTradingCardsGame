@@ -1,0 +1,7 @@
+@startuml
+class SetDeckCommand {
+    + SetDeckCommand(userManager:IUserManager, cardIds:List<string>)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- SetDeckCommand
+@enduml

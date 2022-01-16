@@ -1,0 +1,8 @@
+@startuml
+class DuplicateUserException {
+    + DuplicateUserException()
+    + DuplicateUserException(message:string)
+    + DuplicateUserException(message:string, innerException:Exception)
+}
+Exception <|-- DuplicateUserException
+@enduml

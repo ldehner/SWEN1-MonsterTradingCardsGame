@@ -1,0 +1,6 @@
+@startuml
+interface IServer {
+    Start() : void
+    Stop() : void
+}
+@enduml

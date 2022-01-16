@@ -1,0 +1,11 @@
+@startuml
+class BattleResult {
+    + BattleResult(guid:string, winner:SimpleUser, loser:SimpleUser, battleLog:List<string>)
+}
+class "List`1"<T> {
+}
+BattleResult --> "Guid" Guid
+BattleResult --> "Winner" SimpleUser
+BattleResult --> "Loser" SimpleUser
+BattleResult --> "BattleLog<string>" "List`1"
+@enduml

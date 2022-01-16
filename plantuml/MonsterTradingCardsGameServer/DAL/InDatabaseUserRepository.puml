@@ -1,0 +1,24 @@
+@startuml
+class InDatabaseUserRepository {
+    + InDatabaseUserRepository()
+    + GetUserByCredentials(username:string, password:string) : User
+    + GetScoreBoard() : List<Score>
+    + GetStack(username:string) : Stack
+    + GetDeck(username:string) : Deck
+    + SetDeck(username:string, deck:Deck) : bool
+    + AddPackage(package:List<UniversalCard>, id:Guid) : bool
+    + AquirePackage(username:string, coins:int, stack:Stack) : bool
+    + CreateTrade(username:string, card:Card, minDmg:double, tradeId:string, type:int) : bool
+    + ListTrades() : List<ReadableTrade>
+    + GetTrade(tradeId:string) : UniversalTrade
+    + DeleteTrade(tradeId:string) : bool
+    + AcceptTrade(tradeId:string, seller:User, buyer:User) : bool
+    + SetStack(user:User) : bool
+    + LogoutUser(token:string) : bool
+    + GetUserByAuthToken(authToken:string) : User
+    + GetUserByUsername(username:string) : User
+    + UpdateUserData(username:string, userData:UserData) : bool
+    + InsertUser(user:User, password:string) : bool
+}
+IUserRepository <|-- InDatabaseUserRepository
+@enduml

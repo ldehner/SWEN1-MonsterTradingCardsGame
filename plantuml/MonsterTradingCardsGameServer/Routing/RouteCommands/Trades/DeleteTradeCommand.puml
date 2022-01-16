@@ -1,0 +1,7 @@
+@startuml
+class DeleteTradeCommand {
+    + DeleteTradeCommand(userManager:IUserManager, tradeId:string)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- DeleteTradeCommand
+@enduml

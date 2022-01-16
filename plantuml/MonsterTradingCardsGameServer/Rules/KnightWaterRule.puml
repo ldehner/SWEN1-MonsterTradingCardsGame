@@ -1,0 +1,6 @@
+@startuml
+class KnightWaterRule {
+    + <<override>> CalculateDamage(card1:Card, card2:Card) : void
+}
+Rule <|-- KnightWaterRule
+@enduml

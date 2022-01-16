@@ -1,0 +1,7 @@
+@startuml
+class GetBattleCommand {
+    + GetBattleCommand(battleManager:IBattleManager, battleId:string)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- GetBattleCommand
+@enduml

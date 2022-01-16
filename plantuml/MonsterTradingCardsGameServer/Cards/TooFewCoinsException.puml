@@ -1,0 +1,8 @@
+@startuml
+class TooFewCoinsException {
+    + TooFewCoinsException()
+    + TooFewCoinsException(message:string)
+    + TooFewCoinsException(message:string, inner:Exception)
+}
+Exception <|-- TooFewCoinsException
+@enduml

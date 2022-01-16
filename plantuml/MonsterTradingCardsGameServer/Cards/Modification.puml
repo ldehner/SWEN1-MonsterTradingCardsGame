@@ -1,0 +1,8 @@
+@startuml
+enum Modification {
+    None,
+    Normal,
+    Water,
+    Fire,
+}
+@enduml

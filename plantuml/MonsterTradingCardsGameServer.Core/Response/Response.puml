@@ -1,0 +1,6 @@
+@startuml
+class Response {
+    + Payload : string <<get>> <<set>>
+}
+Response --> "StatusCode" StatusCode
+@enduml

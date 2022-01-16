@@ -1,0 +1,8 @@
+@startuml
+class ReadableCard {
+    + ReadableCard(id:string, cardName:string, damage:double)
+    + Id : string <<get>> <<set>>
+    + CardName : string <<get>> <<set>>
+    + Damage : double <<get>> <<set>>
+}
+@enduml

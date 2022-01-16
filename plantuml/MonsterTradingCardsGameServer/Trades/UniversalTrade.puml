@@ -1,0 +1,9 @@
+@startuml
+class UniversalTrade {
+    + UniversalTrade(username:string, card:Card, requiredType:string, requiredDamage:double)
+    + Trader : string <<get>> <<set>>
+    + RequiredType : string <<get>> <<set>>
+    + RequiredDamage : double <<get>> <<set>>
+}
+UniversalTrade --> "Card" Card
+@enduml

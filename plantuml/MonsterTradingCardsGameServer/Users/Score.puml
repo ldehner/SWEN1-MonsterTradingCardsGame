@@ -1,0 +1,7 @@
+@startuml
+class Score {
+    + Score(username:string, stats:Stats)
+    + Username : string <<get>> <<set>>
+}
+Score --> "Stats" Stats
+@enduml

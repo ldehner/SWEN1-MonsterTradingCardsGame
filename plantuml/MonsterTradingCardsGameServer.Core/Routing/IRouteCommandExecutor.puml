@@ -1,0 +1,5 @@
+@startuml
+interface IRouteCommandExecutor {
+    ExecuteCommand(command:IRouteCommand) : Response.Response
+}
+@enduml

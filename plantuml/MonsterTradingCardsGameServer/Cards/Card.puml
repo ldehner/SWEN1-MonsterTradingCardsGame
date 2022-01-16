@@ -1,0 +1,16 @@
+@startuml
+abstract class Card {
+    + Card(id:Guid, damage:double, mod:Modification)
+    + Damage : double <<get>> <<set>>
+    + {abstract} ToUniversalCard() : UniversalCard
+    + {abstract} GetCardName() : string
+    + ToReadableCard() : ReadableCard
+    + {abstract} GetCardType() : string
+    + <<virtual>> SetRules() : void
+}
+class "List`1"<T> {
+}
+Card --> "Mod" Modification
+Card --> "Rules<Rule>" "List`1"
+Card --> "Id" Guid
+@enduml

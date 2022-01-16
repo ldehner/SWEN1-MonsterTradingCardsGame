@@ -1,0 +1,6 @@
+@startuml
+interface IClient {
+    + ReceiveRequest() : RequestContext
+    + SendResponse(response:Response.Response) : void
+}
+@enduml

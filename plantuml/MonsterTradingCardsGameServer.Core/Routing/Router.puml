@@ -1,0 +1,24 @@
+@startuml
+class Router {
+    + Router(routeParser:IRouteParser, identityProvider:IIdentityProvider)
+    + Resolve(request:RequestContext) : IRouteCommand
+    + AddRoute(method:HttpMethod, routePattern:string, create:CreatePublicRouteCommand) : void
+    + AddProtectedRoute(method:HttpMethod, routePattern:string, create:CreateProtectedRouteCommand) : void
+}
+class "Dictionary`2"<T1,T2> {
+}
+interface ICreator {
+}
+class PublicCreator {
+}
+class ProtectedCreator {
+}
+IRouter <|-- Router
+Router +-- ICreator
+Router +-- PublicCreator
+ICreator <|-- PublicCreator
+PublicCreator --> "Create" CreatePublicRouteCommand
+Router +-- ProtectedCreator
+ICreator <|-- ProtectedCreator
+ProtectedCreator --> "Create" CreateProtectedRouteCommand
+@enduml

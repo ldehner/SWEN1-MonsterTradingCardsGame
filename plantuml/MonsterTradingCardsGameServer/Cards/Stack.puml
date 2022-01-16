@@ -1,0 +1,6 @@
+@startuml
+class Stack {
+    + Stack(cards:List<Card>)
+}
+CardCollection <|-- Stack
+@enduml

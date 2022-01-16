@@ -1,0 +1,5 @@
+@startuml
+interface IBattleRepository {
+    NewBattle(user:User) : bool
+}
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class BattleNotFoundException {
+    + BattleNotFoundException()
+    + BattleNotFoundException(message:string)
+    + BattleNotFoundException(message:string, innerException:Exception)
+}
+Exception <|-- BattleNotFoundException
+@enduml

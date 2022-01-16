@@ -1,0 +1,10 @@
+@startuml
+class CardCollection {
+    + CardCollection(cards:List<Card>)
+    + ToUniversalCardList() : List<UniversalCard>
+    + ToReadableCardList() : List<ReadableCard>
+}
+class "List`1"<T> {
+}
+CardCollection --> "Cards<Card>" "List`1"
+@enduml

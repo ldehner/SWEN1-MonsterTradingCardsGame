@@ -1,0 +1,6 @@
+@startuml
+interface IRouteParser {
+    IsMatch(request:RequestContext, method:HttpMethod, routePattern:string) : bool
+    ParseParameters(request:RequestContext, routePattern:string) : Dictionary<string, string>
+}
+@enduml

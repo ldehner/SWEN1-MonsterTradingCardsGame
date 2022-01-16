@@ -1,0 +1,5 @@
+@startuml
+abstract class Rule {
+    + {abstract} CalculateDamage(card1:Card, card2:Card) : void
+}
+@enduml

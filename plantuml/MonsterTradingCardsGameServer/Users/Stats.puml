@@ -1,0 +1,8 @@
+@startuml
+class Stats {
+    + Stats(wins:int, losses:int)
+    + Wins : int <<get>> <<set>>
+    + Losses : int <<get>> <<set>>
+    + Elo : int <<get>> <<set>>
+}
+@enduml

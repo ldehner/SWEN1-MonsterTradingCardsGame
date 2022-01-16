@@ -1,0 +1,8 @@
+@startuml
+abstract class ProtectedRouteCommand {
+    + {abstract} Execute() : Response
+}
+IProtectedRouteCommand <|-- ProtectedRouteCommand
+ProtectedRouteCommand --> "User" User
+ProtectedRouteCommand --> "Identity" IIdentity
+@enduml

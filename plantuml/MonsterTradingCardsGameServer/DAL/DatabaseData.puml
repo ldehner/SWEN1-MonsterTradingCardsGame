@@ -1,0 +1,25 @@
+@startuml
+class DatabaseData <<static>> {
+    + <<const>> ConnectionString : string
+    + <<const>> UserByUsernameCommand : string
+    + <<const>> NewUserCommand : string
+    + <<const>> UpdateUserDataCommand : string
+    + <<const>> UpdateUserAfterBattle : string
+    + <<const>> GetScoreBoard : string
+    + <<const>> GetUserStack : string
+    + <<const>> GetUserDeck : string
+    + <<const>> UpdateUserDeck : string
+    + <<const>> AddPackageCommand : string
+    + <<const>> DeletePackageCommand : string
+    + <<const>> AquirePackageCommand : string
+    + <<const>> UpdateUserAfterPackageBuy : string
+    + <<const>> AddTrade : string
+    + <<const>> GetTrades : string
+    + <<const>> TradeById : string
+    + <<const>> DeleteTradeCommand : string
+    + {static} TradeLock : object
+    + {static} UserLock : object
+    + {static} PackageLock : object
+    + {static} ActiveUserLock : object
+}
+@enduml

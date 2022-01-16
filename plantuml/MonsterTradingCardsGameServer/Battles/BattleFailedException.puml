@@ -1,0 +1,8 @@
+@startuml
+class BattleFailedException {
+    + BattleFailedException()
+    + BattleFailedException(message:string)
+    + BattleFailedException(message:string, innerException:Exception)
+}
+Exception <|-- BattleFailedException
+@enduml

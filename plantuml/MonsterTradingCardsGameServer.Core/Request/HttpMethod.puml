@@ -1,0 +1,12 @@
+@startuml
+enum HttpMethod {
+    Get,
+    Post,
+    Put,
+    Delete,
+    Patch,
+}
+class MethodUtilities <<static>> {
+    + {static} GetMethod(method:string) : HttpMethod
+}
+@enduml

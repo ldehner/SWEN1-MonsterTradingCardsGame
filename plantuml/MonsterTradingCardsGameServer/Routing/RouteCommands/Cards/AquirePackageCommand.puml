@@ -1,0 +1,7 @@
+@startuml
+class AquirePackageCommand {
+    + AquirePackageCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- AquirePackageCommand
+@enduml

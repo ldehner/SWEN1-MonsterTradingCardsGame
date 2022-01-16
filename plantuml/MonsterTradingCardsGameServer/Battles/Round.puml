@@ -1,0 +1,6 @@
+@startuml
+class Round {
+    + Round(c1:Card, c2:Card, battleLog:List<string>)
+    + Calculate() : BattleStatus
+}
+@enduml

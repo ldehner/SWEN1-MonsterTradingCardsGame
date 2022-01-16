@@ -1,0 +1,9 @@
+@startuml
+class Package {
+    + Package(cards:List<Card>)
+}
+class "List`1"<T> {
+}
+Package --> "Guid" Guid
+Package --> "Cards<Card>" "List`1"
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+class UniversalCard {
+    + UniversalCard(id:string, modification:Modification, monsterType:MonsterType, damage:double)
+    + Damage : double <<get>> <<set>>
+    + ToCard() : Card
+}
+UniversalCard --> "Id" Guid
+UniversalCard --> "Modification" Modification
+UniversalCard --> "MonsterType" MonsterType
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class AppendixRouteParser {
+    + IsMatch(request:RequestContext, method:HttpMethod, routePattern:string) : bool
+    + ParseParameters(request:RequestContext, routePattern:string) : Dictionary<string, string>
+}
+IRouteParser <|-- AppendixRouteParser
+@enduml

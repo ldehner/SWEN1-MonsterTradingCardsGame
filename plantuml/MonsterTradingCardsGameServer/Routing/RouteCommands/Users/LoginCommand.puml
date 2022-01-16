@@ -1,0 +1,7 @@
+@startuml
+class LoginCommand {
+    + LoginCommand(userManager:IUserManager, credentials:Credentials)
+    + Execute() : Response
+}
+IRouteCommand <|-- LoginCommand
+@enduml

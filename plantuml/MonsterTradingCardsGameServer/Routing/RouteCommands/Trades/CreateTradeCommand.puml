@@ -1,0 +1,7 @@
+@startuml
+class CreateTradeCommand {
+    + CreateTradeCommand(userManager:IUserManager, userRequestTrade:UserRequestTrade)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- CreateTradeCommand
+@enduml

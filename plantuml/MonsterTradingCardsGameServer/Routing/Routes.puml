@@ -1,0 +1,6 @@
+@startuml
+class Routes <<static>> {
+    + {static} RegisterUserRoutes(router:Router, userManager:IUserManager) : void
+    + {static} RegisterBattleRoutes(router:Router, battleManager:IBattleManager) : void
+}
+@enduml

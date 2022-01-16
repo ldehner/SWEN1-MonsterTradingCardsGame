@@ -1,0 +1,7 @@
+@startuml
+class LogoutUserCommand {
+    + LogoutUserCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- LogoutUserCommand
+@enduml

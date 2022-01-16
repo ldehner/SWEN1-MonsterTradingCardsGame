@@ -1,0 +1,8 @@
+@startuml
+class NoSuchRuleException {
+    + NoSuchRuleException()
+    + NoSuchRuleException(message:string)
+    + NoSuchRuleException(message:string, inner:Exception)
+}
+Exception <|-- NoSuchRuleException
+@enduml

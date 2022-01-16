@@ -1,0 +1,9 @@
+@startuml
+class Spell {
+    + Spell(id:Guid, damage:double, mod:Modification)
+    + <<override>> ToUniversalCard() : UniversalCard
+    + <<override>> GetCardName() : string
+    + <<override>> GetCardType() : string
+}
+Card <|-- Spell
+@enduml

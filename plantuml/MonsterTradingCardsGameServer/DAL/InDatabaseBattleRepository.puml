@@ -1,0 +1,6 @@
+@startuml
+class InDatabaseBattleRepository {
+    + NewBattle(user:User) : bool
+}
+IBattleRepository <|-- InDatabaseBattleRepository
+@enduml

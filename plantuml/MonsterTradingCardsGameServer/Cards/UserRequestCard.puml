@@ -1,0 +1,9 @@
+@startuml
+class UserRequestCard {
+    + UserRequestCard(id:string, name:string, damage:double)
+    + Id : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + Damage : double <<get>> <<set>>
+    + ToUniversalCard() : UniversalCard
+}
+@enduml

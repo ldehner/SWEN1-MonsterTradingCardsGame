@@ -1,0 +1,21 @@
+@startuml
+interface IUserManager {
+    LoginUser(credentials:Credentials) : User
+    RegisterUser(credentials:Credentials) : void
+    GetUserData(username:string) : UserData
+    EditUserData(username:string, userData:UserData) : void
+    GetUserStats(username:string) : Stats
+    + GetScores() : List<Score>
+    + GetUser(username:string) : User
+    + GetStack(username:string) : Stack
+    + GetDeck(username:string) : Deck
+    + SetDeck(username:string, ids:List<string>) : bool
+    + AddPackage(package:List<UserRequestCard>) : bool
+    + AquirePackage(username:string) : bool
+    + CreateTrade(username:string, userRequestTrade:UserRequestTrade) : bool
+    + ListTrades() : List<ReadableTrade>
+    + AcceptTrade(username:string, tradeId:string, cardId:string) : bool
+    + DeleteTrade(username:string, tradeId:string) : bool
+    + LogoutUser(token:string) : bool
+}
+@enduml

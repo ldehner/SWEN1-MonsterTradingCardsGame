@@ -1,0 +1,11 @@
+@startuml
+class Monster {
+    + Monster(id:Guid, damage:double, mod:Modification, type:MonsterType)
+    + <<override>> ToUniversalCard() : UniversalCard
+    + <<override>> GetCardName() : string
+    + <<override>> GetCardType() : string
+    + <<override>> SetRules() : void
+}
+Card <|-- Monster
+Monster --> "Type" MonsterType
+@enduml

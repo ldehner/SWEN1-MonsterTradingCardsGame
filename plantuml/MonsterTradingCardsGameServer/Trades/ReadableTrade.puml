@@ -1,0 +1,11 @@
+@startuml
+class ReadableTrade {
+    + ReadableTrade(tradeId:string, username:string, cardName:string, damage:double, requiredType:string, requiredDamage:double)
+    + TradeId : string <<get>> <<set>>
+    + Trader : string <<get>> <<set>>
+    + CardName : string <<get>> <<set>>
+    + Damage : double <<get>> <<set>>
+    + RequiredType : string <<get>> <<set>>
+    + RequiredDamage : double <<get>> <<set>>
+}
+@enduml

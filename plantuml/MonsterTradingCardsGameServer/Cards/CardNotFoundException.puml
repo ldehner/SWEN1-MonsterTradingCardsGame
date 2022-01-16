@@ -1,0 +1,8 @@
+@startuml
+class CardNotFoundException {
+    + CardNotFoundException()
+    + CardNotFoundException(message:string)
+    + CardNotFoundException(message:string, inner:Exception)
+}
+Exception <|-- CardNotFoundException
+@enduml

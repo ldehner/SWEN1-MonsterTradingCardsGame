@@ -1,0 +1,8 @@
+@startuml
+class UserData {
+    + UserData(name:string, bio:string, icon:string)
+    + Name : string <<get>> <<set>>
+    + Bio : string <<get>> <<set>>
+    + Image : string <<get>> <<set>>
+}
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+class User {
+    + User(username:string, stats:Stats, userData:UserData, stack:Stack, deck:Deck, coins:int)
+    + <<sealed>> <<override>> Username : string <<get>> <<set>>
+    + Coins : int <<get>> <<set>>
+    + HashedPassword : string <<get>> <<set>>
+    + Token : string <<get>>
+    + ToSimpleUser() : SimpleUser
+}
+class "List`1"<T> {
+}
+ISimpleUser <|-- User
+IIdentity <|-- User
+User --> "Battles<BattleResult>" "List`1"
+User --> "Stats" Stats
+User --> "UserData" UserData
+User --> "Stack" Stack
+User --> "Deck" Deck
+@enduml

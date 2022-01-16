@@ -1,0 +1,7 @@
+@startuml
+class UserIdentityProvider {
+    + UserIdentityProvider(userRepository:IUserRepository)
+    + GetIdentityForRequest(request:RequestContext) : IIdentity
+}
+IIdentityProvider <|-- UserIdentityProvider
+@enduml

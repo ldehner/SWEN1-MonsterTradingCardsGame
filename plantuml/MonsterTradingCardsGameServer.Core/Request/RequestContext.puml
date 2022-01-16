@@ -1,0 +1,12 @@
+@startuml
+class RequestContext {
+    + RequestContext()
+    + ResourcePath : string <<get>> <<set>>
+    + HttpVersion : string <<get>> <<set>>
+    + Payload : string <<get>> <<set>>
+}
+class "Dictionary`2"<T1,T2> {
+}
+RequestContext --> "Method" HttpMethod
+RequestContext --> "Header<string,string>" "Dictionary`2"
+@enduml

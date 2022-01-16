@@ -1,0 +1,7 @@
+@startuml
+class NormalRuleTest {
+    + CheckIfNormalDamageIsHalvedWhenOtherCardHasFireMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfNormalDamageIsDoubledWhenOtherCardHasWaterMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfNormalDamageIsSameWhenOtherCardHasNormalMod(Dmg1:int, Dmg2:int) : void
+}
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class GoblinDragonRule {
+    + <<override>> CalculateDamage(card1:Card, card2:Card) : void
+}
+Rule <|-- GoblinDragonRule
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class HttpClient {
+    + HttpClient(connection:TcpClient)
+    + ReceiveRequest() : RequestContext
+    + SendResponse(response:Response.Response) : void
+}
+IClient <|-- HttpClient
+@enduml

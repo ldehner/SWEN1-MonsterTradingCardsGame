@@ -1,0 +1,7 @@
+@startuml
+class ListTradesCommand {
+    + ListTradesCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- ListTradesCommand
+@enduml

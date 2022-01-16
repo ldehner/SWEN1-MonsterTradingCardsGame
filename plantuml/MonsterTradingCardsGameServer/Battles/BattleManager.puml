@@ -1,0 +1,9 @@
+@startuml
+class BattleManager {
+    + BattleManager(userManager:UserManager, battleRepository:IBattleRepository)
+    + NewBattle(username:string) : BattleResult
+    + GetBattle(username:string, battleId:string) : BattleResult
+    + ListBattles(username:string) : List<BattleResult>
+}
+IBattleManager <|-- BattleManager
+@enduml

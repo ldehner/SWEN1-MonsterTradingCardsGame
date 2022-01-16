@@ -1,0 +1,8 @@
+@startuml
+class InvalidDeckException {
+    + InvalidDeckException()
+    + InvalidDeckException(message:string)
+    + InvalidDeckException(message:string, innerException:Exception)
+}
+Exception <|-- InvalidDeckException
+@enduml

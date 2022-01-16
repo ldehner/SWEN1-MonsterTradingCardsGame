@@ -1,0 +1,6 @@
+@startuml
+class MtcgDbSetup {
+    + MtcgDbSetup()
+    + Start() : void
+}
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class WaterRuleTest {
+    + CheckIfWaterDamageIsHalvedWhenOtherCardHasNormalMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfWaterDamageIsDoubledWhenOtherCardHasFireMod(Dmg1:int, Dmg2:int) : void
+    + CheckIfWaterDamageIsSameWhenOtherCardHasWaterMod(Dmg1:int, Dmg2:int) : void
+}
+@enduml

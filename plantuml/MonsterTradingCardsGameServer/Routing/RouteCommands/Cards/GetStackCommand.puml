@@ -1,0 +1,7 @@
+@startuml
+class GetStackCommand {
+    + GetStackCommand(userManager:IUserManager)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- GetStackCommand
+@enduml

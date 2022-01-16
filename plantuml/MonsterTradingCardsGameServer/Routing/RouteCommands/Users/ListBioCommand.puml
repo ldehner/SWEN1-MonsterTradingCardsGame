@@ -1,0 +1,7 @@
+@startuml
+class ListBioCommand {
+    + ListBioCommand(userManager:IUserManager, username:string)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- ListBioCommand
+@enduml

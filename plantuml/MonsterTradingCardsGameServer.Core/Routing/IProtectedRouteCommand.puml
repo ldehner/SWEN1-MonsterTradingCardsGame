@@ -1,0 +1,6 @@
+@startuml
+interface IProtectedRouteCommand {
+}
+IRouteCommand <|-- IProtectedRouteCommand
+IProtectedRouteCommand --> "Identity" IIdentity
+@enduml

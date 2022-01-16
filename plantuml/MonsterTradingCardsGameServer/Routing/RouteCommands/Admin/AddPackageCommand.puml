@@ -1,0 +1,7 @@
+@startuml
+class AddPackageCommand {
+    + AddPackageCommand(userManager:IUserManager, package:List<UserRequestCard>)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- AddPackageCommand
+@enduml

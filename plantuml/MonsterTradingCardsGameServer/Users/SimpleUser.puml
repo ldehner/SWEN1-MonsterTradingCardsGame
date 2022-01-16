@@ -1,0 +1,8 @@
+@startuml
+class SimpleUser {
+    + SimpleUser(username:string, stats:Stats)
+    + <<sealed>> <<override>> Username : string <<get>> <<set>>
+}
+ISimpleUser <|-- SimpleUser
+SimpleUser --> "Stats" Stats
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class HttpServer {
+    + HttpServer(address:IPAddress, port:int, router:IRouter)
+    + Start() : void
+    + Stop() : void
+}
+IServer <|-- HttpServer
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class HttpListener {
+    + HttpListener(address:IPAddress, port:int)
+    + AcceptClient() : IClient
+    + Start() : void
+    + Stop() : void
+}
+IListener <|-- HttpListener
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+interface IListener {
+    AcceptClient() : IClient
+    Start() : void
+    Stop() : void
+}
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class UserRequestTrade {
+    + CardToTrade : string
+    + Id : string
+    + MinimumDamage : double
+    + Type : string
+    + UserRequestTrade(id:string, cardToTrade:string, type:string, minimumDamage:double)
+}
+@enduml

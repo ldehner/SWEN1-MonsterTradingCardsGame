@@ -1,0 +1,7 @@
+@startuml
+class AcceptTradeCommand {
+    + AcceptTradeCommand(userManager:IUserManager, tradeId:string, cardId:string)
+    + <<override>> Execute() : Response
+}
+ProtectedRouteCommand <|-- AcceptTradeCommand
+@enduml
