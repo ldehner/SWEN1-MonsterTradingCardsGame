@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
+using MonsterTradingCardsGameServer.Trades;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.DAL

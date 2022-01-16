@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
+using MonsterTradingCardsGameServer.Trades;
 using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
 using Npgsql;
