@@ -1,8 +1,20 @@
 namespace MonsterTradingCardsGameServer
 {
-    public class TradingOffer
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ReadableTrade
     {
-        public TradingOffer(string tradeId, string username, string cardName, double damage, string requiredType,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tradeId"></param>
+        /// <param name="username"></param>
+        /// <param name="cardName"></param>
+        /// <param name="damage"></param>
+        /// <param name="requiredType"></param>
+        /// <param name="requiredDamage"></param>
+        public ReadableTrade(string tradeId, string username, string cardName, double damage, string requiredType,
             double requiredDamage)
         {
             TradeId = tradeId;

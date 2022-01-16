@@ -1,13 +1,13 @@
 namespace MonsterTradingCardsGameServer
 {
-    public class TradingDeal
+    public class UserRequestTrade
     {
         public string CardToTrade;
         public string Id;
         public double MinimumDamage;
         public string Type;
 
-        public TradingDeal(string id, string cardToTrade, string type, double minimumDamage)
+        public UserRequestTrade(string id, string cardToTrade, string type, double minimumDamage)
         {
             Id = id;
             CardToTrade = cardToTrade;

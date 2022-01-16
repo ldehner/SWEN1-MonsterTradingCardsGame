@@ -3,8 +3,17 @@ using System.Security.Cryptography;
 
 namespace MonsterTradingCardsGameServer
 {
+    /// <summary>
+    /// Creates password hash with salt value and compares passwords
+    /// </summary>
     public static class PasswordManager
     {
+        /// <summary>
+        /// Compares two passwords
+        /// </summary>
+        /// <param name="storedPw">the stored password</param>
+        /// <param name="userPw">password provided of user</param>
+        /// <returns>if passwords are equal</returns>
         public static bool ComparePasswords(string storedPw, string userPw)
         {
             /* Extract the bytes */
@@ -22,6 +31,11 @@ namespace MonsterTradingCardsGameServer
             return true;
         }
 
+        /// <summary>
+        /// Creates hash from password
+        /// </summary>
+        /// <param name="password">the clear text password</param>
+        /// <returns>the password hash</returns>
         public static string CreatePwHash(string password)
         {
             byte[] salt;

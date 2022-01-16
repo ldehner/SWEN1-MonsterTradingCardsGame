@@ -233,12 +233,12 @@ namespace MonsterTradingCardsGameServer.DAL
         /// Lists all trading offers
         /// </summary>
         /// <returns>all trading offers</returns>
-        public List<TradingOffer> ListTrades()
+        public List<ReadableTrade> ListTrades()
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
             using var c = new NpgsqlCommand(DatabaseData.GetTrades, conn);
             conn.Open();
-            var offers = new List<TradingOffer>();
+            var offers = new List<ReadableTrade>();
             using var reader = c.ExecuteReader();
             while (reader.Read()) offers.Add(_dbToTradingOffer(reader));
 
@@ -250,7 +250,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// </summary>
         /// <param name="tradeId">trade id</param>
         /// <returns>the trade</returns>
-        public Trade GetTrade(string tradeId)
+        public UniversalTrade GetTrade(string tradeId)
         {
             using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
             using var c = new NpgsqlCommand(DatabaseData.TradeById, conn);
@@ -265,7 +265,7 @@ namespace MonsterTradingCardsGameServer.DAL
                 var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString());
                 var minDmg = double.Parse(reader["minDmg"].ToString());
                 var cardType = int.Parse(reader["cardType"].ToString()) == 1 ? "Monster" : "Spell";
-                return new Trade(username, card.ToCard(), cardType, minDmg);
+                return new UniversalTrade(username, card.ToCard(), cardType, minDmg);
             }
             return null;
         }
@@ -462,14 +462,14 @@ namespace MonsterTradingCardsGameServer.DAL
         /// </summary>
         /// <param name="reader">Data reader</param>
         /// <returns>the trading offer</returns>
-        private static TradingOffer _dbToTradingOffer(IDataRecord reader)
+        private static ReadableTrade _dbToTradingOffer(IDataRecord reader)
         {
             var id = reader["id"].ToString();
             var username = reader["username"].ToString();
             var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString()!);
             var minDmg = double.Parse(reader["minDmg"].ToString()!);
             var cardType = int.Parse(reader["cardType"].ToString()!) == 1 ? "Monster" : "Spell";
-            return new TradingOffer(id, username, card?.ToCard().GetCardName(), card!.Damage, cardType, minDmg);
+            return new ReadableTrade(id, username, card?.ToCard().GetCardName(), card!.Damage, cardType, minDmg);
         }
 
         /// <summary>

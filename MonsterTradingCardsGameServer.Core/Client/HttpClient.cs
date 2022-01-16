@@ -6,15 +6,26 @@ using MonsterTradingCardsGameServer.Core.Request;
 
 namespace MonsterTradingCardsGameServer.Core.Client
 {
+    /// <summary>
+    /// Http client
+    /// </summary>
     internal class HttpClient : IClient
     {
         private readonly TcpClient _connection;
 
+        /// <summary>
+        /// sets the connection
+        /// </summary>
+        /// <param name="connection">tcp client</param>
         public HttpClient(TcpClient connection)
         {
             _connection = connection;
         }
 
+        /// <summary>
+        /// Recieves users request
+        /// </summary>
+        /// <returns>the requests context</returns>
         public RequestContext ReceiveRequest()
         {
             var reader = new StreamReader(_connection.GetStream());
@@ -97,6 +108,10 @@ namespace MonsterTradingCardsGameServer.Core.Client
             };
         }
 
+        /// <summary>
+        /// Sends response to client
+        /// </summary>
+        /// <param name="response">the requests response</param>
         public void SendResponse(Response.Response response)
         {
             var writer = new StreamWriter(_connection.GetStream()) {AutoFlush = true};

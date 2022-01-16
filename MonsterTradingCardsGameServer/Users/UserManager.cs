@@ -164,32 +164,32 @@ namespace MonsterTradingCardsGameServer.Users
         /// creates a new trading offer
         /// </summary>
         /// <param name="username">users username</param>
-        /// <param name="tradingDeal">trading deal</param>
+        /// <param name="userRequestTrade">trading deal</param>
         /// <returns>if query was successful</returns>
-        public bool CreateTrade(string username, TradingDeal tradingDeal)
+        public bool CreateTrade(string username, UserRequestTrade userRequestTrade)
         {
             var user = GetUser(username);
             var cardInDeck = false;
             Card tradingCard = null;
             user.Stack.Cards.ForEach(card =>
             {
-                if (card.Id.ToString().Equals(tradingDeal.CardToTrade)) tradingCard = card;
+                if (card.Id.ToString().Equals(userRequestTrade.CardToTrade)) tradingCard = card;
             });
             user.Deck.Cards.ForEach(card =>
             {
-                if (card.Id.ToString().Equals(tradingDeal.CardToTrade)) cardInDeck = true;
+                if (card.Id.ToString().Equals(userRequestTrade.CardToTrade)) cardInDeck = true;
             });
             user.Stack.Cards.Remove(tradingCard);
             return !cardInDeck && tradingCard is not null &&
-                   _userRepository.CreateTrade(username, tradingCard, tradingDeal.MinimumDamage, tradingDeal.Id,
-                       tradingDeal.Type.Equals("Monster") ? 1 : 0) && _userRepository.SetStack(user);
+                   _userRepository.CreateTrade(username, tradingCard, userRequestTrade.MinimumDamage, userRequestTrade.Id,
+                       userRequestTrade.Type.Equals("Monster") ? 1 : 0) && _userRepository.SetStack(user);
         }
 
         /// <summary>
         /// lists all available trades
         /// </summary>
         /// <returns>all trades</returns>
-        public List<TradingOffer> ListTrades()
+        public List<ReadableTrade> ListTrades()
         {
             return _userRepository.ListTrades();
         }

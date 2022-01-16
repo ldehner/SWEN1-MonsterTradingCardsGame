@@ -2,8 +2,14 @@
 
 namespace MonsterTradingCardsGameServer.Core.Request
 {
+    /// <summary>
+    /// User requests context
+    /// </summary>
     public class RequestContext
     {
+        /// <summary>
+        /// sets all attributes
+        /// </summary>
         public RequestContext()
         {
             Method = HttpMethod.Get;

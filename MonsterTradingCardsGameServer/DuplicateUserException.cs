@@ -2,6 +2,9 @@ using System;
 
 namespace MonsterTradingCardsGameServer
 {
+    /// <summary>
+    /// Exception in case user already exists
+    /// </summary>
     public class DuplicateUserException : Exception
     {
         public DuplicateUserException()

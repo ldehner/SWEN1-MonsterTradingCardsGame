@@ -1,5 +1,8 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Response
 {
+    /// <summary>
+    /// HTTP Status codes
+    /// </summary>
     public enum StatusCode
     {
         Ok = 200,

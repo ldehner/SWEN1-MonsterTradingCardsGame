@@ -2,6 +2,9 @@
 
 namespace MonsterTradingCardsGameServer.Core.Listener
 {
+    /// <summary>
+    /// interface for the listener
+    /// </summary>
     public interface IListener
     {
         IClient AcceptClient();

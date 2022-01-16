@@ -108,14 +108,14 @@ namespace MonsterTradingCardsGameServer.DAL
         /// Lists all trading offers
         /// </summary>
         /// <returns>all trading offers</returns>
-        public List<TradingOffer> ListTrades();
+        public List<ReadableTrade> ListTrades();
 
         /// <summary>
         /// Gets a specific trade
         /// </summary>
         /// <param name="tradeId">trade id</param>
         /// <returns>the trade</returns>
-        public Trade GetTrade(string tradeId);
+        public UniversalTrade GetTrade(string tradeId);
 
         /// <summary>
         /// deletes a trade

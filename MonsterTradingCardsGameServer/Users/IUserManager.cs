@@ -95,15 +95,15 @@ namespace MonsterTradingCardsGameServer.Users
         /// creates a new trading offer
         /// </summary>
         /// <param name="username">users username</param>
-        /// <param name="tradingDeal">trading deal</param>
+        /// <param name="userRequestTrade">trading deal</param>
         /// <returns>if query was successful</returns>
-        public bool CreateTrade(string username, TradingDeal tradingDeal);
+        public bool CreateTrade(string username, UserRequestTrade userRequestTrade);
 
         /// <summary>
         /// lists all available trades
         /// </summary>
         /// <returns>all trades</returns>
-        public List<TradingOffer> ListTrades();
+        public List<ReadableTrade> ListTrades();
 
         /// <summary>
         /// Accepts a trade and trades cards
