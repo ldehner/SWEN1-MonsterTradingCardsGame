@@ -20,7 +20,6 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         /// <param name="username">the user which user data is wanted</param>
         public ListBioCommand(IUserManager userManager, string username)
         {
-            Console.WriteLine("Username: " + username);
             _userManager = userManager;
             _username = username;
         }
