@@ -224,10 +224,6 @@ namespace MonsterTradingCardsGameServer.Users
             seller.Stack.Cards.Add(tradingCard);
             buyer.Stack.Cards.Remove(tradingCard);
             buyer.Stack.Cards.Add(deal.Card);
-            Console.WriteLine("Seller");
-            seller.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
-            Console.WriteLine("Buyer");
-            buyer.Stack.ToUniversalCardList().ForEach(card => Console.WriteLine(card.Id));
             return _userRepository.AcceptTrade(tradeId, seller, buyer);
         }
 

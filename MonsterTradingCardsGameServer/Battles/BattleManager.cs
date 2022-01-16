@@ -16,7 +16,11 @@ namespace MonsterTradingCardsGameServer.Battles
         private readonly UserManager _userManager;
         private readonly Queue<User> _userQ;
 
-
+        /// <summary>
+        /// Sets all attributes
+        /// </summary>
+        /// <param name="userManager">the user manager</param>
+        /// <param name="battleRepository">the battle repository</param>
         public BattleManager(UserManager userManager, IBattleRepository battleRepository)
         {
             _userQ = new Queue<User>();
@@ -25,6 +29,13 @@ namespace MonsterTradingCardsGameServer.Battles
             _battleRepository = battleRepository;
         }
 
+        /// <summary>
+        /// Creates a new battle
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>the battle result</returns>
+        /// <exception cref="InvalidDeckException">exception in case deck is invalid</exception>
+        /// <exception cref="BattleFailedException">exception in case battle failed</exception>
         public BattleResult NewBattle(string username)
         {
             var user = _userManager.GetUser(username);
@@ -33,7 +44,9 @@ namespace MonsterTradingCardsGameServer.Battles
             User u2 = null;
             lock (_battleLock)
             {
-                if (!_userQ.Contains(user)) _userQ.Enqueue(user);
+                //if (!_userQ.Contains(user)) _userQ.Enqueue(user); // does not work
+                if (_userQ.Count > 0 && _userQ.Peek().Username.Equals(user.Username)) throw new AlreadyInQueueException();
+                _userQ.Enqueue(user);
                 // if already two players inside Queue start a new Battle and delete Players from queue
                 // else ignore this step
                 if (_userQ.Count >= 2)
@@ -66,6 +79,13 @@ namespace MonsterTradingCardsGameServer.Battles
             return battleResult;
         }
 
+        /// <summary>
+        /// Gets a battle
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <param name="battleId">specific battle id</param>
+        /// <returns>returns the battle result of the battle</returns>
+        /// <exception cref="BattleNotFoundException">throws exception if user was not found</exception>
         public BattleResult GetBattle(string username, string battleId)
         {
             var user = _userManager.GetUser(username);
@@ -78,6 +98,11 @@ namespace MonsterTradingCardsGameServer.Battles
             return battleResult;
         }
 
+        /// <summary>
+        /// Lists all battles of user
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>the list of battle results</returns>
         public List<BattleResult> ListBattles(string username)
         {
             return _userManager.GetUser(username).Battles;
