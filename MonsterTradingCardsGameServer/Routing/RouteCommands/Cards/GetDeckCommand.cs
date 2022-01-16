@@ -4,15 +4,26 @@ using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
 {
+    /// <summary>
+    /// gets users deck
+    /// </summary>
     public class GetDeckCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
 
+        /// <summary>
+        /// Sets user manager
+        /// </summary>
+        /// <param name="userManager">user manager</param>
         public GetDeckCommand(IUserManager userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
             var result = _userManager.GetDeck(User.Username);

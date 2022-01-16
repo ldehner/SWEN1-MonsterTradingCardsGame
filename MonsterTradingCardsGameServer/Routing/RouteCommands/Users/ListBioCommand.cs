@@ -5,11 +5,19 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
+    /// <summary>
+    /// Lists a specific users userdata
+    /// </summary>
     public class ListBioCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
         private readonly string _username;
 
+        /// <summary>
+        /// Sets user manager and username
+        /// </summary>
+        /// <param name="userManager">the user manager</param>
+        /// <param name="username">the user which user data is wanted</param>
         public ListBioCommand(IUserManager userManager, string username)
         {
             Console.WriteLine("Username: " + username);
@@ -17,6 +25,10 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
             _username = username;
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
             UserData userdata;

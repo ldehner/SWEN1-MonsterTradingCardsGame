@@ -14,8 +14,16 @@ using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing
 {
+    /// <summary>
+    /// Sets all routes
+    /// </summary>
     public static class Routes
     {
+        /// <summary>
+        /// Registers user specific routes
+        /// </summary>
+        /// <param name="router">the router</param>
+        /// <param name="userManager">the user manager</param>
         public static void RegisterUserRoutes(Router router, IUserManager userManager)
         {
             // public routes
@@ -38,7 +46,7 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Get, "/deck",
                 (r, p) => new GetDeckCommand(userManager));
             router.AddProtectedRoute(HttpMethod.Put, "/deck",
-                (r, p) => new SetDeckCommand(userManager, r.Payload));
+                (r, p) => new SetDeckCommand(userManager, Deserialize<List<string>>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Post, "/packages",
                 (r, p) => new AddPackageCommand(userManager,
                     Deserialize<List<UserRequestCard>>(r.Payload)));
@@ -56,6 +64,11 @@ namespace MonsterTradingCardsGameServer.Routing
                 (r, p) => new LogoutUserCommand(userManager));
         }
 
+        /// <summary>
+        /// Registers Battle Routes
+        /// </summary>
+        /// <param name="router">Router</param>
+        /// <param name="battleManager">Battle Manager</param>
         public static void RegisterBattleRoutes(Router router, IBattleManager battleManager)
         {
             router.AddProtectedRoute(HttpMethod.Post, "/battles",
@@ -66,6 +79,12 @@ namespace MonsterTradingCardsGameServer.Routing
                 (r, p) => new GetBattleCommand(battleManager, p["appendix"]));
         }
         
+        /// <summary>
+        /// Deserializes the payload
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         private static T Deserialize<T>(string payload) where T : class
         {
             var deserializedData = JsonConvert.DeserializeObject<T>(payload);

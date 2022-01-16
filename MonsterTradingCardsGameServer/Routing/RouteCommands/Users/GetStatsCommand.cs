@@ -4,15 +4,26 @@ using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
+    /// <summary>
+    /// Gets the stats of a specific user
+    /// </summary>
     public class GetStatsCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
 
+        /// <summary>
+        /// Sets user manager
+        /// </summary>
+        /// <param name="userManager">the usermanager</param>
         public GetStatsCommand(IUserManager userManager)
         {
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
             Stats stats;

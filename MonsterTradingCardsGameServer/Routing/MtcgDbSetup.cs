@@ -1,6 +1,5 @@
 using System.Net;
 using MonsterTradingCardsGameServer.Battles;
-using MonsterTradingCardsGameServer.Core.Authentication;
 using MonsterTradingCardsGameServer.Core.Routing;
 using MonsterTradingCardsGameServer.Core.Server;
 using MonsterTradingCardsGameServer.DAL;
@@ -8,6 +7,9 @@ using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing
 {
+    /// <summary>
+    /// Sets up the repositorys and managers
+    /// </summary>
     public class MtcgDbSetup
     {
         private HttpServer _httpServer;
@@ -28,6 +30,9 @@ namespace MonsterTradingCardsGameServer.Routing
             _httpServer = new HttpServer(IPAddress.Any, 10001, router);
         }
         
+        /// <summary>
+        /// Starts the server
+        /// </summary>
         public void Start()
         {
             _httpServer.Start();

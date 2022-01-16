@@ -10,6 +10,10 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands
         public User User => (User) Identity;
         public IIdentity Identity { get; set; }
 
+        /// <summary>
+        /// Executes the command
+        /// </summary>
+        /// <returns>the response in form of status code and payload</returns>
         public abstract Response Execute();
     }
 }
