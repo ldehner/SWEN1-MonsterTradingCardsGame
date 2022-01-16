@@ -1,3 +1,4 @@
+using System;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Users;
@@ -32,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
                     ? new Response {StatusCode = StatusCode.Conflict}
                     : new Response {StatusCode = StatusCode.Ok};
             }
-            catch (TooFewCoinsException)
+            catch (Exception)
             {
                 return new Response() {StatusCode = StatusCode.Conflict};
             }

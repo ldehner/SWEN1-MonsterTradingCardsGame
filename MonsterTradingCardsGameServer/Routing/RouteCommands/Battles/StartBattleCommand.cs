@@ -1,3 +1,4 @@
+using System;
 using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Core.Response;
 using Newtonsoft.Json;
@@ -32,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
                 response.Payload = JsonConvert.SerializeObject(_battleManager.NewBattle(User.Username));
                 response.StatusCode = StatusCode.Ok;
             }
-            catch (BattleFailedException)
+            catch (Exception)
             {
                 response.StatusCode = StatusCode.Conflict;
             }

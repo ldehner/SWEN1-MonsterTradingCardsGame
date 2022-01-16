@@ -35,8 +35,11 @@ namespace MonsterTradingCardsGameServer.DAL
         public User GetUserByCredentials(string username, string password)
         {
             var user = GetUserByUsername(username);
-            if (user is null || !PasswordManager.ComparePasswords(user?.HashedPassword, password)) return null;
-            if (!_activeUsers.ContainsKey(user.Token)) _activeUsers.Add(user.Token, user);
+            if (user is null || !PasswordManager.ComparePasswords(user.HashedPassword, password)) return null;
+            lock (DatabaseData.ActiveUserLock)
+            {
+                if (!_activeUsers.ContainsKey(user.Token)) _activeUsers.Add(user.Token, user);
+            }
             return user;
         }
 
@@ -46,17 +49,19 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>Returns a list of Scores if successful</returns>
         public List<Score> GetScoreBoard()
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.GetScoreBoard, conn);
-            conn.Open();
-            c.Parameters.Add("@admin", NpgsqlDbType.Varchar).Value = "admin";
-            var scoreList = new List<Score>();
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
-                scoreList.Add(new Score(reader["username"].ToString(),
-                    JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString())));
-
-            return scoreList;
+            lock (DatabaseData.UserLock)
+            {
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.GetScoreBoard, conn);
+                conn.Open();
+                c.Parameters.Add("@admin", NpgsqlDbType.Varchar).Value = "admin";
+                var scoreList = new List<Score>();
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                    scoreList.Add(new Score(reader["username"].ToString(),
+                        JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty)));
+                return scoreList;
+            }
         }
 
         /// <summary>
@@ -66,18 +71,21 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the stack</returns>
         public Stack GetStack(string username)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.GetUserStack, conn);
-            conn.Open();
-            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-            List<UniversalCard> temp = null;
-            var stack = new List<Card>();
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
-                temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString());
+            lock (DatabaseData.UserLock)
+            {
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.GetUserStack, conn);
+                conn.Open();
+                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+                List<UniversalCard> temp = null;
+                var stack = new List<Card>();
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString() ?? string.Empty);
 
-            temp?.ForEach(card => stack.Add(card.ToCard()));
-            return new Stack(stack);
+                temp?.ForEach(card => stack.Add(card.ToCard()));
+                return new Stack(stack);
+            }
         }
 
         /// <summary>
@@ -87,18 +95,21 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>deck of the user</returns>
         public Deck GetDeck(string username)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.GetUserDeck, conn);
-            conn.Open();
-            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-            List<UniversalCard> temp = null;
-            var deck = new List<Card>();
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
-                temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString());
+            lock (DatabaseData.UserLock)
+            {
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.GetUserDeck, conn);
+                conn.Open();
+                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+                List<UniversalCard> temp = null;
+                var deck = new List<Card>();
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ?? string.Empty);
 
-            temp?.ForEach(card => deck.Add(card.ToCard()));
-            return new Deck(deck);
+                temp?.ForEach(card => deck.Add(card.ToCard()));
+                return new Deck(deck);
+            }
         }
 
         /// <summary>
@@ -109,23 +120,26 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool SetDeck(string username, Deck deck)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.UpdateUserDeck, conn);
-            conn.Open();
-            c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-
-            c.Prepare();
-
-            c.Parameters["deck"].Value = JsonConvert.SerializeObject(deck.ToUniversalCardList());
-            try
+            lock (DatabaseData.UserLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.UpdateUserDeck, conn);
+                conn.Open();
+                c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+
+                c.Prepare();
+
+                c.Parameters["deck"].Value = JsonConvert.SerializeObject(deck.ToUniversalCardList());
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -137,24 +151,27 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool AddPackage(List<UniversalCard> package, Guid id)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.AddPackageCommand, conn);
-            conn.Open();
-            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
-            c.Parameters.Add("package", NpgsqlDbType.Jsonb);
-
-            c.Prepare();
-
-            c.Parameters["id"].Value = id.ToString();
-            c.Parameters["package"].Value = JsonConvert.SerializeObject(package);
-            try
+            lock (DatabaseData.PackageLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.AddPackageCommand, conn);
+                conn.Open();
+                c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+                c.Parameters.Add("package", NpgsqlDbType.Jsonb);
+
+                c.Prepare();
+
+                c.Parameters["id"].Value = id.ToString();
+                c.Parameters["package"].Value = JsonConvert.SerializeObject(package);
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -167,27 +184,24 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool AquirePackage(string username, int coins, Stack stack)
         {
-            using (var conn = new NpgsqlConnection(DatabaseData.ConnectionString))
+            var id = "";
+            var package = new List<UniversalCard>();
+            lock (DatabaseData.PackageLock)
             {
-                using (var c = new NpgsqlCommand(DatabaseData.AquirePackageCommand, conn))
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.AquirePackageCommand, conn);
+                conn.Open();
+                
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
                 {
-                    conn.Open();
-                    var id = "";
-                    var package = new List<UniversalCard>();
-                    using (var reader = c.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            id = reader["id"].ToString();
-                            package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString());
-                        }
-                    }
-
-                    stack.Cards.ForEach(card => package?.Add(card.ToUniversalCard()));
-
-                    return _deletePackage(id) && _updateStack(package, coins, 5, username);
+                    id = reader["id"].ToString();
+                    package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString() ?? string.Empty);
                 }
             }
+            if (id!.Equals("")) throw new NoMorePackagesException();
+            stack.Cards.ForEach(card => package?.Add(card.ToUniversalCard()));
+            return _deletePackage(id) && _updateStack(package, coins, 5, username);
         }
 
         /// <summary>
@@ -201,32 +215,35 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.AddTrade, conn);
-            conn.Open();
-
-            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
-            c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
-            c.Parameters.Add("card", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("minDmg", NpgsqlDbType.Double);
-            c.Parameters.Add("cardType", NpgsqlDbType.Integer);
-
-            c.Prepare();
-
-            c.Parameters["id"].Value = tradeId;
-            c.Parameters["username"].Value = username;
-            c.Parameters["card"].Value = JsonConvert.SerializeObject(card.ToUniversalCard());
-            c.Parameters["minDmg"].Value = minDmg;
-            c.Parameters["cardType"].Value = type;
-
-            try
+            lock (DatabaseData.TradeLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.AddTrade, conn);
+                conn.Open();
+
+                c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+                c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
+                c.Parameters.Add("card", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("minDmg", NpgsqlDbType.Double);
+                c.Parameters.Add("cardType", NpgsqlDbType.Integer);
+
+                c.Prepare();
+
+                c.Parameters["id"].Value = tradeId;
+                c.Parameters["username"].Value = username;
+                c.Parameters["card"].Value = JsonConvert.SerializeObject(card.ToUniversalCard());
+                c.Parameters["minDmg"].Value = minDmg;
+                c.Parameters["cardType"].Value = type;
+
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -236,14 +253,17 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>all trading offers</returns>
         public List<ReadableTrade> ListTrades()
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.GetTrades, conn);
-            conn.Open();
-            var offers = new List<ReadableTrade>();
-            using var reader = c.ExecuteReader();
-            while (reader.Read()) offers.Add(_dbToTradingOffer(reader));
+            lock (DatabaseData.TradeLock)
+            {
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.GetTrades, conn);
+                conn.Open();
+                var offers = new List<ReadableTrade>();
+                using var reader = c.ExecuteReader();
+                while (reader.Read()) offers.Add(_dbToTradingOffer(reader));
 
-            return offers;
+                return offers;
+            }
         }
 
         /// <summary>
@@ -253,22 +273,25 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the trade</returns>
         public UniversalTrade GetTrade(string tradeId)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.TradeById, conn);
-            conn.Open();
-
-            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
-
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
+            lock (DatabaseData.TradeLock)
             {
-                var username = reader["username"].ToString();
-                var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString());
-                var minDmg = double.Parse(reader["minDmg"].ToString());
-                var cardType = int.Parse(reader["cardType"].ToString()) == 1 ? "Monster" : "Spell";
-                return new UniversalTrade(username, card.ToCard(), cardType, minDmg);
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.TradeById, conn);
+                conn.Open();
+
+                c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
+
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                {
+                    var username = reader["username"].ToString();
+                    var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString() ?? string.Empty);
+                    var minDmg = double.Parse(reader["minDmg"].ToString() ?? string.Empty);
+                    var cardType = int.Parse(reader["cardType"].ToString() ?? string.Empty) == 1 ? "Monster" : "Spell";
+                    return new UniversalTrade(username, card?.ToCard(), cardType, minDmg);
+                }
+                return null;
             }
-            return null;
         }
 
         /// <summary>
@@ -278,7 +301,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool DeleteTrade(string tradeId)
         {
-            return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);
+            return _deleteById(tradeId, DatabaseData.DeleteTradeCommand, DatabaseData.TradeLock);
         }
 
         /// <summary>
@@ -290,7 +313,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool AcceptTrade(string tradeId, User seller, User buyer)
         {
-            var a1 = _deleteTrade(tradeId);
+            var a1 = DeleteTrade(tradeId);
             var a2 = _updateStack(seller.Stack.ToUniversalCardList(), seller.Coins, 0, seller.Username);
             var a3 = _updateStack(buyer.Stack.ToUniversalCardList(), buyer.Coins, 0, buyer.Username);
             return a1 && a2 && a3;
@@ -313,8 +336,11 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool LogoutUser(string token)
         {
-            if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
-            _activeUsers.Remove(token);
+            lock (DatabaseData.ActiveUserLock)
+            {
+                if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
+                _activeUsers.Remove(token);
+            }
             return true;
         }
 
@@ -328,13 +354,13 @@ namespace MonsterTradingCardsGameServer.DAL
             try
             {
                 var dbUsername = reader["username"].ToString();
-                var dbStack = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString());
-                var dbDeck = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString());
-                var dbStats = JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString());
-                var dbUserdata = JsonConvert.DeserializeObject<UserData>(reader["userdata"].ToString());
-                var coins = int.Parse(reader["coins"].ToString());
+                var dbStack = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString() ?? string.Empty);
+                var dbDeck = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ?? string.Empty);
+                var dbStats = JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty);
+                var dbUserdata = JsonConvert.DeserializeObject<UserData>(reader["userdata"].ToString() ?? string.Empty);
+                var coins = int.Parse(reader["coins"].ToString() ?? string.Empty);
                 var pw = reader["password"].ToString();
-                var battles = JsonConvert.DeserializeObject<List<BattleResult>>(reader["battles"].ToString());
+                var battles = JsonConvert.DeserializeObject<List<BattleResult>>(reader["battles"].ToString() ?? string.Empty);
                 var stackList = new List<Card>();
                 var deckList = new List<Card>();
                 dbStack?.ForEach(card => stackList.Add(card.ToCard()));
@@ -359,7 +385,10 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the user</returns>
         public User GetUserByAuthToken(string authToken)
         {
-            return _activeUsers.ContainsKey(authToken) ? _activeUsers[authToken] : null;
+            lock (DatabaseData.ActiveUserLock)
+            {
+                return _activeUsers.ContainsKey(authToken) ? _activeUsers[authToken] : null;
+            }
         }
 
         /// <summary>
@@ -369,16 +398,19 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the user</returns>
         public User GetUserByUsername(string username)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.UserByUsernameCommand, conn);
-            conn.Open();
-            c.Parameters.Add("@uname", NpgsqlDbType.Varchar).Value = username;
-            User user = null;
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
-                user = _getUser(reader);
+            lock (DatabaseData.UserLock)
+            {
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.UserByUsernameCommand, conn);
+                conn.Open();
+                c.Parameters.Add("@uname", NpgsqlDbType.Varchar).Value = username;
+                User user = null;
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                    user = _getUser(reader);
 
-            return user;
+                return user;
+            }
         }
 
         /// <summary>
@@ -389,23 +421,26 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool UpdateUserData(string username, UserData userData)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.UpdateUserDataCommand, conn);
-            conn.Open();
-            c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-
-            c.Prepare();
-
-            c.Parameters["userdata"].Value = JsonConvert.SerializeObject(userData);
-            try
+            lock (DatabaseData.UserLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.UpdateUserDataCommand, conn);
+                conn.Open();
+                c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+
+                c.Prepare();
+
+                c.Parameters["userdata"].Value = JsonConvert.SerializeObject(userData);
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -417,44 +452,47 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool InsertUser(User user, string password)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.NewUserCommand, conn);
-            conn.Open();
-            var uname = c.CreateParameter();
-            uname.DbType = DbType.String;
-            uname.ParameterName = "username";
-            uname.Size = 20;
-            c.Parameters.Add(uname);
-
-
-            c.Parameters.Add("pw", NpgsqlDbType.Varchar, 200);
-            c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("stats", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("elo", NpgsqlDbType.Integer);
-            c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("coins", NpgsqlDbType.Integer);
-            c.Parameters.Add("battles", NpgsqlDbType.Jsonb);
-
-            c.Prepare();
-
-            c.Parameters["username"].Value = user.Username;
-            c.Parameters["pw"].Value = PasswordManager.CreatePwHash(password);
-            c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack.ToUniversalCardList());
-            c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck.ToUniversalCardList());
-            c.Parameters["stats"].Value = JsonConvert.SerializeObject(user.Stats);
-            c.Parameters["elo"].Value = user.Stats.Elo;
-            c.Parameters["userdata"].Value = JsonConvert.SerializeObject(user.UserData);
-            c.Parameters["coins"].Value = user.Coins;
-            c.Parameters["battles"].Value = JsonConvert.SerializeObject(user.Battles);
-            try
+            lock (DatabaseData.UserLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.NewUserCommand, conn);
+                conn.Open();
+                var uname = c.CreateParameter();
+                uname.DbType = DbType.String;
+                uname.ParameterName = "username";
+                uname.Size = 20;
+                c.Parameters.Add(uname);
+
+
+                c.Parameters.Add("pw", NpgsqlDbType.Varchar, 200);
+                c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("stats", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("elo", NpgsqlDbType.Integer);
+                c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("coins", NpgsqlDbType.Integer);
+                c.Parameters.Add("battles", NpgsqlDbType.Jsonb);
+
+                c.Prepare();
+
+                c.Parameters["username"].Value = user.Username;
+                c.Parameters["pw"].Value = PasswordManager.CreatePwHash(password);
+                c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack.ToUniversalCardList());
+                c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck.ToUniversalCardList());
+                c.Parameters["stats"].Value = JsonConvert.SerializeObject(user.Stats);
+                c.Parameters["elo"].Value = user.Stats.Elo;
+                c.Parameters["userdata"].Value = JsonConvert.SerializeObject(user.UserData);
+                c.Parameters["coins"].Value = user.Coins;
+                c.Parameters["battles"].Value = JsonConvert.SerializeObject(user.Battles);
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -467,20 +505,10 @@ namespace MonsterTradingCardsGameServer.DAL
         {
             var id = reader["id"].ToString();
             var username = reader["username"].ToString();
-            var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString()!);
-            var minDmg = double.Parse(reader["minDmg"].ToString()!);
-            var cardType = int.Parse(reader["cardType"].ToString()!) == 1 ? "Monster" : "Spell";
+            var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString()  ?? string.Empty);
+            var minDmg = double.Parse(reader["minDmg"].ToString()  ?? string.Empty);
+            var cardType = int.Parse(reader["cardType"].ToString()  ?? string.Empty) == 1 ? "Monster" : "Spell";
             return new ReadableTrade(id, username, card?.ToCard().GetCardName(), card!.Damage, cardType, minDmg);
-        }
-
-        /// <summary>
-        /// Deletes a trade
-        /// </summary>
-        /// <param name="tradeId"></param>
-        /// <returns></returns>
-        private static bool _deleteTrade(string tradeId)
-        {
-            return _deleteById(tradeId, DatabaseData.DeleteTradeCommand);
         }
 
         /// <summary>
@@ -488,24 +516,28 @@ namespace MonsterTradingCardsGameServer.DAL
         /// </summary>
         /// <param name="id">id of the element</param>
         /// <param name="command">the command</param>
+        /// <param name="obj">the lock object</param>
         /// <returns>if query was successful</returns>
-        private static bool _deleteById(string id, string command)
+        private static bool _deleteById(string id, string command, object obj)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(command, conn);
-            conn.Open();
-            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = id;
-
-            c.Prepare();
-
-            try
+            lock (obj)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(command, conn);
+                conn.Open();
+                c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = id;
+
+                c.Prepare();
+
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -516,7 +548,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         private static bool _deletePackage(string id)
         {
-            return _deleteById(id, DatabaseData.DeletePackageCommand);
+            return _deleteById(id, DatabaseData.DeletePackageCommand, DatabaseData.PackageLock);
         }
 
         /// <summary>
@@ -529,24 +561,27 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         private static bool _updateStack(List<UniversalCard> stack, int coins, int minusCoins, string username)
         {
-            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-            using var c = new NpgsqlCommand(DatabaseData.UpdateUserAfterPackageBuy, conn);
-            conn.Open();
-            c.CommandText = DatabaseData.UpdateUserAfterPackageBuy;
-            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-            c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
-            c.Parameters.Add("coins", NpgsqlDbType.Integer);
-            c.Prepare();
-            c.Parameters["stack"].Value = JsonConvert.SerializeObject(stack);
-            c.Parameters["coins"].Value = coins - minusCoins;
-            try
+            lock (DatabaseData.UserLock)
             {
-                c.ExecuteNonQuery();
-                return true;
-            }
-            catch (PostgresException)
-            {
-                return false;
+                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+                using var c = new NpgsqlCommand(DatabaseData.UpdateUserAfterPackageBuy, conn);
+                conn.Open();
+                c.CommandText = DatabaseData.UpdateUserAfterPackageBuy;
+                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+                c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
+                c.Parameters.Add("coins", NpgsqlDbType.Integer);
+                c.Prepare();
+                c.Parameters["stack"].Value = JsonConvert.SerializeObject(stack);
+                c.Parameters["coins"].Value = coins - minusCoins;
+                try
+                {
+                    c.ExecuteNonQuery();
+                    return true;
+                }
+                catch (PostgresException)
+                {
+                    return false;
+                }
             }
         }
     }
