@@ -1,3 +1,4 @@
+using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Users;
 
@@ -25,9 +26,16 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            return !_userManager.AquirePackage(User.Username)
-                ? new Response {StatusCode = StatusCode.Conflict}
-                : new Response {StatusCode = StatusCode.Ok};
+            try
+            {
+                return !_userManager.AquirePackage(User.Username)
+                    ? new Response {StatusCode = StatusCode.Conflict}
+                    : new Response {StatusCode = StatusCode.Ok};
+            }
+            catch (TooFewCoinsException)
+            {
+                return new Response() {StatusCode = StatusCode.Conflict};
+            }
         }
     }
 }

@@ -25,9 +25,16 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            return _userManager.LogoutUser(User.Token)
-                ? new Response {StatusCode = StatusCode.Ok}
-                : new Response {StatusCode = StatusCode.Conflict};
+            try
+            {
+                return _userManager.LogoutUser(User.Token)
+                    ? new Response {StatusCode = StatusCode.Ok}
+                    : new Response {StatusCode = StatusCode.Conflict};
+            }
+            catch (UserNotFoundException)
+            {
+                return new Response() {StatusCode = StatusCode.Unauthorized};
+            }
         }
     }
 }

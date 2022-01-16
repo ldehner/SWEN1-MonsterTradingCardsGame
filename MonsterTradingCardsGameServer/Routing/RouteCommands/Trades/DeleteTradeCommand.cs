@@ -1,4 +1,5 @@
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Trades;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
@@ -28,9 +29,17 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            return _userManager.DeleteTrade(User.Username, _tradeId)
-                ? new Response {StatusCode = StatusCode.Ok}
-                : new Response {StatusCode = StatusCode.Unauthorized};
+            try
+            {
+                return _userManager.DeleteTrade(User.Username, _tradeId)
+                    ? new Response {StatusCode = StatusCode.Ok}
+                    : new Response {StatusCode = StatusCode.Unauthorized};
+            }
+            catch (NoSuchTradeException)
+            {
+                return new Response() {StatusCode = StatusCode.NotFound};
+            }
+            
         }
     }
 }

@@ -217,6 +217,7 @@ namespace MonsterTradingCardsGameServer.Users
             });
             if (tradingCard is null || cardInDeck) return false;
             var deal = _userRepository.GetTrade(tradeId);
+            if (deal is null) throw new NoSuchTradeException();
             if (deal.Trader.Equals(username) || tradingCard.Damage < deal.RequiredDamage ||
                 !tradingCard.GetCardType().Equals(deal.RequiredType)) return false;
             var seller = _userRepository.GetUserByUsername(deal.Trader);
@@ -239,6 +240,7 @@ namespace MonsterTradingCardsGameServer.Users
         public bool DeleteTrade(string username, string tradeId)
         {
             var trade = _userRepository.GetTrade(tradeId);
+            if (trade is null) throw new NoSuchTradeException();
             var user = _userRepository.GetUserByUsername(username);
             user.Stack.Cards.Add(trade.Card);
             return trade.Trader.Equals(username) && _userRepository.SetStack(user) &&

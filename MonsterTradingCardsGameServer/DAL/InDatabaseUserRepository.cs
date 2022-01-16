@@ -313,7 +313,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool LogoutUser(string token)
         {
-            if (!_activeUsers.ContainsKey(token)) return false;
+            if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
             _activeUsers.Remove(token);
             return true;
         }

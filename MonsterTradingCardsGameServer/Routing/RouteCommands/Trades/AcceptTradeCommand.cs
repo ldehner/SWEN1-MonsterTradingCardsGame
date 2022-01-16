@@ -1,5 +1,6 @@
 using System;
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Trades;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
@@ -32,10 +33,17 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            Console.WriteLine(_tradeId);
-            return _userManager.AcceptTrade(User.Username, _tradeId, _cardId)
-                ? new Response {StatusCode = StatusCode.Ok}
-                : new Response {StatusCode = StatusCode.Conflict};
+            try
+            {
+                return _userManager.AcceptTrade(User.Username, _tradeId, _cardId)
+                    ? new Response {StatusCode = StatusCode.Ok}
+                    : new Response {StatusCode = StatusCode.Conflict};
+            }
+            catch (NoSuchTradeException)
+            {
+                return new Response() {StatusCode = StatusCode.NotFound};
+            }
+            
         }
     }
 }
