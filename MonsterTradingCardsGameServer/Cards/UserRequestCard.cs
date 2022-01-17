@@ -38,7 +38,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     "Regular" => Modification.Normal,
                     "Fire" => Modification.Fire,
                     "Water" => Modification.Water,
-                    _ => modification
+                    _ => throw new CardNotFoundException()
                 };
             }
             else
@@ -59,7 +59,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     "Knight" => MonsterType.Knight,
                     "Kraken" => MonsterType.Kraken,
                     "Elve" => MonsterType.Elve,
-                    _ => monsterType
+                    _ => throw new CardNotFoundException()
                 };
             }
 

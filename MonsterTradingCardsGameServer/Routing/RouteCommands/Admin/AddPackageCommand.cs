@@ -30,12 +30,18 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            var response = new Response
+            try
             {
-                StatusCode = !User.Username.Equals("admin") ? StatusCode.Unauthorized :
-                    _userManager.AddPackage(_package) ? StatusCode.Created : StatusCode.Conflict
-            };
-            return response;
+                return new Response
+                {
+                    StatusCode = !User.Username.Equals("admin") ? StatusCode.Unauthorized :
+                        _userManager.AddPackage(_package) ? StatusCode.Created : StatusCode.Conflict
+                };
+            }
+            catch (CardNotFoundException)
+            {
+                return new Response() {StatusCode = StatusCode.Conflict};
+            }
         }
     }
 }
