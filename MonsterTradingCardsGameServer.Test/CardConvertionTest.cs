@@ -42,7 +42,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(100.5, Modification.Fire, MonsterType.Dragon)]
         [TestCase(34.4, Modification.Water, MonsterType.Wizard)]
         [TestCase(65.6, Modification.Normal, MonsterType.Goblin)]
-        [TestCase(32.0, Modification.Fire, MonsterType.Elve)]
+        [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Org)]
@@ -92,7 +92,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(100.5, Modification.Fire, MonsterType.Dragon)]
         [TestCase(34.4, Modification.Water, MonsterType.Wizard)]
         [TestCase(65.6, Modification.Normal, MonsterType.Goblin)]
-        [TestCase(32.0, Modification.Fire, MonsterType.Elve)]
+        [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Org)]
@@ -142,7 +142,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(100.5, Modification.Fire, MonsterType.Dragon)]
         [TestCase(34.4, Modification.Water, MonsterType.Wizard)]
         [TestCase(65.6, Modification.Normal, MonsterType.Goblin)]
-        [TestCase(32.0, Modification.Fire, MonsterType.Elve)]
+        [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Org)]
@@ -177,7 +177,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase("WaterWizard", 33.5, Modification.Water, MonsterType.Wizard)]
         [TestCase("WaterGoblin", 33.5, Modification.Water, MonsterType.Goblin)]
         [TestCase("Dragon", 33.5, Modification.Normal, MonsterType.Dragon)]
-        [TestCase("FireElve", 33.5, Modification.Fire, MonsterType.Elve)]
+        [TestCase("FireElve", 33.5, Modification.Fire, MonsterType.Elf)]
         public void CheckIfUserRequestCardIsConvertedSuccessfulToUniversalCard(string name, double damage, Modification mod, MonsterType type)
         {
             // arrange

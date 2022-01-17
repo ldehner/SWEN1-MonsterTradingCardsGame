@@ -60,9 +60,9 @@ namespace MonsterTradingCardsGameServer.Cards
             switch (Type)
             {
                 case MonsterType.Dragon:
-                    Rules.Add(new DragonFireElveRule());
+                    Rules.Add(new DragonFireElfRule());
                     break;
-                case MonsterType.Elve:
+                case MonsterType.Elf:
                     break;
                 case MonsterType.Goblin:
                     Rules.Add(new GoblinDragonRule());

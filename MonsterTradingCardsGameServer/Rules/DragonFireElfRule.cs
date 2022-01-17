@@ -5,7 +5,7 @@ namespace MonsterTradingCardsGameServer.Rules
     /// <summary>
     /// Sets damage of dragon to zero if other card is fire elve
     /// </summary>
-    public class DragonFireElveRule : Rule
+    public class DragonFireElfRule : Rule
     {
         /// <summary>
         /// Calculates the damage between two cards
@@ -15,7 +15,7 @@ namespace MonsterTradingCardsGameServer.Rules
         public override void CalculateDamage(Card card1, Card card2)
         {
             if (card2.GetType() != typeof(Monster)) return;
-            if (((Monster) card2).Type == MonsterType.Elve && card2.Mod == Modification.Fire) card1.Damage *= 0;
+            if (((Monster) card2).Type == MonsterType.Elf && card2.Mod == Modification.Fire) card1.Damage *= 0;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(100.5, Modification.Fire, MonsterType.Dragon, "Fire-Dragon")]
         [TestCase(34.4, Modification.Water, MonsterType.Wizard, "Water-Wizard")]
         [TestCase(65.6, Modification.Normal, MonsterType.Goblin, "Normal-Goblin")]
-        [TestCase(32.0, Modification.Fire, MonsterType.Elve, "Fire-Elve")]
+        [TestCase(32.0, Modification.Fire, MonsterType.Elf, "Fire-Elf")]
         [TestCase(43.1, Modification.Water, MonsterType.Knight, "Water-Knight")]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken, "Normal-Kraken")]
         [TestCase(73.9, Modification.Fire, MonsterType.Org, "Fire-Org")]

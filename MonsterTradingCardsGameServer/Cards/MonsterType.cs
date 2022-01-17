@@ -12,6 +12,6 @@ namespace MonsterTradingCardsGameServer.Cards
         Org,
         Knight,
         Kraken,
-        Elve
+        Elf
     }
 }

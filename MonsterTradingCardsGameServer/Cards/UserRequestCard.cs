@@ -28,7 +28,7 @@ namespace MonsterTradingCardsGameServer.Cards
         /// <returns>the universal card</returns>
         public UniversalCard ToUniversalCard()
         {
-            var modification = Modification.None;
+            Modification modification;
             var monsterType = MonsterType.None;
             if (Name.Contains("Spell"))
             {
@@ -58,7 +58,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     "Org" => MonsterType.Org,
                     "Knight" => MonsterType.Knight,
                     "Kraken" => MonsterType.Kraken,
-                    "Elve" => MonsterType.Elve,
+                    "Elf" => MonsterType.Elf,
                     _ => throw new CardNotFoundException()
                 };
             }
