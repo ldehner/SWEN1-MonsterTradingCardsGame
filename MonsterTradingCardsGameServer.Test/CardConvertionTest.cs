@@ -177,7 +177,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase("WaterWizard", 33.5, Modification.Water, MonsterType.Wizard)]
         [TestCase("WaterGoblin", 33.5, Modification.Water, MonsterType.Goblin)]
         [TestCase("Dragon", 33.5, Modification.Normal, MonsterType.Dragon)]
-        [TestCase("FireElve", 33.5, Modification.Fire, MonsterType.Elf)]
+        [TestCase("FireElf", 33.5, Modification.Fire, MonsterType.Elf)]
         public void CheckIfUserRequestCardIsConvertedSuccessfulToUniversalCard(string name, double damage, Modification mod, MonsterType type)
         {
             // arrange
