@@ -1,5 +1,5 @@
 using MonsterTradingCardsGameServer.Core.Response;
-using MonsterTradingCardsGameServer.Users;
+using MonsterTradingCardsGameServer.Manager;
 using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
@@ -9,15 +9,15 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
     /// </summary>
     public class GetDeckCommand : ProtectedRouteCommand
     {
-        private readonly IUserManager _userManager;
+        private readonly ICardManager _cardManager;
 
         /// <summary>
         /// Sets user manager
         /// </summary>
-        /// <param name="userManager">user manager</param>
-        public GetDeckCommand(IUserManager userManager)
+        /// <param name="cardManager">card manager</param>
+        public GetDeckCommand(ICardManager cardManager)
         {
-            _userManager = userManager;
+            _cardManager = cardManager;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            var result = _userManager.GetDeck(User.Username);
+            var result = _cardManager.GetDeck(User.Username);
             var response = new Response();
             if (result is null) response.StatusCode = StatusCode.NoContent;
             if (result is null) return response;

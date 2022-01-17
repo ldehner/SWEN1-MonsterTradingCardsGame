@@ -1,5 +1,5 @@
 using MonsterTradingCardsGameServer.Core.Response;
-using MonsterTradingCardsGameServer.Users;
+using MonsterTradingCardsGameServer.Manager;
 using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
@@ -9,15 +9,15 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
     /// </summary>
     public class ListTradesCommand : ProtectedRouteCommand
     {
-        private readonly IUserManager _userManager;
+        private readonly ITradeManager _tradeManager;
 
         /// <summary>
         /// Sets user manager
         /// </summary>
-        /// <param name="userManager">the user manager</param>
-        public ListTradesCommand(IUserManager userManager)
+        /// <param name="tradeManager">the trade manager</param>
+        public ListTradesCommand(ITradeManager tradeManager)
         {
-            _userManager = userManager;
+            _tradeManager = tradeManager;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         public override Response Execute()
         {
             var response = new Response();
-            var result = _userManager.ListTrades();
+            var result = _tradeManager.ListTrades();
             response.Payload = JsonConvert.SerializeObject(result);
             response.StatusCode = StatusCode.Ok;
             return response;

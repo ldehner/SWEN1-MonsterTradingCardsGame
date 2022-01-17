@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Response;
-using MonsterTradingCardsGameServer.Users;
+using MonsterTradingCardsGameServer.Manager;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
 {
@@ -11,16 +11,16 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
     public class AddPackageCommand : ProtectedRouteCommand
     {
         private readonly List<UserRequestCard> _package;
-        private readonly IUserManager _userManager;
-        
+        private readonly IPackageManager _packageManager;
+
         /// <summary>
         /// Sets user manager and package
         /// </summary>
-        /// <param name="userManager">the user manager</param>
+        /// <param name="packageManager"></param>
         /// <param name="package">the package to add</param>
-        public AddPackageCommand(IUserManager userManager, List<UserRequestCard> package)
+        public AddPackageCommand(IPackageManager packageManager, List<UserRequestCard> package)
         {
-            _userManager = userManager;
+            _packageManager = packageManager;
             _package = package;
         }
 
@@ -35,7 +35,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
                 return new Response
                 {
                     StatusCode = !User.Username.Equals("admin") ? StatusCode.Unauthorized :
-                        _userManager.AddPackage(_package) ? StatusCode.Created : StatusCode.Conflict
+                        _packageManager.AddPackage(_package) ? StatusCode.Created : StatusCode.Conflict
                 };
             }
             catch (CardNotFoundException)

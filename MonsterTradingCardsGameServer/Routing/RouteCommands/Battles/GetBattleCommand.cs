@@ -1,5 +1,6 @@
 using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Manager;
 using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles

@@ -1,7 +1,6 @@
-using System;
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Manager;
 using MonsterTradingCardsGameServer.Trades;
-using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
@@ -12,17 +11,17 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
     {
         private readonly string _tradeId;
         private readonly string _cardId;
-        private readonly IUserManager _userManager;
+        private readonly ITradeManager _tradeManager;
 
         /// <summary>
         /// Sets user manager, trade id and card id
         /// </summary>
-        /// <param name="userManager">the user manager</param>
+        /// <param name="tradeManager">the trade manager</param>
         /// <param name="tradeId">the id of the trade, the user wants to accept</param>
         /// <param name="cardId">the id of the card, the user wants to trade in return</param>
-        public AcceptTradeCommand(IUserManager userManager, string tradeId, string cardId)
+        public AcceptTradeCommand(ITradeManager tradeManager, string tradeId, string cardId)
         {
-            _userManager = userManager;
+            _tradeManager = tradeManager;
             _tradeId = tradeId;
             _cardId = cardId;
         }
@@ -35,7 +34,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         {
             try
             {
-                return _userManager.AcceptTrade(User.Username, _tradeId, _cardId)
+                return _tradeManager.AcceptTrade(User.Username, _tradeId, _cardId)
                     ? new Response {StatusCode = StatusCode.Ok}
                     : new Response {StatusCode = StatusCode.Conflict};
             }

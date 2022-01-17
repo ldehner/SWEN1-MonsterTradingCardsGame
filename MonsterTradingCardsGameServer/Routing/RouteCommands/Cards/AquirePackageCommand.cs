@@ -1,7 +1,6 @@
 using System;
-using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Response;
-using MonsterTradingCardsGameServer.Users;
+using MonsterTradingCardsGameServer.Manager;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
 {
@@ -10,15 +9,15 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
     /// </summary>
     public class AquirePackageCommand : ProtectedRouteCommand
     {
-        private readonly IUserManager _userManager;
+        private readonly IPackageManager _packageManager;
 
         /// <summary>
         /// Sets the user manager
         /// </summary>
-        /// <param name="userManager">the user manager</param>
-        public AquirePackageCommand(IUserManager userManager)
+        /// <param name="packageManager">the package manager</param>
+        public AquirePackageCommand(IPackageManager packageManager)
         {
-            _userManager = userManager;
+            _packageManager = packageManager;
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         {
             try
             {
-                return !_userManager.AquirePackage(User.Username)
+                return !_packageManager.AquirePackage(User)
                     ? new Response {StatusCode = StatusCode.Conflict}
                     : new Response {StatusCode = StatusCode.Ok};
             }

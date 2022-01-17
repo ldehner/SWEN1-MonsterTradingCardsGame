@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Request;
 using MonsterTradingCardsGameServer.Core.Routing;
+using MonsterTradingCardsGameServer.Manager;
 using MonsterTradingCardsGameServer.Routing.RouteCommands.Admin;
 using MonsterTradingCardsGameServer.Routing.RouteCommands.Battles;
 using MonsterTradingCardsGameServer.Routing.RouteCommands.Cards;
@@ -41,27 +41,54 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Get, "/stats",
                 (r, p) => new GetStatsCommand(userManager));
             router.AddProtectedRoute(HttpMethod.Get, "/score", (r, p) => new GetScoreBoardCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Get, "/cards",
-                (r, p) => new GetStackCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Get, "/deck",
-                (r, p) => new GetDeckCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Put, "/deck",
-                (r, p) => new SetDeckCommand(userManager, Deserialize<List<string>>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Post, "/packages",
-                (r, p) => new AddPackageCommand(userManager,
-                    Deserialize<List<UserRequestCard>>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Get, "/packages",
-                (r, p) => new AquirePackageCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Post, "/tradings",
-                (r, p) => new CreateTradeCommand(userManager, Deserialize<UserRequestTrade>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(userManager));
-            router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}",
-                (r, p) => new AcceptTradeCommand(userManager, p["appendix"],
-                    Deserialize<string>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}",
-                (r, p) => new DeleteTradeCommand(userManager, p["appendix"]));
             router.AddProtectedRoute(HttpMethod.Post, "/logout",
                 (r, p) => new LogoutUserCommand(userManager));
+        }
+
+        /// <summary>
+        /// Registers card specific routes
+        /// </summary>
+        /// <param name="router">router</param>
+        /// <param name="cardManager">card manager</param>
+        public static void RegisterCardRoutes(Router router, ICardManager cardManager)
+        {
+            router.AddProtectedRoute(HttpMethod.Get, "/cards",
+                (r, p) => new GetStackCommand(cardManager));
+            router.AddProtectedRoute(HttpMethod.Get, "/deck",
+                (r, p) => new GetDeckCommand(cardManager));
+            router.AddProtectedRoute(HttpMethod.Put, "/deck",
+                (r, p) => new SetDeckCommand(cardManager, Deserialize<List<string>>(r.Payload)));
+        }
+        
+        /// <summary>
+        /// Registers trade specific routes
+        /// </summary>
+        /// <param name="router">router</param>
+        /// <param name="tradeManager">trade manager</param>
+        public static void RegisterTradeRoutes(Router router, ITradeManager tradeManager)
+        {
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings",
+                (r, p) => new CreateTradeCommand(tradeManager, Deserialize<UserRequestTrade>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/tradings", (r, p) => new ListTradesCommand(tradeManager));
+            router.AddProtectedRoute(HttpMethod.Post, "/tradings/{appendix}",
+                (r, p) => new AcceptTradeCommand(tradeManager, p["appendix"],
+                    Deserialize<string>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}",
+                (r, p) => new DeleteTradeCommand(tradeManager, p["appendix"]));
+        }
+        
+        /// <summary>
+        /// Registers package specific routes
+        /// </summary>
+        /// <param name="router">router</param>
+        /// <param name="packageManager">package manager</param>
+        public static void RegisterPackageRoutes(Router router, IPackageManager packageManager)
+        {
+            router.AddProtectedRoute(HttpMethod.Post, "/packages",
+                (r, p) => new AddPackageCommand(packageManager,
+                    Deserialize<List<UserRequestCard>>(r.Payload)));
+            router.AddProtectedRoute(HttpMethod.Get, "/packages",
+                (r, p) => new AquirePackageCommand(packageManager));
         }
 
         /// <summary>
@@ -82,9 +109,9 @@ namespace MonsterTradingCardsGameServer.Routing
         /// <summary>
         /// Deserializes the payload
         /// </summary>
-        /// <param name="payload"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <param name="payload">the payload</param>
+        /// <typeparam name="T">object type</typeparam>
+        /// <returns>the deserialized object</returns>
         private static T Deserialize<T>(string payload) where T : class
         {
             var deserializedData = JsonConvert.DeserializeObject<T>(payload);

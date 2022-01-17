@@ -1,6 +1,6 @@
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Manager;
 using MonsterTradingCardsGameServer.Trades;
-using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
@@ -10,16 +10,16 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
     public class DeleteTradeCommand : ProtectedRouteCommand
     {
         private readonly string _tradeId;
-        private readonly IUserManager _userManager;
+        private readonly ITradeManager _tradeManager;
 
         /// <summary>
         /// Sets user manager and trade id
         /// </summary>
-        /// <param name="userManager">the user manager</param>
+        /// <param name="tradeManager">the trade manager</param>
         /// <param name="tradeId">the id of the trade the user wants to delete</param>
-        public DeleteTradeCommand(IUserManager userManager, string tradeId)
+        public DeleteTradeCommand(ITradeManager tradeManager, string tradeId)
         {
-            _userManager = userManager;
+            _tradeManager = tradeManager;
             _tradeId = tradeId;
         }
 
@@ -31,7 +31,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         {
             try
             {
-                return _userManager.DeleteTrade(User.Username, _tradeId)
+                return _tradeManager.DeleteTrade(User.Username, _tradeId)
                     ? new Response {StatusCode = StatusCode.Ok}
                     : new Response {StatusCode = StatusCode.Unauthorized};
             }

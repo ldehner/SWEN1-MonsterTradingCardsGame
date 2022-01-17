@@ -1,6 +1,6 @@
 using MonsterTradingCardsGameServer.Core.Response;
+using MonsterTradingCardsGameServer.Manager;
 using MonsterTradingCardsGameServer.Trades;
-using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
@@ -10,16 +10,16 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
     public class CreateTradeCommand : ProtectedRouteCommand
     {
         private readonly UserRequestTrade _userRequestTrade;
-        private readonly IUserManager _userManager;
+        private readonly ITradeManager _tradeManager;
 
         /// <summary>
         /// Sets user manager and users trade
         /// </summary>
-        /// <param name="userManager">the user manager</param>
+        /// <param name="tradeManager">the trade manager</param>
         /// <param name="userRequestTrade">the trade of the user</param>
-        public CreateTradeCommand(IUserManager userManager, UserRequestTrade userRequestTrade)
+        public CreateTradeCommand(ITradeManager tradeManager, UserRequestTrade userRequestTrade)
         {
-            _userManager = userManager;
+            _tradeManager = tradeManager;
             _userRequestTrade = userRequestTrade;
         }
 
@@ -29,7 +29,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
         {
-            return _userManager.CreateTrade(User.Username, _userRequestTrade)
+            return _tradeManager.CreateTrade(User.Username, _userRequestTrade)
                 ? new Response {StatusCode = StatusCode.Created}
                 : new Response {StatusCode = StatusCode.Conflict};
         }
