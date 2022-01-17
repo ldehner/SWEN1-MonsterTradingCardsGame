@@ -56,6 +56,8 @@ namespace MonsterTradingCardsGameServer.Routing
                 (r, p) => new GetStackCommand(cardManager));
             router.AddProtectedRoute(HttpMethod.Get, "/deck",
                 (r, p) => new GetDeckCommand(cardManager));
+            router.AddProtectedRoute(HttpMethod.Get, "/deck{appendix}",
+                (r, p) => new GetPlainDeckCommand(cardManager, p["appendix"]));
             router.AddProtectedRoute(HttpMethod.Put, "/deck",
                 (r, p) => new SetDeckCommand(cardManager, Deserialize<List<string>>(r.Payload)));
         }

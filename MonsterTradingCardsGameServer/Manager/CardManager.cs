@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.DAL;
 using MonsterTradingCardsGameServer.Users;
@@ -40,6 +41,27 @@ namespace MonsterTradingCardsGameServer.Manager
         public Deck GetDeck(string username)
         {
             return _cardRepository.GetDeck(username);
+        }
+
+        /// <summary>
+        /// Gets the deck of a user and returns it in plain text
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>users deck</returns>
+        public string GetPlainDeck(string username)
+        {
+            var deck = _cardRepository.GetDeck(username);
+            if (deck is null) return null;
+            if (deck.Cards.Count == 0) return "";
+            var sb = new StringBuilder();
+            var count = 1;
+            deck.Cards.ForEach(card =>
+            {
+                if (count != 1) sb.Append(", ");
+                sb.Append($"{card.GetCardName()} {card.Damage} Damage");
+                count++;
+            });
+            return sb.ToString();
         }
 
         /// <summary>

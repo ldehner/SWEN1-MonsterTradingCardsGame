@@ -24,6 +24,13 @@ namespace MonsterTradingCardsGameServer.Manager
         public Deck GetDeck(string username);
 
         /// <summary>
+        /// Gets the deck of a user and returns it in plain text
+        /// </summary>
+        /// <param name="username">users username</param>
+        /// <returns>users deck</returns>
+        public string GetPlainDeck(string username);
+        
+        /// <summary>
         /// sets users deck
         /// </summary>
         /// <param name="username">users deck</param>
