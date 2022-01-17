@@ -7,9 +7,15 @@ using NUnit.Framework;
 
 namespace MonsterTradingCardsGameServer.Test
 {
+    /// <summary>
+    /// Checks if battle outcome is correct
+    /// </summary>
     [TestFixture]
     public class BattleTest
     {
+        /// <summary>
+        /// Checks if battle outcome is correct
+        /// </summary>
         public void CheckIfBattleOutcomeIsCorrect()
         {
             // arrange

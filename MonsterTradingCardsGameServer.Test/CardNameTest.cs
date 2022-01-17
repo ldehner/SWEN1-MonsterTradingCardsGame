@@ -4,6 +4,9 @@ using NUnit.Framework;
 
 namespace MonsterTradingCardsGameServer.Test
 {
+    /// <summary>
+    /// Checks if the card names are generated successfully
+    /// </summary>
     [TestFixture]
     public class CardNameTest
     {

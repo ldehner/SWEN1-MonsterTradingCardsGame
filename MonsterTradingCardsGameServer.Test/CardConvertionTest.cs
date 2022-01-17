@@ -4,6 +4,9 @@ using NUnit.Framework;
 
 namespace MonsterTradingCardsGameServer.Test
 {
+    /// <summary>
+    /// Checks if all card convertions work
+    /// </summary>
     [TestFixture]
     public class CardConvertionTest
     {
