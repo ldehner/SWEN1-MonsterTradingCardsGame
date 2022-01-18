@@ -23,7 +23,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(32.0, Modification.Fire, MonsterType.Elf, "Fire-Elf")]
         [TestCase(43.1, Modification.Water, MonsterType.Knight, "Water-Knight")]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken, "Normal-Kraken")]
-        [TestCase(73.9, Modification.Fire, MonsterType.Org, "Fire-Org")]
+        [TestCase(73.9, Modification.Fire, MonsterType.Ork, "Fire-Ork")]
         public void CheckIfMonsterCardNameIsGeneratedSuccessful(double damage, Modification mod, MonsterType type, string expName)
         {
             // arrange

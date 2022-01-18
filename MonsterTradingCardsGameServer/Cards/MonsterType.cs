@@ -9,7 +9,7 @@ namespace MonsterTradingCardsGameServer.Cards
         Goblin,
         Dragon,
         Wizard,
-        Org,
+        Ork,
         Knight,
         Kraken,
         Elf

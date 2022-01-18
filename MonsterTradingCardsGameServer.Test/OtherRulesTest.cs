@@ -48,20 +48,20 @@ namespace MonsterTradingCardsGameServer.Test
         }
         
         /// <summary>
-        /// Checks if org's damage is zero, when other card is a wizard
+        /// Checks if ork's damage is zero, when other card is a wizard
         /// </summary>
         [Test]
-        public void CheckIfOrgsDamageIsZeroWhenOtherCardIsWizard()
+        public void CheckIfOrksDamageIsZeroWhenOtherCardIsWizard()
         {
             // arrange
-            var org = new Monster(Guid.NewGuid(), 10, Modification.Normal, MonsterType.Org);
+            var ork = new Monster(Guid.NewGuid(), 10, Modification.Normal, MonsterType.Ork);
             var wizard = new Monster(Guid.NewGuid(), 10, Modification.Normal, MonsterType.Wizard);
             
             // act
-            new OrgWizardRule().CalculateDamage(org, wizard);
+            new OrkWizardRule().CalculateDamage(ork, wizard);
 
             // assert
-            Assert.AreEqual(0.0, org.Damage);
+            Assert.AreEqual(0.0, ork.Damage);
             Assert.AreEqual(10.0, wizard.Damage);
         }
         

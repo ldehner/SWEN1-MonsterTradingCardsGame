@@ -73,8 +73,8 @@ namespace MonsterTradingCardsGameServer.Cards
                 case MonsterType.Kraken:
                     Rules.Add(new KrakenSpellRule());
                     break;
-                case MonsterType.Org:
-                    Rules.Add(new OrgWizardRule());
+                case MonsterType.Ork:
+                    Rules.Add(new OrkWizardRule());
                     break;
                 case MonsterType.Wizard:
                     break;

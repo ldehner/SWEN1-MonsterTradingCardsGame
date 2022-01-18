@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.DAL;
-using MonsterTradingCardsGameServer.Trades;
 using MonsterTradingCardsGameServer.Users;
 
 namespace MonsterTradingCardsGameServer.Manager
@@ -44,7 +42,8 @@ namespace MonsterTradingCardsGameServer.Manager
         /// <returns>user</returns>
         public User GetUser(string username)
         {
-            return _userRepository.GetUserByUsername(username) ?? throw new UserNotFoundException();
+            var user = _userRepository.GetUserByUsername(username);
+            return user is null ? throw new UserNotFoundException() : user;
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace MonsterTradingCardsGameServer.Manager
         /// <returns>userdata of user</returns>
         public UserData GetUserData(string username)
         {
-            return _userRepository.GetUserByUsername(username).UserData ?? throw new UserNotFoundException();
+            return GetUser(username).UserData ?? throw new UserNotFoundException();
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace MonsterTradingCardsGameServer.Manager
         /// <returns>users stats</returns>
         public Stats GetUserStats(string username)
         {
-            return _userRepository.GetUserByUsername(username).Stats ?? throw new UserNotFoundException();
+            return GetUser(username).Stats ?? throw new UserNotFoundException();
         }
 
         /// <summary>

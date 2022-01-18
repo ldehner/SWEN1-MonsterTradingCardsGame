@@ -1,3 +1,5 @@
+
+
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
@@ -55,7 +57,7 @@ namespace MonsterTradingCardsGameServer.Cards
                     "Goblin" => MonsterType.Goblin,
                     "Dragon" => MonsterType.Dragon,
                     "Wizard" => MonsterType.Wizard,
-                    "Org" => MonsterType.Org,
+                    "Ork" => MonsterType.Ork,
                     "Knight" => MonsterType.Knight,
                     "Kraken" => MonsterType.Kraken,
                     "Elf" => MonsterType.Elf,

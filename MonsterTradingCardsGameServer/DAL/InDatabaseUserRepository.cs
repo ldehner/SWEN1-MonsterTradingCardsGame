@@ -23,6 +23,7 @@ namespace MonsterTradingCardsGameServer.DAL
         public InDatabaseUserRepository()
         {
             _activeUsers = new Dictionary<string, User>();
+            _activeUsers.Add("admin-mtcgToken", new User("admin", null, null, null, null, 0));
         }
 
         /// <summary>
@@ -106,7 +107,7 @@ namespace MonsterTradingCardsGameServer.DAL
                 };
                 return user;
             }
-            catch (NullReferenceException)
+            catch (Exception)
             {
                 return null;
             }

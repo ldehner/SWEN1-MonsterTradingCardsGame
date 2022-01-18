@@ -45,7 +45,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
-        [TestCase(73.9, Modification.Fire, MonsterType.Org)]
+        [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
         public void CheckIfMonsterCardIsConvertedSuccessfulToUniversalCard(double damage, Modification mod, MonsterType type)
         {
             // arrange
@@ -95,7 +95,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
-        [TestCase(73.9, Modification.Fire, MonsterType.Org)]
+        [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
         public void CheckIfMonsterCardIsConvertedSuccessfulToReadableCard(double damage, Modification mod, MonsterType type)
         {
             // arrange
@@ -145,7 +145,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(32.0, Modification.Fire, MonsterType.Elf)]
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
-        [TestCase(73.9, Modification.Fire, MonsterType.Org)]
+        [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
         public void CheckIfUniversalCardIsConvertedSuccessfulToMonsterCard(double damage, Modification mod, MonsterType type)
         {
             // arrange
@@ -172,7 +172,7 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase("FireSpell", 32.7, Modification.Fire, MonsterType.None)]
         [TestCase("WaterSpell", 57.1, Modification.Water, MonsterType.None)]
         [TestCase("Knight", 100.5, Modification.Normal, MonsterType.Knight)]
-        [TestCase("Org", 100.5, Modification.Normal, MonsterType.Org)]
+        [TestCase("Ork", 100.5, Modification.Normal, MonsterType.Ork)]
         [TestCase("FireKraken", 100.5, Modification.Fire, MonsterType.Kraken)]
         [TestCase("WaterWizard", 33.5, Modification.Water, MonsterType.Wizard)]
         [TestCase("WaterGoblin", 33.5, Modification.Water, MonsterType.Goblin)]

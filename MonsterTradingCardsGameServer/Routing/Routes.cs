@@ -89,7 +89,7 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Post, "/packages",
                 (r, p) => new AddPackageCommand(packageManager,
                     Deserialize<List<UserRequestCard>>(r.Payload)));
-            router.AddProtectedRoute(HttpMethod.Get, "/packages",
+            router.AddProtectedRoute(HttpMethod.Post, "/transactions/packages",
                 (r, p) => new AquirePackageCommand(packageManager));
         }
 

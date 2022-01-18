@@ -5,7 +5,7 @@ namespace MonsterTradingCardsGameServer.Rules
     /// <summary>
     /// Sets damage of org to zero if other card is wizard
     /// </summary>
-    public class OrgWizardRule : Rule
+    public class OrkWizardRule : Rule
     {
         /// <summary>
         /// Calculates the damage between two cards
