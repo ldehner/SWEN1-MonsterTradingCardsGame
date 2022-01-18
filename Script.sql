@@ -23,7 +23,8 @@ create table TRADES(
 drop table if exists packages;
 create table packages(
 	id varchar(200) not null primary key,
-	package jsonb not null
+	package jsonb not null,
+	counter SERIAL
 );
 
 select * from data;

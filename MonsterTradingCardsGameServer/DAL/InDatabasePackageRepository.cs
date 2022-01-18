@@ -31,27 +31,24 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool AddPackage(List<UniversalCard> package, Guid id)
         {
-            lock (DatabaseData.PackageLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.AddPackageCommand, conn);
+            conn.Open();
+            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("package", NpgsqlDbType.Jsonb);
+
+            c.Prepare();
+
+            c.Parameters["id"].Value = id.ToString();
+            c.Parameters["package"].Value = JsonConvert.SerializeObject(package);
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.AddPackageCommand, conn);
-                conn.Open();
-                c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
-                c.Parameters.Add("package", NpgsqlDbType.Jsonb);
-
-                c.Prepare();
-
-                c.Parameters["id"].Value = id.ToString();
-                c.Parameters["package"].Value = JsonConvert.SerializeObject(package);
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
 
@@ -66,20 +63,19 @@ namespace MonsterTradingCardsGameServer.DAL
         {
             var id = "";
             var package = new List<UniversalCard>();
-            lock (DatabaseData.PackageLock)
-            {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.AquirePackageCommand, conn);
-                conn.Open();
 
-                using var reader = c.ExecuteReader();
-                while (reader.Read())
-                {
-                    id = reader["id"].ToString();
-                    package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString() ??
-                        string.Empty);
-                }
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.AquirePackageCommand, conn);
+            conn.Open();
+
+            using var reader = c.ExecuteReader();
+            while (reader.Read())
+            {
+                id = reader["id"].ToString();
+                package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString() ??
+                                                                             string.Empty);
             }
+
 
             if (id!.Equals("")) throw new NoMorePackagesException();
             stack.Cards.ForEach(card => package?.Add(card.ToUniversalCard()));
@@ -93,24 +89,21 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         private static bool _deletePackage(string id)
         {
-            lock (DatabaseData.PackageLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.DeletePackageCommand, conn);
+            conn.Open();
+            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = id;
+
+            c.Prepare();
+
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.DeletePackageCommand, conn);
-                conn.Open();
-                c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = id;
-
-                c.Prepare();
-
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
     }

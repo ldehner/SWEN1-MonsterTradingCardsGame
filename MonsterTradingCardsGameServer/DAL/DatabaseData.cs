@@ -35,10 +35,10 @@ namespace MonsterTradingCardsGameServer.DAL
         public const string UpdateUserDeck = @"UPDATE " + UserTable + " SET deck = @deck WHERE username = @username";
 
         public const string AddPackageCommand =
-            @"INSERT INTO " + PackageTable + " (id, package) VALUES (@id, @package)";
+            @"INSERT INTO " + PackageTable + " (id, package, counter) VALUES (@id, @package, DEFAULT)";
 
         public const string DeletePackageCommand = @"DELETE FROM " + PackageTable + " WHERE id = @id";
-        public const string AquirePackageCommand = @"SELECT * FROM " + PackageTable + " ORDER BY RANDOM() LIMIT 1";
+        public const string AquirePackageCommand = @"SELECT * FROM " + PackageTable + " ORDER BY counter ASC LIMIT 1";
 
         public const string UpdateUserAfterPackageBuy =
             @"UPDATE " + UserTable + " SET stack = @stack, coins = @coins WHERE username = @username";

@@ -36,35 +36,32 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type)
         {
-            lock (DatabaseData.TradeLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.AddTrade, conn);
+            conn.Open();
+
+            c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("card", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("minDmg", NpgsqlDbType.Double);
+            c.Parameters.Add("cardType", NpgsqlDbType.Integer);
+
+            c.Prepare();
+
+            c.Parameters["id"].Value = tradeId;
+            c.Parameters["username"].Value = username;
+            c.Parameters["card"].Value = JsonConvert.SerializeObject(card.ToUniversalCard());
+            c.Parameters["minDmg"].Value = minDmg;
+            c.Parameters["cardType"].Value = type;
+
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.AddTrade, conn);
-                conn.Open();
-
-                c.Parameters.Add("id", NpgsqlDbType.Varchar, 200);
-                c.Parameters.Add("username", NpgsqlDbType.Varchar, 200);
-                c.Parameters.Add("card", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("minDmg", NpgsqlDbType.Double);
-                c.Parameters.Add("cardType", NpgsqlDbType.Integer);
-
-                c.Prepare();
-
-                c.Parameters["id"].Value = tradeId;
-                c.Parameters["username"].Value = username;
-                c.Parameters["card"].Value = JsonConvert.SerializeObject(card.ToUniversalCard());
-                c.Parameters["minDmg"].Value = minDmg;
-                c.Parameters["cardType"].Value = type;
-
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
 
@@ -74,17 +71,14 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>all trading offers</returns>
         public List<ReadableTrade> ListTrades()
         {
-            lock (DatabaseData.TradeLock)
-            {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.GetTrades, conn);
-                conn.Open();
-                var offers = new List<ReadableTrade>();
-                using var reader = c.ExecuteReader();
-                while (reader.Read()) offers.Add(_dbToTradingOffer(reader));
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.GetTrades, conn);
+            conn.Open();
+            var offers = new List<ReadableTrade>();
+            using var reader = c.ExecuteReader();
+            while (reader.Read()) offers.Add(_dbToTradingOffer(reader));
 
-                return offers;
-            }
+            return offers;
         }
 
         /// <summary>
@@ -94,26 +88,23 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the trade</returns>
         public UniversalTrade GetTrade(string tradeId)
         {
-            lock (DatabaseData.TradeLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.TradeById, conn);
+            conn.Open();
+
+            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
+
+            using var reader = c.ExecuteReader();
+            while (reader.Read())
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.TradeById, conn);
-                conn.Open();
-
-                c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
-
-                using var reader = c.ExecuteReader();
-                while (reader.Read())
-                {
-                    var username = reader["username"].ToString();
-                    var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString() ?? string.Empty);
-                    var minDmg = double.Parse(reader["minDmg"].ToString() ?? string.Empty);
-                    var cardType = int.Parse(reader["cardType"].ToString() ?? string.Empty) == 1 ? "Monster" : "Spell";
-                    return new UniversalTrade(username, card?.ToCard(), cardType, minDmg);
-                }
-
-                return null;
+                var username = reader["username"].ToString();
+                var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString() ?? string.Empty);
+                var minDmg = double.Parse(reader["minDmg"].ToString() ?? string.Empty);
+                var cardType = int.Parse(reader["cardType"].ToString() ?? string.Empty) == 1 ? "Monster" : "Spell";
+                return new UniversalTrade(username, card?.ToCard(), cardType, minDmg);
             }
+
+            return null;
         }
 
         /// <summary>
@@ -123,24 +114,21 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool DeleteTrade(string tradeId)
         {
-            lock (DatabaseData.TradeLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.DeleteTradeCommand, conn);
+            conn.Open();
+            c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
+
+            c.Prepare();
+
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.DeleteTradeCommand, conn);
-                conn.Open();
-                c.Parameters.Add("@id", NpgsqlDbType.Varchar).Value = tradeId;
-
-                c.Prepare();
-
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
 

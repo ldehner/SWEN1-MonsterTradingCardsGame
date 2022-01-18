@@ -84,13 +84,14 @@ namespace MonsterTradingCardsGameServer.Routing
         /// </summary>
         /// <param name="router">router</param>
         /// <param name="packageManager">package manager</param>
-        public static void RegisterPackageRoutes(Router router, IPackageManager packageManager)
+        /// <param name="userManager">the user manager</param>
+        public static void RegisterPackageRoutes(Router router, IPackageManager packageManager, IUserManager userManager)
         {
             router.AddProtectedRoute(HttpMethod.Post, "/packages",
                 (r, p) => new AddPackageCommand(packageManager,
                     Deserialize<List<UserRequestCard>>(r.Payload)));
             router.AddProtectedRoute(HttpMethod.Post, "/transactions/packages",
-                (r, p) => new AquirePackageCommand(packageManager));
+                (r, p) => new AquirePackageCommand(packageManager, userManager));
         }
 
         /// <summary>

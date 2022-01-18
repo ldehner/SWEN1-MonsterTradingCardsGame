@@ -36,10 +36,9 @@ namespace MonsterTradingCardsGameServer.DAL
         {
             var user = GetUserByUsername(username);
             if (user is null || !PasswordManager.ComparePasswords(user.HashedPassword, password)) return null;
-            lock (DatabaseData.ActiveUserLock)
-            {
-                if (!_activeUsers.ContainsKey(user.Token)) _activeUsers.Add(user.Token, user);
-            }
+
+            if (!_activeUsers.ContainsKey(user.Token)) _activeUsers.Add(user.Token, user);
+
 
             return user;
         }
@@ -50,19 +49,16 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>Returns a list of Scores if successful</returns>
         public List<Score> GetScoreBoard()
         {
-            lock (DatabaseData.UserLock)
-            {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.GetScoreBoard, conn);
-                conn.Open();
-                c.Parameters.Add("@admin", NpgsqlDbType.Varchar).Value = "admin";
-                var scoreList = new List<Score>();
-                using var reader = c.ExecuteReader();
-                while (reader.Read())
-                    scoreList.Add(new Score(reader["username"].ToString(),
-                        JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty)));
-                return scoreList;
-            }
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.GetScoreBoard, conn);
+            conn.Open();
+            c.Parameters.Add("@admin", NpgsqlDbType.Varchar).Value = "admin";
+            var scoreList = new List<Score>();
+            using var reader = c.ExecuteReader();
+            while (reader.Read())
+                scoreList.Add(new Score(reader["username"].ToString(),
+                    JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty)));
+            return scoreList;
         }
 
         /// <summary>
@@ -72,11 +68,9 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool LogoutUser(string token)
         {
-            lock (DatabaseData.ActiveUserLock)
-            {
-                if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
-                _activeUsers.Remove(token);
-            }
+            if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
+            _activeUsers.Remove(token);
+
 
             return true;
         }
@@ -88,10 +82,7 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the user</returns>
         public User GetUserByAuthToken(string authToken)
         {
-            lock (DatabaseData.ActiveUserLock)
-            {
-                return _activeUsers.ContainsKey(authToken) ? _activeUsers[authToken] : null;
-            }
+            return _activeUsers.ContainsKey(authToken) ? _activeUsers[authToken] : null;
         }
 
         /// <summary>
@@ -101,19 +92,16 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>the user</returns>
         public User GetUserByUsername(string username)
         {
-            lock (DatabaseData.UserLock)
-            {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.UserByUsernameCommand, conn);
-                conn.Open();
-                c.Parameters.Add("@uname", NpgsqlDbType.Varchar).Value = username;
-                User user = null;
-                using var reader = c.ExecuteReader();
-                while (reader.Read())
-                    user = _getUser(reader);
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.UserByUsernameCommand, conn);
+            conn.Open();
+            c.Parameters.Add("@uname", NpgsqlDbType.Varchar).Value = username;
+            User user = null;
+            using var reader = c.ExecuteReader();
+            while (reader.Read())
+                user = _getUser(reader);
 
-                return user;
-            }
+            return user;
         }
 
         /// <summary>
@@ -124,26 +112,23 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool UpdateUserData(string username, UserData userData)
         {
-            lock (DatabaseData.UserLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.UpdateUserDataCommand, conn);
+            conn.Open();
+            c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
+
+            c.Prepare();
+
+            c.Parameters["userdata"].Value = JsonConvert.SerializeObject(userData);
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.UpdateUserDataCommand, conn);
-                conn.Open();
-                c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("@username", NpgsqlDbType.Varchar).Value = username;
-
-                c.Prepare();
-
-                c.Parameters["userdata"].Value = JsonConvert.SerializeObject(userData);
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
 
@@ -155,47 +140,44 @@ namespace MonsterTradingCardsGameServer.DAL
         /// <returns>if query was successful</returns>
         public bool InsertUser(User user, string password)
         {
-            lock (DatabaseData.UserLock)
+            using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
+            using var c = new NpgsqlCommand(DatabaseData.NewUserCommand, conn);
+            conn.Open();
+            var uname = c.CreateParameter();
+            uname.DbType = DbType.String;
+            uname.ParameterName = "username";
+            uname.Size = 20;
+            c.Parameters.Add(uname);
+
+
+            c.Parameters.Add("pw", NpgsqlDbType.Varchar, 200);
+            c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("stats", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("elo", NpgsqlDbType.Integer);
+            c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
+            c.Parameters.Add("coins", NpgsqlDbType.Integer);
+            c.Parameters.Add("battles", NpgsqlDbType.Jsonb);
+
+            c.Prepare();
+
+            c.Parameters["username"].Value = user.Username;
+            c.Parameters["pw"].Value = PasswordManager.CreatePwHash(password);
+            c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack.ToUniversalCardList());
+            c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck.ToUniversalCardList());
+            c.Parameters["stats"].Value = JsonConvert.SerializeObject(user.Stats);
+            c.Parameters["elo"].Value = user.Stats.Elo;
+            c.Parameters["userdata"].Value = JsonConvert.SerializeObject(user.UserData);
+            c.Parameters["coins"].Value = user.Coins;
+            c.Parameters["battles"].Value = JsonConvert.SerializeObject(user.Battles);
+            try
             {
-                using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
-                using var c = new NpgsqlCommand(DatabaseData.NewUserCommand, conn);
-                conn.Open();
-                var uname = c.CreateParameter();
-                uname.DbType = DbType.String;
-                uname.ParameterName = "username";
-                uname.Size = 20;
-                c.Parameters.Add(uname);
-
-
-                c.Parameters.Add("pw", NpgsqlDbType.Varchar, 200);
-                c.Parameters.Add("stack", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("deck", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("stats", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("elo", NpgsqlDbType.Integer);
-                c.Parameters.Add("userdata", NpgsqlDbType.Jsonb);
-                c.Parameters.Add("coins", NpgsqlDbType.Integer);
-                c.Parameters.Add("battles", NpgsqlDbType.Jsonb);
-
-                c.Prepare();
-
-                c.Parameters["username"].Value = user.Username;
-                c.Parameters["pw"].Value = PasswordManager.CreatePwHash(password);
-                c.Parameters["stack"].Value = JsonConvert.SerializeObject(user.Stack.ToUniversalCardList());
-                c.Parameters["deck"].Value = JsonConvert.SerializeObject(user.Deck.ToUniversalCardList());
-                c.Parameters["stats"].Value = JsonConvert.SerializeObject(user.Stats);
-                c.Parameters["elo"].Value = user.Stats.Elo;
-                c.Parameters["userdata"].Value = JsonConvert.SerializeObject(user.UserData);
-                c.Parameters["coins"].Value = user.Coins;
-                c.Parameters["battles"].Value = JsonConvert.SerializeObject(user.Battles);
-                try
-                {
-                    c.ExecuteNonQuery();
-                    return true;
-                }
-                catch (PostgresException)
-                {
-                    return false;
-                }
+                c.ExecuteNonQuery();
+                return true;
+            }
+            catch (PostgresException)
+            {
+                return false;
             }
         }
 

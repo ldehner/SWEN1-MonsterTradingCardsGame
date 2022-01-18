@@ -36,7 +36,7 @@ namespace MonsterTradingCardsGameServer.Routing
             Routes.RegisterBattleRoutes(router, battleManager);
             Routes.RegisterCardRoutes(router, cardManager);
             Routes.RegisterTradeRoutes(router, tradeManager);
-            Routes.RegisterPackageRoutes(router, packageManager);
+            Routes.RegisterPackageRoutes(router, packageManager, userManager);
 
             _httpServer = new HttpServer(IPAddress.Any, 10001, router);
         }
