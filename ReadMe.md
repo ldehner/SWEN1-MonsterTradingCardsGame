@@ -157,6 +157,8 @@ Body:
 
 *Id's of the four card's user wants in his deck.
 
+
+
 ### Trade
 
 #### List Trades `GET`
