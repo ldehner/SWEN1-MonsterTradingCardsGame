@@ -49,9 +49,5 @@ namespace MonsterTradingCardsGameServer.DAL
         public const string GetTrades = @"SELECT * FROM " + TradeTable + "";
         public const string TradeById = @"SELECT * FROM " + TradeTable + " WHERE id = @id";
         public const string DeleteTradeCommand = @"DELETE FROM " + TradeTable + " WHERE id = @id";
-        public static object TradeLock = new();
-        public static object UserLock = new();
-        public static object PackageLock = new();
-        public static object ActiveUserLock = new();
     }
 }
