@@ -3,7 +3,7 @@
 namespace MonsterTradingCardsGameServer.Core.Routing
 {
     /// <summary>
-    /// Exception in case route is not authorized
+    ///     Exception in case route is not authorized
     /// </summary>
     internal class RouteNotAuthorizedException : Exception
     {

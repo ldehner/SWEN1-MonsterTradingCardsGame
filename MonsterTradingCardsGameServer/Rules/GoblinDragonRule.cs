@@ -3,12 +3,12 @@ using MonsterTradingCardsGameServer.Cards;
 namespace MonsterTradingCardsGameServer.Rules
 {
     /// <summary>
-    /// Sets damage of goblin to zero if other card is a dragon
+    ///     Sets damage of goblin to zero if other card is a dragon
     /// </summary>
     public class GoblinDragonRule : Rule
     {
         /// <summary>
-        /// Calculates the damage between two cards
+        ///     Calculates the damage between two cards
         /// </summary>
         /// <param name="card1">first card</param>
         /// <param name="card2">second card</param>

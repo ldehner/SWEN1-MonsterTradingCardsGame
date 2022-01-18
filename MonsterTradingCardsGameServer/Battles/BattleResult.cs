@@ -5,14 +5,14 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Battles
 {
     /// <summary>
-    /// Battle result of two users battle
+    ///     Battle result of two users battle
     /// </summary>
     public class BattleResult
     {
         public readonly Guid Guid;
 
         /// <summary>
-        /// Sets all attributes of a battleresult
+        ///     Sets all attributes of a battleresult
         /// </summary>
         /// <param name="guid">the id of the battle</param>
         /// <param name="winner">the winner of the battle</param>

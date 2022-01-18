@@ -1,7 +1,7 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Routing
 {
     /// <summary>
-    /// Route command executor
+    ///     Route command executor
     /// </summary>
     public interface IRouteCommandExecutor
     {

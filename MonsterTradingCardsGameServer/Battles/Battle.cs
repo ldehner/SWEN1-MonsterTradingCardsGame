@@ -8,19 +8,19 @@ namespace MonsterTradingCardsGameServer.Battles
     public class Battle
     {
         private const int MaxRounds = 100;
-        private Card _current1, _current2;
-        private Card _currentBackup1, _currentBackup2;
         private readonly Random _rand = new();
-        private int _roundCounter = 1;
         private readonly List<Card> _tmpDeck1;
         private readonly List<Card> _tmpDeck2;
         private readonly User _user1;
         private readonly User _user2;
+        private Card _current1, _current2;
+        private Card _currentBackup1, _currentBackup2;
+        private int _roundCounter = 1;
         public List<string> BattleLog = new();
         public User Winner, Loser;
 
         /// <summary>
-        /// Constructor for battle
+        ///     Constructor for battle
         /// </summary>
         /// <param name="user1">the first required user</param>
         /// <param name="user2">the second required user</param>
@@ -33,8 +33,8 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// Starts a battle till either one player has won or a
-        /// maximum round number of 100 was reached
+        ///     Starts a battle till either one player has won or a
+        ///     maximum round number of 100 was reached
         /// </summary>
         /// <returns>The result of the battle</returns>
         public BattleResult StartBattle()
@@ -65,7 +65,7 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// Picks a random card out of the deck of both users
+        ///     Picks a random card out of the deck of both users
         /// </summary>
         private void _pickRandomCard()
         {
@@ -76,7 +76,7 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// checks the outcome of the battle
+        ///     checks the outcome of the battle
         /// </summary>
         private void _checkOutcome()
         {
@@ -89,8 +89,8 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// sets winner and loser, wins and losses
-        /// and recalculates the elo of both players
+        ///     sets winner and loser, wins and losses
+        ///     and recalculates the elo of both players
         /// </summary>
         /// <param name="winner">the user who won</param>
         /// <param name="loser">the user who lost</param>

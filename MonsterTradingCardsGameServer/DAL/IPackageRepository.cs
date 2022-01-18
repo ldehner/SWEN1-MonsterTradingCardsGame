@@ -5,12 +5,12 @@ using MonsterTradingCardsGameServer.Cards;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Interface for package repository
+    ///     Interface for package repository
     /// </summary>
     public interface IPackageRepository
     {
         /// <summary>
-        /// Adds a new package into the db
+        ///     Adds a new package into the db
         /// </summary>
         /// <param name="package">universal card list</param>
         /// <param name="id">uid of the package</param>
@@ -18,7 +18,7 @@ namespace MonsterTradingCardsGameServer.DAL
         public bool AddPackage(List<UniversalCard> package, Guid id);
 
         /// <summary>
-        /// Adds an quicred package into the stack of the user and updates the number of coins
+        ///     Adds an quicred package into the stack of the user and updates the number of coins
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <param name="coins">users number of coins</param>

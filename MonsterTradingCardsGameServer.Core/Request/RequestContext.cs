@@ -3,12 +3,12 @@
 namespace MonsterTradingCardsGameServer.Core.Request
 {
     /// <summary>
-    /// User requests context
+    ///     User requests context
     /// </summary>
     public class RequestContext
     {
         /// <summary>
-        /// sets all attributes
+        ///     sets all attributes
         /// </summary>
         public RequestContext()
         {

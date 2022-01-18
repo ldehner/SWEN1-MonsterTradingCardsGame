@@ -5,15 +5,15 @@ using MonsterTradingCardsGameServer.Trades;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
     /// <summary>
-    /// Creates a new trade
+    ///     Creates a new trade
     /// </summary>
     public class CreateTradeCommand : ProtectedRouteCommand
     {
-        private readonly UserRequestTrade _userRequestTrade;
         private readonly ITradeManager _tradeManager;
+        private readonly UserRequestTrade _userRequestTrade;
 
         /// <summary>
-        /// Sets user manager and users trade
+        ///     Sets user manager and users trade
         /// </summary>
         /// <param name="tradeManager">the trade manager</param>
         /// <param name="userRequestTrade">the trade of the user</param>
@@ -24,7 +24,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

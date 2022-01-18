@@ -7,7 +7,7 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Manager
 {
     /// <summary>
-    /// Handles battles of all users
+    ///     Handles battles of all users
     /// </summary>
     public class BattleManager : IBattleManager
     {
@@ -18,7 +18,7 @@ namespace MonsterTradingCardsGameServer.Manager
         private readonly Queue<User> _userQ;
 
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="userManager">the user manager</param>
         /// <param name="battleRepository">the battle repository</param>
@@ -31,7 +31,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Creates a new battle
+        ///     Creates a new battle
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>the battle result</returns>
@@ -46,7 +46,8 @@ namespace MonsterTradingCardsGameServer.Manager
             lock (_battleLock)
             {
                 //if (!_userQ.Contains(user)) _userQ.Enqueue(user); // does not work
-                if (_userQ.Count > 0 && _userQ.Peek().Username.Equals(user.Username)) throw new AlreadyInQueueException();
+                if (_userQ.Count > 0 && _userQ.Peek().Username.Equals(user.Username))
+                    throw new AlreadyInQueueException();
                 _userQ.Enqueue(user);
                 // if already two players inside Queue start a new Battle and delete Players from queue
                 // else ignore this step
@@ -81,7 +82,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Gets a battle
+        ///     Gets a battle
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="battleId">specific battle id</param>
@@ -100,7 +101,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Lists all battles of user
+        ///     Lists all battles of user
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>the list of battle results</returns>

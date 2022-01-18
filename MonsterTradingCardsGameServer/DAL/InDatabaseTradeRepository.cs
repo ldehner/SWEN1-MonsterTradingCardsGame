@@ -10,23 +10,23 @@ using NpgsqlTypes;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Makes trade querys
+    ///     Makes trade querys
     /// </summary>
     public class InDatabaseTradeRepository : ITradeRepository
     {
         private readonly ICardRepository _cardRepository;
-        
+
         /// <summary>
-        /// Sets card repository
+        ///     Sets card repository
         /// </summary>
         /// <param name="cardRepository">the card repository</param>
         public InDatabaseTradeRepository(ICardRepository cardRepository)
         {
             _cardRepository = cardRepository;
         }
-        
+
         /// <summary>
-        /// Creates a new trade offer
+        ///     Creates a new trade offer
         /// </summary>
         /// <param name="username">traders username</param>
         /// <param name="card">card trader wants to trade</param>
@@ -69,7 +69,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Lists all trading offers
+        ///     Lists all trading offers
         /// </summary>
         /// <returns>all trading offers</returns>
         public List<ReadableTrade> ListTrades()
@@ -88,7 +88,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Gets a specific trade
+        ///     Gets a specific trade
         /// </summary>
         /// <param name="tradeId">trade id</param>
         /// <returns>the trade</returns>
@@ -111,12 +111,13 @@ namespace MonsterTradingCardsGameServer.DAL
                     var cardType = int.Parse(reader["cardType"].ToString() ?? string.Empty) == 1 ? "Monster" : "Spell";
                     return new UniversalTrade(username, card?.ToCard(), cardType, minDmg);
                 }
+
                 return null;
             }
         }
 
         /// <summary>
-        /// deletes a trade
+        ///     deletes a trade
         /// </summary>
         /// <param name="tradeId">id of the trade</param>
         /// <returns>if query was successful</returns>
@@ -144,7 +145,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// deletes the offer, and updates both users stacks
+        ///     deletes the offer, and updates both users stacks
         /// </summary>
         /// <param name="tradeId">id of the trade</param>
         /// <param name="seller">seller</param>
@@ -157,9 +158,9 @@ namespace MonsterTradingCardsGameServer.DAL
             var a3 = _cardRepository.UpdateStack(buyer.Stack.ToUniversalCardList(), buyer.Coins, 0, buyer.Username);
             return a1 && a2 && a3;
         }
-        
+
         /// <summary>
-        /// Converts result of reader into a trading offer
+        ///     Converts result of reader into a trading offer
         /// </summary>
         /// <param name="reader">Data reader</param>
         /// <returns>the trading offer</returns>
@@ -167,9 +168,9 @@ namespace MonsterTradingCardsGameServer.DAL
         {
             var id = reader["id"].ToString();
             var username = reader["username"].ToString();
-            var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString()  ?? string.Empty);
-            var minDmg = double.Parse(reader["minDmg"].ToString()  ?? string.Empty);
-            var cardType = int.Parse(reader["cardType"].ToString()  ?? string.Empty) == 1 ? "Monster" : "Spell";
+            var card = JsonConvert.DeserializeObject<UniversalCard>(reader["card"].ToString() ?? string.Empty);
+            var minDmg = double.Parse(reader["minDmg"].ToString() ?? string.Empty);
+            var cardType = int.Parse(reader["cardType"].ToString() ?? string.Empty) == 1 ? "Monster" : "Spell";
             return new ReadableTrade(id, username, card?.ToCard().GetCardName(), card!.Damage, cardType, minDmg);
         }
     }

@@ -1,12 +1,10 @@
 namespace MonsterTradingCardsGameServer.Trades
 {
     /// <summary>
-    /// 
     /// </summary>
     public class ReadableTrade
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="tradeId"></param>
         /// <param name="username"></param>

@@ -6,14 +6,14 @@ using MonsterTradingCardsGameServer.Core.Authentication;
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// USer
+    ///     USer
     /// </summary>
     public class User : ISimpleUser, IIdentity
     {
         public List<BattleResult> Battles;
 
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="stats">users stats</param>
@@ -31,7 +31,7 @@ namespace MonsterTradingCardsGameServer.Users
             Coins = coins;
             Battles = new List<BattleResult>();
         }
-        
+
         public sealed override string Username { get; set; }
         public sealed override Stats Stats { get; set; }
         public int Coins { get; set; }
@@ -42,7 +42,7 @@ namespace MonsterTradingCardsGameServer.Users
         public Deck Deck { get; set; }
 
         /// <summary>
-        /// Converts the user into a simple user
+        ///     Converts the user into a simple user
         /// </summary>
         /// <returns>a simple user</returns>
         public SimpleUser ToSimpleUser()

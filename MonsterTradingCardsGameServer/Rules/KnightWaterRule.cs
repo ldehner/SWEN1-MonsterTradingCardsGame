@@ -3,12 +3,12 @@ using MonsterTradingCardsGameServer.Cards;
 namespace MonsterTradingCardsGameServer.Rules
 {
     /// <summary>
-    /// sets damage of knight to zero if other card is water spell
+    ///     sets damage of knight to zero if other card is water spell
     /// </summary>
     public class KnightWaterRule : Rule
     {
         /// <summary>
-        /// Calculates the damage between two cards
+        ///     Calculates the damage between two cards
         /// </summary>
         /// <param name="card1">first card</param>
         /// <param name="card2">second card</param>

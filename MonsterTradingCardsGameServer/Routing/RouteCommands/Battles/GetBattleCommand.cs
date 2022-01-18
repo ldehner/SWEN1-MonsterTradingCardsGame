@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
 {
     /// <summary>
-    /// Gets the users desired battle
+    ///     Gets the users desired battle
     /// </summary>
     public class GetBattleCommand : ProtectedRouteCommand
     {
@@ -14,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
         private readonly IBattleManager _battleManager;
 
         /// <summary>
-        /// sets battle manager and battle id
+        ///     sets battle manager and battle id
         /// </summary>
         /// <param name="battleManager">the battle manager</param>
         /// <param name="battleId">the id of the battle, the user desires</param>
@@ -25,7 +25,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

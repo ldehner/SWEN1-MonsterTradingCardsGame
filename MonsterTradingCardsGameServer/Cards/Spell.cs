@@ -3,12 +3,12 @@ using System;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Spell card
+    ///     Spell card
     /// </summary>
     public class Spell : Card
     {
         /// <summary>
-        /// sets all needed attributes
+        ///     sets all needed attributes
         /// </summary>
         /// <param name="id">uid of the card</param>
         /// <param name="damage">damage of the card</param>
@@ -17,9 +17,9 @@ namespace MonsterTradingCardsGameServer.Cards
         {
             base.SetRules();
         }
-        
+
         /// <summary>
-        /// converts the spell card into a universal card
+        ///     converts the spell card into a universal card
         /// </summary>
         /// <returns>a universal card</returns>
         public override UniversalCard ToUniversalCard()
@@ -28,7 +28,7 @@ namespace MonsterTradingCardsGameServer.Cards
         }
 
         /// <summary>
-        /// Generates the card name
+        ///     Generates the card name
         /// </summary>
         /// <returns>the card name</returns>
         public override string GetCardName()
@@ -37,7 +37,7 @@ namespace MonsterTradingCardsGameServer.Cards
         }
 
         /// <summary>
-        /// Returns the card type
+        ///     Returns the card type
         /// </summary>
         /// <returns>card type</returns>
         public override string GetCardType()

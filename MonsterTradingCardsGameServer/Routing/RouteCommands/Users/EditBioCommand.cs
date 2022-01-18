@@ -5,7 +5,7 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
     /// <summary>
-    /// Edits users bio
+    ///     Edits users bio
     /// </summary>
     public class EditBioCommand : ProtectedRouteCommand
     {
@@ -14,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         private readonly string _username;
 
         /// <summary>
-        /// Sets user manager, username and users data
+        ///     Sets user manager, username and users data
         /// </summary>
         /// <param name="userManager">the user manager</param>
         /// <param name="username">the user who's user data should be changed</param>
@@ -27,7 +27,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

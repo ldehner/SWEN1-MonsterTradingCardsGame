@@ -3,12 +3,12 @@ using System;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Universal card
+    ///     Universal card
     /// </summary>
     public class UniversalCard
     {
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="id">uid of the card</param>
         /// <param name="modification">modification of the card</param>
@@ -28,7 +28,7 @@ namespace MonsterTradingCardsGameServer.Cards
         public double Damage { get; set; }
 
         /// <summary>
-        /// Converts the universal card into a card
+        ///     Converts the universal card into a card
         /// </summary>
         /// <returns>the card</returns>
         public Card ToCard()

@@ -5,14 +5,14 @@ using MonsterTradingCardsGameServer.Manager;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
 {
     /// <summary>
-    /// Trys to aquire a package
+    ///     Trys to aquire a package
     /// </summary>
     public class AquirePackageCommand : ProtectedRouteCommand
     {
         private readonly IPackageManager _packageManager;
 
         /// <summary>
-        /// Sets the user manager
+        ///     Sets the user manager
         /// </summary>
         /// <param name="packageManager">the package manager</param>
         public AquirePackageCommand(IPackageManager packageManager)
@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
@@ -34,7 +34,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
             }
             catch (Exception)
             {
-                return new Response() {StatusCode = StatusCode.Conflict};
+                return new Response {StatusCode = StatusCode.Conflict};
             }
         }
     }

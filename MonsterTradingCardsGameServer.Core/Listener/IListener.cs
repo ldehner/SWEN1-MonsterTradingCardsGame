@@ -3,7 +3,7 @@
 namespace MonsterTradingCardsGameServer.Core.Listener
 {
     /// <summary>
-    /// interface for the listener
+    ///     interface for the listener
     /// </summary>
     public interface IListener
     {

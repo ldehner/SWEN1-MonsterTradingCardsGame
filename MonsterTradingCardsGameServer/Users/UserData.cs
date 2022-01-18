@@ -1,12 +1,12 @@
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Users Data
+    ///     Users Data
     /// </summary>
     public class UserData
     {
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="name">users name</param>
         /// <param name="bio">users bio</param>

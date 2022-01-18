@@ -6,12 +6,12 @@ using MonsterTradingCardsGameServer.Core.Routing;
 namespace MonsterTradingCardsGameServer.Routing
 {
     /// <summary>
-    /// checks for an appendix in the route
+    ///     checks for an appendix in the route
     /// </summary>
     public class AppendixRouteParser : IRouteParser
     {
         /// <summary>
-        /// checks if the appendix is a match
+        ///     checks if the appendix is a match
         /// </summary>
         /// <param name="request">the request context</param>
         /// <param name="method">the http method</param>
@@ -26,7 +26,7 @@ namespace MonsterTradingCardsGameServer.Routing
         }
 
         /// <summary>
-        /// parses the parameters
+        ///     parses the parameters
         /// </summary>
         /// <param name="request">the request context</param>
         /// <param name="routePattern">the route pattern</param>

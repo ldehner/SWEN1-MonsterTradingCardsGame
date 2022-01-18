@@ -8,23 +8,23 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Manager
 {
     /// <summary>
-    /// manages cards
+    ///     manages cards
     /// </summary>
     public class CardManager : ICardManager
     {
-        private ICardRepository _cardRepository;
-        
+        private readonly ICardRepository _cardRepository;
+
         /// <summary>
-        /// sets card repository
+        ///     sets card repository
         /// </summary>
         /// <param name="cardRepository">card repository</param>
         public CardManager(ICardRepository cardRepository)
         {
             _cardRepository = cardRepository;
         }
-        
+
         /// <summary>
-        /// Gets the stack of a user
+        ///     Gets the stack of a user
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>users stack</returns>
@@ -34,7 +34,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Gets the deck of a user
+        ///     Gets the deck of a user
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>users deck</returns>
@@ -44,7 +44,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Gets the deck of a user and returns it in plain text
+        ///     Gets the deck of a user and returns it in plain text
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>users deck</returns>
@@ -65,7 +65,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// sets users deck
+        ///     sets users deck
         /// </summary>
         /// <param name="username">users deck</param>
         /// <param name="ids">list of ids</param>
@@ -83,7 +83,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// sets stack of user
+        ///     sets stack of user
         /// </summary>
         /// <param name="user">user</param>
         /// <returns>if query was successful</returns>
@@ -91,6 +91,5 @@ namespace MonsterTradingCardsGameServer.Manager
         {
             return _cardRepository.SetStack(user);
         }
-        
     }
 }

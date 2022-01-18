@@ -4,7 +4,6 @@ using MonsterTradingCardsGameServer.Cards;
 namespace MonsterTradingCardsGameServer.Battles
 {
     /// <summary>
-    /// 
     /// </summary>
     public class Round
     {
@@ -21,7 +20,7 @@ namespace MonsterTradingCardsGameServer.Battles
         private List<string> BattleLog { get; }
 
         /// <summary>
-        /// Calculates which user has won the round
+        ///     Calculates which user has won the round
         /// </summary>
         /// <returns>the result of the battle</returns>
         public BattleStatus Calculate()
@@ -44,7 +43,7 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// Adds the result of the current round to the battle log
+        ///     Adds the result of the current round to the battle log
         /// </summary>
         /// <param name="winner">the winning card</param>
         /// <param name="loser">the losing card</param>
@@ -65,7 +64,7 @@ namespace MonsterTradingCardsGameServer.Battles
         }
 
         /// <summary>
-        /// applies the rules and sets the recalculated damage
+        ///     applies the rules and sets the recalculated damage
         /// </summary>
         private void _checkRules()
         {

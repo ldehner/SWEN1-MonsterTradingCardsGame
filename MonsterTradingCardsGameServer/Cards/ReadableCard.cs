@@ -1,12 +1,12 @@
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Readable version of a card
+    ///     Readable version of a card
     /// </summary>
     public class ReadableCard
     {
         /// <summary>
-        /// sets all nedded attributes
+        ///     sets all nedded attributes
         /// </summary>
         /// <param name="id">uid of the card</param>
         /// <param name="cardName">name of the card</param>

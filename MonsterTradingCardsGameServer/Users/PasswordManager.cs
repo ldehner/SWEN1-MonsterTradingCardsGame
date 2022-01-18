@@ -4,12 +4,12 @@ using System.Security.Cryptography;
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Creates password hash with salt value and compares passwords
+    ///     Creates password hash with salt value and compares passwords
     /// </summary>
     public static class PasswordManager
     {
         /// <summary>
-        /// Compares two passwords
+        ///     Compares two passwords
         /// </summary>
         /// <param name="storedPw">the stored password</param>
         /// <param name="userPw">password provided of user</param>
@@ -32,7 +32,7 @@ namespace MonsterTradingCardsGameServer.Users
         }
 
         /// <summary>
-        /// Creates hash from password
+        ///     Creates hash from password
         /// </summary>
         /// <param name="password">the clear text password</param>
         /// <returns>the password hash</returns>

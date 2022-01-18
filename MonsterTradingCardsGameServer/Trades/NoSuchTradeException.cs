@@ -2,7 +2,7 @@ using System;
 
 namespace MonsterTradingCardsGameServer.Trades
 {
-    public class NoSuchTradeException:Exception
+    public class NoSuchTradeException : Exception
     {
         public NoSuchTradeException()
         {

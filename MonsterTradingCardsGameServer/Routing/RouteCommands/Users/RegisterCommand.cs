@@ -6,14 +6,14 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
     /// <summary>
-    /// Registers an user
+    ///     Registers an user
     /// </summary>
     public class RegisterCommand : IRouteCommand
     {
         private readonly IUserManager _userManager;
 
         /// <summary>
-        /// Sets user manager and credentials
+        ///     Sets user manager and credentials
         /// </summary>
         /// <param name="userManager">the user manager</param>
         /// <param name="credentials">the users password and username</param>
@@ -26,7 +26,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         private Credentials Credentials { get; }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public Response Execute()

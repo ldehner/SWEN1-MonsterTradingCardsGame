@@ -3,7 +3,7 @@ using System;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Exception in case user has not enough coins
+    ///     Exception in case user has not enough coins
     /// </summary>
     public class TooFewCoinsException : Exception
     {

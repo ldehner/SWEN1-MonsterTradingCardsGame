@@ -7,14 +7,14 @@ using MonsterTradingCardsGameServer.Core.Request;
 namespace MonsterTradingCardsGameServer.Core.Client
 {
     /// <summary>
-    /// Http client
+    ///     Http client
     /// </summary>
     internal class HttpClient : IClient
     {
         private readonly TcpClient _connection;
 
         /// <summary>
-        /// sets the connection
+        ///     sets the connection
         /// </summary>
         /// <param name="connection">tcp client</param>
         public HttpClient(TcpClient connection)
@@ -23,7 +23,7 @@ namespace MonsterTradingCardsGameServer.Core.Client
         }
 
         /// <summary>
-        /// Recieves users request
+        ///     Recieves users request
         /// </summary>
         /// <returns>the requests context</returns>
         public RequestContext ReceiveRequest()
@@ -109,7 +109,7 @@ namespace MonsterTradingCardsGameServer.Core.Client
         }
 
         /// <summary>
-        /// Sends response to client
+        ///     Sends response to client
         /// </summary>
         /// <param name="response">the requests response</param>
         public void SendResponse(Response.Response response)

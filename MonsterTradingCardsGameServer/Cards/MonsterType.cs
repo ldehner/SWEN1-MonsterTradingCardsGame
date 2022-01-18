@@ -1,7 +1,7 @@
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// All Monster Types
+    ///     All Monster Types
     /// </summary>
     public enum MonsterType
     {

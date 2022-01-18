@@ -5,14 +5,14 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
     /// <summary>
-    /// Logs an user out
+    ///     Logs an user out
     /// </summary>
     public class LogoutUserCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
 
         /// <summary>
-        /// Sets user manager
+        ///     Sets user manager
         /// </summary>
         /// <param name="userManager">user manager</param>
         public LogoutUserCommand(IUserManager userManager)
@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
@@ -34,7 +34,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
             }
             catch (UserNotFoundException)
             {
-                return new Response() {StatusCode = StatusCode.Unauthorized};
+                return new Response {StatusCode = StatusCode.Unauthorized};
             }
         }
     }

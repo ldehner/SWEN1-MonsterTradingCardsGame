@@ -1,7 +1,7 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Request
 {
     /// <summary>
-    /// all needed http methods
+    ///     all needed http methods
     /// </summary>
     public enum HttpMethod
     {
@@ -13,12 +13,12 @@
     }
 
     /// <summary>
-    /// parses methods
+    ///     parses methods
     /// </summary>
     public static class MethodUtilities
     {
         /// <summary>
-        /// turns text into http method
+        ///     turns text into http method
         /// </summary>
         /// <param name="method">method name</param>
         /// <returns>the http method</returns>

@@ -3,7 +3,7 @@ using System;
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Exception in case user already exists
+    ///     Exception in case user already exists
     /// </summary>
     public class DuplicateUserException : Exception
     {

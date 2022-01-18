@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Manager;
@@ -7,7 +6,7 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
     /// <summary>
-    /// Lists a specific users userdata
+    ///     Lists a specific users userdata
     /// </summary>
     public class ListBioCommand : ProtectedRouteCommand
     {
@@ -15,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         private readonly string _username;
 
         /// <summary>
-        /// Sets user manager and username
+        ///     Sets user manager and username
         /// </summary>
         /// <param name="userManager">the user manager</param>
         /// <param name="username">the user which user data is wanted</param>
@@ -26,7 +25,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

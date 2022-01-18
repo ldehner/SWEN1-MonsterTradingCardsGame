@@ -3,7 +3,7 @@ using System;
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Exception in case user wasn't found
+    ///     Exception in case user wasn't found
     /// </summary>
     public class UserNotFoundException : Exception
     {

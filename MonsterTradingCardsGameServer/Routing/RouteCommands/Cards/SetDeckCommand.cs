@@ -5,7 +5,7 @@ using MonsterTradingCardsGameServer.Manager;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
 {
     /// <summary>
-    /// Sets deck of user
+    ///     Sets deck of user
     /// </summary>
     public class SetDeckCommand : ProtectedRouteCommand
     {
@@ -13,7 +13,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         private readonly ICardManager _cardManager;
 
         /// <summary>
-        /// Sets user manager and card ids
+        ///     Sets user manager and card ids
         /// </summary>
         /// <param name="cardManager">the card manager</param>
         /// <param name="cardIds">ids of the cards user wants to be his deck</param>
@@ -24,7 +24,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

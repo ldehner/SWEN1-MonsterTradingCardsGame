@@ -7,22 +7,23 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Manager
 {
     /// <summary>
-    /// manages packages
+    ///     manages packages
     /// </summary>
     public class PackageManager : IPackageManager
     {
-        private IPackageRepository _packageRepository;
+        private readonly IPackageRepository _packageRepository;
 
         /// <summary>
-        /// Sets package repository
+        ///     Sets package repository
         /// </summary>
         /// <param name="packageRepository">the package repository</param>
         public PackageManager(IPackageRepository packageRepository)
         {
             _packageRepository = packageRepository;
         }
+
         /// <summary>
-        /// adds an package
+        ///     adds an package
         /// </summary>
         /// <param name="package">list of cards</param>
         /// <returns>if query was successful</returns>
@@ -35,7 +36,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// aquires an package
+        ///     aquires an package
         /// </summary>
         /// <param name="user">users username</param>
         /// <returns>if query was successful</returns>

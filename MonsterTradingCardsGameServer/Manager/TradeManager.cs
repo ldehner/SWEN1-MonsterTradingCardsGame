@@ -6,17 +6,17 @@ using MonsterTradingCardsGameServer.Trades;
 namespace MonsterTradingCardsGameServer.Manager
 {
     /// <summary>
-    /// Manages trades
+    ///     Manages trades
     /// </summary>
     public class TradeManager : ITradeManager
     {
-        
-        private readonly ITradeRepository _tradeRepository;
-        private readonly IUserManager _userManager;
         private readonly ICardManager _cardManager;
 
+        private readonly ITradeRepository _tradeRepository;
+        private readonly IUserManager _userManager;
+
         /// <summary>
-        /// Sets the repository
+        ///     Sets the repository
         /// </summary>
         /// <param name="tradeRepository"></param>
         /// <param name="userManager"></param>
@@ -27,9 +27,9 @@ namespace MonsterTradingCardsGameServer.Manager
             _userManager = userManager;
             _cardManager = cardManager;
         }
-        
+
         /// <summary>
-        /// creates a new trading offer
+        ///     creates a new trading offer
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="userRequestTrade">trading deal</param>
@@ -49,12 +49,13 @@ namespace MonsterTradingCardsGameServer.Manager
             });
             user.Stack.Cards.Remove(tradingCard);
             return !cardInDeck && tradingCard is not null &&
-                   _tradeRepository.CreateTrade(username, tradingCard, userRequestTrade.MinimumDamage, userRequestTrade.Id,
+                   _tradeRepository.CreateTrade(username, tradingCard, userRequestTrade.MinimumDamage,
+                       userRequestTrade.Id,
                        userRequestTrade.Type.Equals("Monster") ? 1 : 0) && _cardManager.SetStack(user);
         }
 
         /// <summary>
-        /// lists all available trades
+        ///     lists all available trades
         /// </summary>
         /// <returns>all trades</returns>
         public List<ReadableTrade> ListTrades()
@@ -63,7 +64,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Accepts a trade and trades cards
+        ///     Accepts a trade and trades cards
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="tradeId">id of the trade</param>
@@ -95,7 +96,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Deletes a specific trade
+        ///     Deletes a specific trade
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="tradeId">id of the trade</param>

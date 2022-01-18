@@ -11,14 +11,14 @@ using NpgsqlTypes;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Stores the users data in a postgresql database
+    ///     Stores the users data in a postgresql database
     /// </summary>
     public class InDatabaseUserRepository : IUserRepository
     {
         private readonly Dictionary<string, User> _activeUsers;
 
         /// <summary>
-        /// Creates the new repository
+        ///     Creates the new repository
         /// </summary>
         public InDatabaseUserRepository()
         {
@@ -27,7 +27,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Gets user out of db with credentials and compares password
+        ///     Gets user out of db with credentials and compares password
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <param name="password">provided password</param>
@@ -40,11 +40,12 @@ namespace MonsterTradingCardsGameServer.DAL
             {
                 if (!_activeUsers.ContainsKey(user.Token)) _activeUsers.Add(user.Token, user);
             }
+
             return user;
         }
 
         /// <summary>
-        /// Gets all users scores
+        ///     Gets all users scores
         /// </summary>
         /// <returns>Returns a list of Scores if successful</returns>
         public List<Score> GetScoreBoard()
@@ -65,7 +66,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// deletes user out of active users
+        ///     deletes user out of active users
         /// </summary>
         /// <param name="token">token of the user</param>
         /// <returns>if query was successful</returns>
@@ -76,45 +77,12 @@ namespace MonsterTradingCardsGameServer.DAL
                 if (!_activeUsers.ContainsKey(token)) throw new UserNotFoundException();
                 _activeUsers.Remove(token);
             }
+
             return true;
         }
 
         /// <summary>
-        /// Reads users data out ouf datareader
-        /// </summary>
-        /// <param name="reader">the data reader</param>
-        /// <returns>the user</returns>
-        private static User _getUser(IDataRecord reader)
-        {
-            try
-            {
-                var dbUsername = reader["username"].ToString();
-                var dbStack = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString() ?? string.Empty);
-                var dbDeck = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ?? string.Empty);
-                var dbStats = JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty);
-                var dbUserdata = JsonConvert.DeserializeObject<UserData>(reader["userdata"].ToString() ?? string.Empty);
-                var coins = int.Parse(reader["coins"].ToString() ?? string.Empty);
-                var pw = reader["password"].ToString();
-                var battles = JsonConvert.DeserializeObject<List<BattleResult>>(reader["battles"].ToString() ?? string.Empty);
-                var stackList = new List<Card>();
-                var deckList = new List<Card>();
-                dbStack?.ForEach(card => stackList.Add(card.ToCard()));
-                dbDeck?.ForEach(card => deckList.Add(card.ToCard()));
-                var user = new User(dbUsername, dbStats, dbUserdata, new Stack(stackList), new Deck(deckList), coins)
-                {
-                    HashedPassword = pw,
-                    Battles = battles
-                };
-                return user;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Gets an user by his auth token if he has signed in
+        ///     Gets an user by his auth token if he has signed in
         /// </summary>
         /// <param name="authToken">auth token of the user</param>
         /// <returns>the user</returns>
@@ -127,7 +95,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Gets the user by his username
+        ///     Gets the user by his username
         /// </summary>
         /// <param name="username">username of user</param>
         /// <returns>the user</returns>
@@ -149,7 +117,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Updates bio, name and icon of the user
+        ///     Updates bio, name and icon of the user
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="userData">new user data</param>
@@ -180,7 +148,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Inserts a user into the database
+        ///     Inserts a user into the database
         /// </summary>
         /// <param name="user">user</param>
         /// <param name="password">passsword of the user</param>
@@ -228,6 +196,43 @@ namespace MonsterTradingCardsGameServer.DAL
                 {
                     return false;
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Reads users data out ouf datareader
+        /// </summary>
+        /// <param name="reader">the data reader</param>
+        /// <returns>the user</returns>
+        private static User _getUser(IDataRecord reader)
+        {
+            try
+            {
+                var dbUsername = reader["username"].ToString();
+                var dbStack =
+                    JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString() ?? string.Empty);
+                var dbDeck =
+                    JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ?? string.Empty);
+                var dbStats = JsonConvert.DeserializeObject<Stats>(reader["stats"].ToString() ?? string.Empty);
+                var dbUserdata = JsonConvert.DeserializeObject<UserData>(reader["userdata"].ToString() ?? string.Empty);
+                var coins = int.Parse(reader["coins"].ToString() ?? string.Empty);
+                var pw = reader["password"].ToString();
+                var battles =
+                    JsonConvert.DeserializeObject<List<BattleResult>>(reader["battles"].ToString() ?? string.Empty);
+                var stackList = new List<Card>();
+                var deckList = new List<Card>();
+                dbStack?.ForEach(card => stackList.Add(card.ToCard()));
+                dbDeck?.ForEach(card => deckList.Add(card.ToCard()));
+                var user = new User(dbUsername, dbStats, dbUserdata, new Stack(stackList), new Deck(deckList), coins)
+                {
+                    HashedPassword = pw,
+                    Battles = battles
+                };
+                return user;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

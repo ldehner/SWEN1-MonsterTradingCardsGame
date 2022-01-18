@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using MonsterTradingCardsGameServer.Cards;
 using MonsterTradingCardsGameServer.Core.Response;
@@ -7,7 +6,7 @@ using MonsterTradingCardsGameServer.Manager;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
 {
     /// <summary>
-    /// Adds Package
+    ///     Adds Package
     /// </summary>
     public class AddPackageCommand : ProtectedRouteCommand
     {
@@ -15,7 +14,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
         private readonly IPackageManager _packageManager;
 
         /// <summary>
-        /// Sets user manager and package
+        ///     Sets user manager and package
         /// </summary>
         /// <param name="packageManager"></param>
         /// <param name="package">the package to add</param>
@@ -26,7 +25,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
@@ -41,7 +40,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Admin
             }
             catch (CardNotFoundException)
             {
-                return new Response() {StatusCode = StatusCode.Conflict};
+                return new Response {StatusCode = StatusCode.Conflict};
             }
         }
     }

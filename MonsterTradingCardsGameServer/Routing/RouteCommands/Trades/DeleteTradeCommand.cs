@@ -5,7 +5,7 @@ using MonsterTradingCardsGameServer.Trades;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
     /// <summary>
-    /// Deletes a trade
+    ///     Deletes a trade
     /// </summary>
     public class DeleteTradeCommand : ProtectedRouteCommand
     {
@@ -13,7 +13,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         private readonly ITradeManager _tradeManager;
 
         /// <summary>
-        /// Sets user manager and trade id
+        ///     Sets user manager and trade id
         /// </summary>
         /// <param name="tradeManager">the trade manager</param>
         /// <param name="tradeId">the id of the trade the user wants to delete</param>
@@ -24,7 +24,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
@@ -37,9 +37,8 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
             }
             catch (NoSuchTradeException)
             {
-                return new Response() {StatusCode = StatusCode.NotFound};
+                return new Response {StatusCode = StatusCode.NotFound};
             }
-            
         }
     }
 }

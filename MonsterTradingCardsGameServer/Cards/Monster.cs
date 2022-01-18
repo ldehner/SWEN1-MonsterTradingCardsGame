@@ -4,12 +4,12 @@ using MonsterTradingCardsGameServer.Rules;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Monster Card
+    ///     Monster Card
     /// </summary>
     public class Monster : Card
     {
         /// <summary>
-        /// Sets all needed attributes
+        ///     Sets all needed attributes
         /// </summary>
         /// <param name="id">uid of the card</param>
         /// <param name="damage">damage of the card</param>
@@ -24,7 +24,7 @@ namespace MonsterTradingCardsGameServer.Cards
         public MonsterType Type { get; }
 
         /// <summary>
-        /// Converts the monster card into a universal card
+        ///     Converts the monster card into a universal card
         /// </summary>
         /// <returns>a universal card</returns>
         public override UniversalCard ToUniversalCard()
@@ -33,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Cards
         }
 
         /// <summary>
-        /// Builds the card name
+        ///     Builds the card name
         /// </summary>
         /// <returns>the card name</returns>
         public override string GetCardName()
@@ -42,7 +42,7 @@ namespace MonsterTradingCardsGameServer.Cards
         }
 
         /// <summary>
-        /// Returns the card type
+        ///     Returns the card type
         /// </summary>
         /// <returns>card type</returns>
         public override string GetCardType()
@@ -51,7 +51,7 @@ namespace MonsterTradingCardsGameServer.Cards
         }
 
         /// <summary>
-        /// Applies the card specific rule
+        ///     Applies the card specific rule
         /// </summary>
         /// <exception cref="CardNotFoundException">Exception in case the card wasn't found</exception>
         public override void SetRules()

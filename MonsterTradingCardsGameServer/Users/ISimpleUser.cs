@@ -1,7 +1,7 @@
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Simple user
+    ///     Simple user
     /// </summary>
     public abstract class ISimpleUser
     {

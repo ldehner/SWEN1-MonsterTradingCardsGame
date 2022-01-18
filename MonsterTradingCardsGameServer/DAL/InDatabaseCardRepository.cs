@@ -8,12 +8,12 @@ using NpgsqlTypes;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Makes card querys
+    ///     Makes card querys
     /// </summary>
     public class InDatabaseCardRepository : ICardRepository
     {
         /// <summary>
-        /// Gets the stack of the user
+        ///     Gets the stack of the user
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <returns>the stack</returns>
@@ -29,7 +29,8 @@ namespace MonsterTradingCardsGameServer.DAL
                 var stack = new List<Card>();
                 using var reader = c.ExecuteReader();
                 while (reader.Read())
-                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["stack"].ToString() ?? string.Empty);
+                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(
+                        reader["stack"].ToString() ?? string.Empty);
 
                 temp?.ForEach(card => stack.Add(card.ToCard()));
                 return new Stack(stack);
@@ -37,7 +38,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Gets the deck of the user
+        ///     Gets the deck of the user
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <returns>deck of the user</returns>
@@ -53,7 +54,8 @@ namespace MonsterTradingCardsGameServer.DAL
                 var deck = new List<Card>();
                 using var reader = c.ExecuteReader();
                 while (reader.Read())
-                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ?? string.Empty);
+                    temp = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["deck"].ToString() ??
+                                                                              string.Empty);
 
                 temp?.ForEach(card => deck.Add(card.ToCard()));
                 return new Deck(deck);
@@ -61,7 +63,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// sets the deck of the user
+        ///     sets the deck of the user
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <param name="deck">new deck</param>
@@ -92,7 +94,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Sets the stack of an user
+        ///     Sets the stack of an user
         /// </summary>
         /// <param name="user">wanted user</param>
         /// <returns>if query was successful</returns>
@@ -100,9 +102,9 @@ namespace MonsterTradingCardsGameServer.DAL
         {
             return UpdateStack(user.Stack.ToUniversalCardList(), user.Coins, 0, user.Username);
         }
-        
+
         /// <summary>
-        /// Updates users stack
+        ///     Updates users stack
         /// </summary>
         /// <param name="stack">new stack</param>
         /// <param name="coins">users coins</param>

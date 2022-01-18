@@ -10,17 +10,17 @@ using HttpListener = MonsterTradingCardsGameServer.Core.Listener.HttpListener;
 namespace MonsterTradingCardsGameServer.Core.Server
 {
     /// <summary>
-    /// Http Server, accepts and handles client and creates a thread for each client
+    ///     Http Server, accepts and handles client and creates a thread for each client
     /// </summary>
     public class HttpServer : IServer
     {
         private readonly IListener _listener;
         private readonly IRouter _router;
-        private bool _isListening;
         private readonly List<Thread> _threads;
+        private bool _isListening;
 
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="address">ip address of the server</param>
         /// <param name="port">port of the server</param>
@@ -33,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Core.Server
         }
 
         /// <summary>
-        /// Starts the server and listens for new clients
+        ///     Starts the server and listens for new clients
         /// </summary>
         public void Start()
         {
@@ -53,7 +53,7 @@ namespace MonsterTradingCardsGameServer.Core.Server
         }
 
         /// <summary>
-        /// stops the server
+        ///     stops the server
         /// </summary>
         public void Stop()
         {
@@ -62,7 +62,7 @@ namespace MonsterTradingCardsGameServer.Core.Server
         }
 
         /// <summary>
-        /// Handles a client
+        ///     Handles a client
         /// </summary>
         /// <param name="client">client</param>
         private void HandleClient(IClient client)

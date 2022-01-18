@@ -6,14 +6,14 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Manager
 {
     /// <summary>
-    /// UserManager
+    ///     UserManager
     /// </summary>
     public class UserManager : IUserManager
     {
         private readonly IUserRepository _userRepository;
 
         /// <summary>
-        /// Sets the repository
+        ///     Sets the repository
         /// </summary>
         /// <param name="userRepository"></param>
         public UserManager(IUserRepository userRepository)
@@ -22,10 +22,10 @@ namespace MonsterTradingCardsGameServer.Manager
             ActiveUsers = new Dictionary<string, User>();
         }
 
-        private Dictionary<string, User> ActiveUsers { get; set; }
+        private Dictionary<string, User> ActiveUsers { get; }
 
         /// <summary>
-        /// Loggs in User
+        ///     Loggs in User
         /// </summary>
         /// <param name="credentials">users credentials</param>
         /// <returns>user</returns>
@@ -36,7 +36,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// gets user
+        ///     gets user
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>user</returns>
@@ -47,7 +47,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// gets users data
+        ///     gets users data
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>userdata of user</returns>
@@ -57,7 +57,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// changes users data
+        ///     changes users data
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="userData">new userdata</param>
@@ -67,7 +67,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// Lists all scores
+        ///     Lists all scores
         /// </summary>
         /// <returns>the score list</returns>
         public List<Score> GetScores()
@@ -76,7 +76,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// gets users stats
+        ///     gets users stats
         /// </summary>
         /// <param name="username">users username</param>
         /// <returns>users stats</returns>
@@ -86,7 +86,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// registers user
+        ///     registers user
         /// </summary>
         /// <param name="credentials">users credentials</param>
         public void RegisterUser(Credentials credentials)
@@ -98,7 +98,7 @@ namespace MonsterTradingCardsGameServer.Manager
         }
 
         /// <summary>
-        /// logs out user
+        ///     logs out user
         /// </summary>
         /// <param name="token">users token</param>
         /// <returns>if query was successful</returns>

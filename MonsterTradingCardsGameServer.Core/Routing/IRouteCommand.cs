@@ -1,12 +1,12 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Routing
 {
     /// <summary>
-    /// Route command interface
+    ///     Route command interface
     /// </summary>
     public interface IRouteCommand
     {
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>commands response</returns>
         Response.Response Execute();

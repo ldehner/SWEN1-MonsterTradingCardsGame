@@ -3,7 +3,7 @@ using System;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Exception in case there are no more packages
+    ///     Exception in case there are no more packages
     /// </summary>
     public class NoMorePackagesException : Exception
     {

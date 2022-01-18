@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Package
+    ///     Package
     /// </summary>
     public class Package
     {
         public readonly Guid Guid;
 
         /// <summary>
-        /// sets the list of cards
+        ///     sets the list of cards
         /// </summary>
         /// <param name="cards">List with four cards</param>
         public Package(List<Card> cards)

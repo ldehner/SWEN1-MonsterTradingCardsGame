@@ -3,7 +3,7 @@
 namespace MonsterTradingCardsGameServer
 {
     /// <summary>
-    /// Creates Repositorys, Router and starts the Server
+    ///     Creates Repositorys, Router and starts the Server
     /// </summary>
     internal class Program
     {

@@ -5,12 +5,12 @@ using MonsterTradingCardsGameServer.Rules;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Base Card class
+    ///     Base Card class
     /// </summary>
     public abstract class Card
     {
         /// <summary>
-        /// Sets all basic attributes
+        ///     Sets all basic attributes
         /// </summary>
         /// <param name="id">the uid of the card</param>
         /// <param name="damage">the damage of the card</param>
@@ -29,19 +29,19 @@ namespace MonsterTradingCardsGameServer.Cards
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Converts the card into a universal card
+        ///     Converts the card into a universal card
         /// </summary>
         /// <returns>a universal card</returns>
         public abstract UniversalCard ToUniversalCard();
 
         /// <summary>
-        /// Generates the card name
+        ///     Generates the card name
         /// </summary>
         /// <returns>the card name</returns>
         public abstract string GetCardName();
 
         /// <summary>
-        /// Converts the card into a readable card
+        ///     Converts the card into a readable card
         /// </summary>
         /// <returns>A ReadableCard</returns>
         public ReadableCard ToReadableCard()
@@ -52,7 +52,7 @@ namespace MonsterTradingCardsGameServer.Cards
         public abstract string GetCardType();
 
         /// <summary>
-        /// Applies the specific rules for the card
+        ///     Applies the specific rules for the card
         /// </summary>
         public virtual void SetRules()
         {

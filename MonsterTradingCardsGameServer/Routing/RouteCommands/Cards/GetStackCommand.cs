@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
 {
     /// <summary>
-    /// Gets users stack
+    ///     Gets users stack
     /// </summary>
     public class GetStackCommand : ProtectedRouteCommand
     {
         private readonly ICardManager _cardManager;
 
         /// <summary>
-        /// sets user manager
+        ///     sets user manager
         /// </summary>
         /// <param name="cardManager">card manager</param>
         public GetStackCommand(ICardManager cardManager)
@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Cards
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

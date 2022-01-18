@@ -1,14 +1,12 @@
-
-
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// Card generated from the create package command
+    ///     Card generated from the create package command
     /// </summary>
     public class UserRequestCard
     {
         /// <summary>
-        /// sets all attributes
+        ///     sets all attributes
         /// </summary>
         /// <param name="id">uid of the card</param>
         /// <param name="name">name of the card</param>
@@ -25,7 +23,7 @@ namespace MonsterTradingCardsGameServer.Cards
         public double Damage { get; set; }
 
         /// <summary>
-        /// Converts the request card into a universal card
+        ///     Converts the request card into a universal card
         /// </summary>
         /// <returns>the universal card</returns>
         public UniversalCard ToUniversalCard()

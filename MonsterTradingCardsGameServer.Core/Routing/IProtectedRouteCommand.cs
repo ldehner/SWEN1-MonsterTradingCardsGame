@@ -3,7 +3,7 @@
 namespace MonsterTradingCardsGameServer.Core.Routing
 {
     /// <summary>
-    /// Protected route command interface
+    ///     Protected route command interface
     /// </summary>
     public interface IProtectedRouteCommand : IRouteCommand
     {

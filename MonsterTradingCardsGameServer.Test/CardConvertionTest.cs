@@ -5,13 +5,13 @@ using NUnit.Framework;
 namespace MonsterTradingCardsGameServer.Test
 {
     /// <summary>
-    /// Checks if all card convertions work
+    ///     Checks if all card convertions work
     /// </summary>
     [TestFixture]
     public class CardConvertionTest
     {
         /// <summary>
-        /// Checks if spell card is converted successfully to universal card
+        ///     Checks if spell card is converted successfully to universal card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -22,19 +22,19 @@ namespace MonsterTradingCardsGameServer.Test
         {
             // arrange
             var card = new Spell(Guid.NewGuid(), damage, mod);
-            
+
             // act
             var universalCard = card.ToUniversalCard();
-            
+
             // assert
             Assert.AreEqual(card.Id, universalCard.Id);
             Assert.AreEqual(damage, universalCard.Damage);
             Assert.AreEqual(mod, universalCard.Modification);
             Assert.AreEqual(MonsterType.None, universalCard.MonsterType);
         }
-        
+
         /// <summary>
-        /// Checks if monster card is converted successfully to universal card
+        ///     Checks if monster card is converted successfully to universal card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -46,23 +46,24 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
-        public void CheckIfMonsterCardIsConvertedSuccessfulToUniversalCard(double damage, Modification mod, MonsterType type)
+        public void CheckIfMonsterCardIsConvertedSuccessfulToUniversalCard(double damage, Modification mod,
+            MonsterType type)
         {
             // arrange
             var card = new Monster(Guid.NewGuid(), damage, mod, type);
-            
+
             // act
             var universalCard = card.ToUniversalCard();
-            
+
             // assert
             Assert.AreEqual(card.Id, universalCard.Id);
             Assert.AreEqual(damage, universalCard.Damage);
             Assert.AreEqual(mod, universalCard.Modification);
             Assert.AreEqual(type, universalCard.MonsterType);
         }
-        
+
         /// <summary>
-        /// Checks if spell card is converted successfully to readable card
+        ///     Checks if spell card is converted successfully to readable card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -73,18 +74,18 @@ namespace MonsterTradingCardsGameServer.Test
         {
             // arrange
             var card = new Spell(Guid.NewGuid(), damage, mod);
-            
+
             // act
             var readableCard = card.ToReadableCard();
-            
+
             // assert
             Assert.AreEqual(card.Id.ToString(), readableCard.Id);
             Assert.AreEqual(damage, readableCard.Damage);
             Assert.AreEqual(card.GetCardName(), readableCard.CardName);
         }
-        
+
         /// <summary>
-        /// Checks if monster card is converted successfully to readable card
+        ///     Checks if monster card is converted successfully to readable card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -96,22 +97,23 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
-        public void CheckIfMonsterCardIsConvertedSuccessfulToReadableCard(double damage, Modification mod, MonsterType type)
+        public void CheckIfMonsterCardIsConvertedSuccessfulToReadableCard(double damage, Modification mod,
+            MonsterType type)
         {
             // arrange
             var card = new Monster(Guid.NewGuid(), damage, mod, type);
-            
+
             // act
             var readableCard = card.ToReadableCard();
-            
+
             // assert
             Assert.AreEqual(card.Id.ToString(), readableCard.Id);
             Assert.AreEqual(card.Damage, readableCard.Damage);
             Assert.AreEqual(card.GetCardName(), readableCard.CardName);
         }
-        
+
         /// <summary>
-        /// Checks if universal card is converted successfully to spell card
+        ///     Checks if universal card is converted successfully to spell card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -122,7 +124,7 @@ namespace MonsterTradingCardsGameServer.Test
         {
             // arrange
             var universalCard = new UniversalCard(Guid.NewGuid().ToString(), mod, MonsterType.None, damage);
-            
+
             // act
             var spell = universalCard.ToCard();
 
@@ -130,11 +132,10 @@ namespace MonsterTradingCardsGameServer.Test
             Assert.AreEqual(universalCard.Id, spell.Id);
             Assert.AreEqual(universalCard.Damage, spell.Damage);
             Assert.AreEqual(universalCard.Modification, spell.Mod);
-
         }
-        
+
         /// <summary>
-        /// checks if universal card is converted successfully to monster card
+        ///     checks if universal card is converted successfully to monster card
         /// </summary>
         /// <param name="damage">damage of the card</param>
         /// <param name="mod">modification of the card</param>
@@ -146,11 +147,12 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase(43.1, Modification.Water, MonsterType.Knight)]
         [TestCase(87.2, Modification.Normal, MonsterType.Kraken)]
         [TestCase(73.9, Modification.Fire, MonsterType.Ork)]
-        public void CheckIfUniversalCardIsConvertedSuccessfulToMonsterCard(double damage, Modification mod, MonsterType type)
+        public void CheckIfUniversalCardIsConvertedSuccessfulToMonsterCard(double damage, Modification mod,
+            MonsterType type)
         {
             // arrange
             var universalCard = new UniversalCard(Guid.NewGuid().ToString(), mod, type, damage);
-            
+
             // act
             var monster = universalCard.ToCard();
 
@@ -160,9 +162,9 @@ namespace MonsterTradingCardsGameServer.Test
             Assert.AreEqual(universalCard.Modification, monster.Mod);
             Assert.AreEqual(universalCard.MonsterType, ((Monster) monster).Type);
         }
-        
+
         /// <summary>
-        /// checks if user request card is converted successfully to universal card
+        ///     checks if user request card is converted successfully to universal card
         /// </summary>
         /// <param name="name">name of the card</param>
         /// <param name="damage">damage of the card</param>
@@ -178,7 +180,8 @@ namespace MonsterTradingCardsGameServer.Test
         [TestCase("WaterGoblin", 33.5, Modification.Water, MonsterType.Goblin)]
         [TestCase("Dragon", 33.5, Modification.Normal, MonsterType.Dragon)]
         [TestCase("FireElf", 33.5, Modification.Fire, MonsterType.Elf)]
-        public void CheckIfUserRequestCardIsConvertedSuccessfulToUniversalCard(string name, double damage, Modification mod, MonsterType type)
+        public void CheckIfUserRequestCardIsConvertedSuccessfulToUniversalCard(string name, double damage,
+            Modification mod, MonsterType type)
         {
             // arrange
             var id = Guid.NewGuid().ToString();
@@ -193,9 +196,9 @@ namespace MonsterTradingCardsGameServer.Test
             Assert.AreEqual(type, card.MonsterType);
             Assert.AreEqual(damage, card.Damage);
         }
-        
+
         /// <summary>
-        /// Checks if Exception is thrown if card was not found
+        ///     Checks if Exception is thrown if card was not found
         /// </summary>
         /// <param name="name">name of the card</param>
         /// <param name="damage">damage of the card</param>
@@ -214,7 +217,5 @@ namespace MonsterTradingCardsGameServer.Test
             //assert
             Assert.Throws<CardNotFoundException>(() => userRequestCard.ToUniversalCard());
         }
-        
-        
     }
 }

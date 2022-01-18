@@ -1,12 +1,12 @@
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// User Credentials
+    ///     User Credentials
     /// </summary>
     public class Credentials
     {
         /// <summary>
-        /// Sets the attributes
+        ///     Sets the attributes
         /// </summary>
         /// <param name="username">users username</param>
         /// <param name="password"></param>

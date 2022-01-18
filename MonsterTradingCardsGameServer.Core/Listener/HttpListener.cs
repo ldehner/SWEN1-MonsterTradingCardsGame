@@ -5,14 +5,14 @@ using MonsterTradingCardsGameServer.Core.Client;
 namespace MonsterTradingCardsGameServer.Core.Listener
 {
     /// <summary>
-    /// Listens to new requesting clients
+    ///     Listens to new requesting clients
     /// </summary>
     public class HttpListener : IListener
     {
         private readonly TcpListener _listener;
 
         /// <summary>
-        /// sets address and port
+        ///     sets address and port
         /// </summary>
         /// <param name="address">address</param>
         /// <param name="port">port</param>
@@ -22,7 +22,7 @@ namespace MonsterTradingCardsGameServer.Core.Listener
         }
 
         /// <summary>
-        /// Accepts a new client
+        ///     Accepts a new client
         /// </summary>
         /// <returns>the client</returns>
         public IClient AcceptClient()
@@ -32,7 +32,7 @@ namespace MonsterTradingCardsGameServer.Core.Listener
         }
 
         /// <summary>
-        /// starts the listener
+        ///     starts the listener
         /// </summary>
         public void Start()
         {
@@ -40,7 +40,7 @@ namespace MonsterTradingCardsGameServer.Core.Listener
         }
 
         /// <summary>
-        /// stops the listener
+        ///     stops the listener
         /// </summary>
         public void Stop()
         {

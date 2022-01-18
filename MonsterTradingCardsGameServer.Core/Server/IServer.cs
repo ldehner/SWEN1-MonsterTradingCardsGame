@@ -1,17 +1,17 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Server
 {
     /// <summary>
-    /// Interface for the Server
+    ///     Interface for the Server
     /// </summary>
     public interface IServer
     {
         /// <summary>
-        /// Starts server
+        ///     Starts server
         /// </summary>
         void Start();
-        
+
         /// <summary>
-        /// Stops server
+        ///     Stops server
         /// </summary>
         void Stop();
     }

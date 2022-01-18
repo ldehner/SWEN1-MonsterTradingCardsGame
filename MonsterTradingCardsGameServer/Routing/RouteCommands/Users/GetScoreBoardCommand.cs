@@ -1,19 +1,18 @@
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Manager;
-using MonsterTradingCardsGameServer.Users;
 using Newtonsoft.Json;
 
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
 {
     /// <summary>
-    /// Gets the score board
+    ///     Gets the score board
     /// </summary>
     public class GetScoreBoardCommand : ProtectedRouteCommand
     {
         private readonly IUserManager _userManager;
 
         /// <summary>
-        /// Sets the user manager
+        ///     Sets the user manager
         /// </summary>
         /// <param name="userManager">the user manager</param>
         public GetScoreBoardCommand(IUserManager userManager)
@@ -22,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Users
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

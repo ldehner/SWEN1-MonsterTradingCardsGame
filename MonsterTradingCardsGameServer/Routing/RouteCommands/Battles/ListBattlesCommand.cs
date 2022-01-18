@@ -1,4 +1,3 @@
-using MonsterTradingCardsGameServer.Battles;
 using MonsterTradingCardsGameServer.Core.Response;
 using MonsterTradingCardsGameServer.Manager;
 using MonsterTradingCardsGameServer.Users;
@@ -7,14 +6,14 @@ using Newtonsoft.Json;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
 {
     /// <summary>
-    /// Lists all battles of a user
+    ///     Lists all battles of a user
     /// </summary>
     public class ListBattlesCommand : ProtectedRouteCommand
     {
         private readonly IBattleManager _battleManager;
 
         /// <summary>
-        /// Sets the battle manager
+        ///     Sets the battle manager
         /// </summary>
         /// <param name="battleManager">the battle manager</param>
         public ListBattlesCommand(IBattleManager battleManager)
@@ -23,7 +22,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Battles
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

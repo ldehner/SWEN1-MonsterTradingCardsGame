@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace MonsterTradingCardsGameServer.Cards
 {
     /// <summary>
-    /// the deck of an user
+    ///     the deck of an user
     /// </summary>
     public class Deck : CardCollection
     {

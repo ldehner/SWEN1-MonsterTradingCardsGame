@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
     /// <summary>
-    /// Lists all available trades
+    ///     Lists all available trades
     /// </summary>
     public class ListTradesCommand : ProtectedRouteCommand
     {
         private readonly ITradeManager _tradeManager;
 
         /// <summary>
-        /// Sets user manager
+        ///     Sets user manager
         /// </summary>
         /// <param name="tradeManager">the trade manager</param>
         public ListTradesCommand(ITradeManager tradeManager)
@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()

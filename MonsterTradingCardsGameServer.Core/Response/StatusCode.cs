@@ -1,7 +1,7 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Response
 {
     /// <summary>
-    /// HTTP Status codes
+    ///     HTTP Status codes
     /// </summary>
     public enum StatusCode
     {

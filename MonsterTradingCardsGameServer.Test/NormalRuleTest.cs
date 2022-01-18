@@ -6,13 +6,13 @@ using NUnit.Framework;
 namespace MonsterTradingCardsGameServer.Test
 {
     /// <summary>
-    /// Checks if normal rule works
+    ///     Checks if normal rule works
     /// </summary>
     [TestFixture]
     public class NormalRuleTest
     {
         /// <summary>
-        /// Checks if normal damage is halved if other card is fire
+        ///     Checks if normal damage is halved if other card is fire
         /// </summary>
         /// <param name="Dmg1">damage of card 1</param>
         /// <param name="Dmg2">damage of card 2</param>
@@ -33,7 +33,7 @@ namespace MonsterTradingCardsGameServer.Test
         }
 
         /// <summary>
-        /// Checks if normal damage is doubled if other card is water
+        ///     Checks if normal damage is doubled if other card is water
         /// </summary>
         /// <param name="Dmg1">damage of card 1</param>
         /// <param name="Dmg2">damage of card 2</param>
@@ -54,7 +54,7 @@ namespace MonsterTradingCardsGameServer.Test
         }
 
         /// <summary>
-        /// Checks if normal damage is same if other card is normal
+        ///     Checks if normal damage is same if other card is normal
         /// </summary>
         /// <param name="Dmg1">damage of card 1</param>
         /// <param name="Dmg2">damage of card 2</param>

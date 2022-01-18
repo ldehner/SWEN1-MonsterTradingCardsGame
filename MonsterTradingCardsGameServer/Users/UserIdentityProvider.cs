@@ -5,14 +5,14 @@ using MonsterTradingCardsGameServer.DAL;
 namespace MonsterTradingCardsGameServer.Users
 {
     /// <summary>
-    /// Providers identity for user
+    ///     Providers identity for user
     /// </summary>
     public class UserIdentityProvider : IIdentityProvider
     {
         private readonly IUserRepository _userRepository;
 
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="userRepository">the user repository</param>
         public UserIdentityProvider(IUserRepository userRepository)
@@ -21,7 +21,7 @@ namespace MonsterTradingCardsGameServer.Users
         }
 
         /// <summary>
-        /// Checks the identity of the user
+        ///     Checks the identity of the user
         /// </summary>
         /// <param name="request">the request context</param>
         /// <returns>the identity of the user</returns>

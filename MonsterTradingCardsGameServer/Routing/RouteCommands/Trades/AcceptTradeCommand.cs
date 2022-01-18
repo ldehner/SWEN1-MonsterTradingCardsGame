@@ -5,16 +5,16 @@ using MonsterTradingCardsGameServer.Trades;
 namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
 {
     /// <summary>
-    /// Accepts a trade
+    ///     Accepts a trade
     /// </summary>
     public class AcceptTradeCommand : ProtectedRouteCommand
     {
-        private readonly string _tradeId;
         private readonly string _cardId;
+        private readonly string _tradeId;
         private readonly ITradeManager _tradeManager;
 
         /// <summary>
-        /// Sets user manager, trade id and card id
+        ///     Sets user manager, trade id and card id
         /// </summary>
         /// <param name="tradeManager">the trade manager</param>
         /// <param name="tradeId">the id of the trade, the user wants to accept</param>
@@ -27,7 +27,7 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
         }
 
         /// <summary>
-        /// Executes the command
+        ///     Executes the command
         /// </summary>
         /// <returns>the response in form of status code and payload</returns>
         public override Response Execute()
@@ -40,9 +40,8 @@ namespace MonsterTradingCardsGameServer.Routing.RouteCommands.Trades
             }
             catch (NoSuchTradeException)
             {
-                return new Response() {StatusCode = StatusCode.NotFound};
+                return new Response {StatusCode = StatusCode.NotFound};
             }
-            
         }
     }
 }

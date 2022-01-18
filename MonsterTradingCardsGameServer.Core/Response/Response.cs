@@ -1,7 +1,7 @@
 ﻿namespace MonsterTradingCardsGameServer.Core.Response
 {
     /// <summary>
-    /// Response, which contains status code and payload
+    ///     Response, which contains status code and payload
     /// </summary>
     public class Response
     {

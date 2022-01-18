@@ -6,7 +6,7 @@ using MonsterTradingCardsGameServer.Core.Request;
 namespace MonsterTradingCardsGameServer.Core.Routing
 {
     /// <summary>
-    /// Resolves the routes
+    ///     Resolves the routes
     /// </summary>
     public class Router : IRouter
     {
@@ -23,7 +23,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         private readonly Dictionary<Tuple<HttpMethod, string>, ICreator> _routes;
 
         /// <summary>
-        /// Sets all attributes
+        ///     Sets all attributes
         /// </summary>
         /// <param name="routeParser">the route parser</param>
         /// <param name="identityProvider">the identity provider</param>
@@ -35,7 +35,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// resolves a route
+        ///     resolves a route
         /// </summary>
         /// <param name="request">users request</param>
         /// <returns>the route command</returns>
@@ -62,7 +62,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// Adds a new route to the router
+        ///     Adds a new route to the router
         /// </summary>
         /// <param name="method">the http method</param>
         /// <param name="routePattern">the router pattern</param>
@@ -75,7 +75,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// Adds a new protected route to the router
+        ///     Adds a new protected route to the router
         /// </summary>
         /// <param name="method">the http method</param>
         /// <param name="routePattern">the route pattern</param>
@@ -88,7 +88,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// Protects a command
+        ///     Protects a command
         /// </summary>
         /// <param name="create">the command</param>
         /// <param name="request">users request</param>
@@ -107,14 +107,14 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// ICreator Interface
+        ///     ICreator Interface
         /// </summary>
         private interface ICreator
         {
         }
 
         /// <summary>
-        /// Creates Public Route Command
+        ///     Creates Public Route Command
         /// </summary>
         private class PublicCreator : ICreator
         {
@@ -122,7 +122,7 @@ namespace MonsterTradingCardsGameServer.Core.Routing
         }
 
         /// <summary>
-        /// Creates Protected Route Command
+        ///     Creates Protected Route Command
         /// </summary>
         private class ProtectedCreator : ICreator
         {

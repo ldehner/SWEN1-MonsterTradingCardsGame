@@ -3,12 +3,12 @@ using MonsterTradingCardsGameServer.Cards;
 namespace MonsterTradingCardsGameServer.Trades
 {
     /// <summary>
-    /// Class for trades
+    ///     Class for trades
     /// </summary>
     public class UniversalTrade
     {
         /// <summary>
-        /// Sets all parameters
+        ///     Sets all parameters
         /// </summary>
         /// <param name="username">traders username</param>
         /// <param name="card">card to trade</param>

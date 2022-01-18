@@ -3,7 +3,7 @@ using System;
 namespace MonsterTradingCardsGameServer.Battles
 {
     /// <summary>
-    /// Exception in case a battle wasn't found after a search
+    ///     Exception in case a battle wasn't found after a search
     /// </summary>
     public class BattleNotFoundException : Exception
     {

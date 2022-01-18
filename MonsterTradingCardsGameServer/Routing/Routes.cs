@@ -15,12 +15,12 @@ using Newtonsoft.Json;
 namespace MonsterTradingCardsGameServer.Routing
 {
     /// <summary>
-    /// Sets all routes
+    ///     Sets all routes
     /// </summary>
     public static class Routes
     {
         /// <summary>
-        /// Registers user specific routes
+        ///     Registers user specific routes
         /// </summary>
         /// <param name="router">the router</param>
         /// <param name="userManager">the user manager</param>
@@ -46,7 +46,7 @@ namespace MonsterTradingCardsGameServer.Routing
         }
 
         /// <summary>
-        /// Registers card specific routes
+        ///     Registers card specific routes
         /// </summary>
         /// <param name="router">router</param>
         /// <param name="cardManager">card manager</param>
@@ -61,9 +61,9 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Put, "/deck",
                 (r, p) => new SetDeckCommand(cardManager, Deserialize<List<string>>(r.Payload)));
         }
-        
+
         /// <summary>
-        /// Registers trade specific routes
+        ///     Registers trade specific routes
         /// </summary>
         /// <param name="router">router</param>
         /// <param name="tradeManager">trade manager</param>
@@ -78,9 +78,9 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Delete, "/tradings/{appendix}",
                 (r, p) => new DeleteTradeCommand(tradeManager, p["appendix"]));
         }
-        
+
         /// <summary>
-        /// Registers package specific routes
+        ///     Registers package specific routes
         /// </summary>
         /// <param name="router">router</param>
         /// <param name="packageManager">package manager</param>
@@ -94,7 +94,7 @@ namespace MonsterTradingCardsGameServer.Routing
         }
 
         /// <summary>
-        /// Registers Battle Routes
+        ///     Registers Battle Routes
         /// </summary>
         /// <param name="router">Router</param>
         /// <param name="battleManager">Battle Manager</param>
@@ -107,9 +107,9 @@ namespace MonsterTradingCardsGameServer.Routing
             router.AddProtectedRoute(HttpMethod.Get, "/battles/{appendix}",
                 (r, p) => new GetBattleCommand(battleManager, p["appendix"]));
         }
-        
+
         /// <summary>
-        /// Deserializes the payload
+        ///     Deserializes the payload
         /// </summary>
         /// <param name="payload">the payload</param>
         /// <typeparam name="T">object type</typeparam>

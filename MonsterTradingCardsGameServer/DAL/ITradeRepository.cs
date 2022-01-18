@@ -6,12 +6,12 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Interface for trade repository
+    ///     Interface for trade repository
     /// </summary>
     public interface ITradeRepository
     {
         /// <summary>
-        /// Creates a new trade offer
+        ///     Creates a new trade offer
         /// </summary>
         /// <param name="username">traders username</param>
         /// <param name="card">card trader wants to trade</param>
@@ -22,27 +22,27 @@ namespace MonsterTradingCardsGameServer.DAL
         public bool CreateTrade(string username, Card card, double minDmg, string tradeId, int type);
 
         /// <summary>
-        /// Lists all trading offers
+        ///     Lists all trading offers
         /// </summary>
         /// <returns>all trading offers</returns>
         public List<ReadableTrade> ListTrades();
 
         /// <summary>
-        /// Gets a specific trade
+        ///     Gets a specific trade
         /// </summary>
         /// <param name="tradeId">trade id</param>
         /// <returns>the trade</returns>
         public UniversalTrade GetTrade(string tradeId);
 
         /// <summary>
-        /// deletes a trade
+        ///     deletes a trade
         /// </summary>
         /// <param name="tradeId">id of the trade</param>
         /// <returns>if query was successful</returns>
         public bool DeleteTrade(string tradeId);
 
         /// <summary>
-        /// deletes the offer, and updates both users stacks
+        ///     deletes the offer, and updates both users stacks
         /// </summary>
         /// <param name="tradeId">id of the trade</param>
         /// <param name="seller">seller</param>

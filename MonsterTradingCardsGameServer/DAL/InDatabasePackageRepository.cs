@@ -8,23 +8,23 @@ using NpgsqlTypes;
 namespace MonsterTradingCardsGameServer.DAL
 {
     /// <summary>
-    /// Makes Package querys
+    ///     Makes Package querys
     /// </summary>
     public class InDatabasePackageRepository : IPackageRepository
     {
         private readonly ICardRepository _cardRepository;
-        
+
         /// <summary>
-        /// Sets card repository
+        ///     Sets card repository
         /// </summary>
         /// <param name="cardRepository">the card repository</param>
         public InDatabasePackageRepository(ICardRepository cardRepository)
         {
             _cardRepository = cardRepository;
         }
-        
+
         /// <summary>
-        /// Adds a new package into the db
+        ///     Adds a new package into the db
         /// </summary>
         /// <param name="package">universal card list</param>
         /// <param name="id">uid of the package</param>
@@ -56,7 +56,7 @@ namespace MonsterTradingCardsGameServer.DAL
         }
 
         /// <summary>
-        /// Adds an quicred package into the stack of the user and updates the number of coins
+        ///     Adds an quicred package into the stack of the user and updates the number of coins
         /// </summary>
         /// <param name="username">wanted user</param>
         /// <param name="coins">users number of coins</param>
@@ -71,21 +71,23 @@ namespace MonsterTradingCardsGameServer.DAL
                 using var conn = new NpgsqlConnection(DatabaseData.ConnectionString);
                 using var c = new NpgsqlCommand(DatabaseData.AquirePackageCommand, conn);
                 conn.Open();
-                
+
                 using var reader = c.ExecuteReader();
                 while (reader.Read())
                 {
                     id = reader["id"].ToString();
-                    package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString() ?? string.Empty);
+                    package = JsonConvert.DeserializeObject<List<UniversalCard>>(reader["package"].ToString() ??
+                        string.Empty);
                 }
             }
+
             if (id!.Equals("")) throw new NoMorePackagesException();
             stack.Cards.ForEach(card => package?.Add(card.ToUniversalCard()));
             return _deletePackage(id) && _cardRepository.UpdateStack(package, coins, 5, username);
         }
-        
+
         /// <summary>
-        /// Deletes a package
+        ///     Deletes a package
         /// </summary>
         /// <param name="id">id of the package</param>
         /// <returns>if query was successful</returns>

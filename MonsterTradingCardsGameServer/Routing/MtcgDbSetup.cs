@@ -8,11 +8,12 @@ using MonsterTradingCardsGameServer.Users;
 namespace MonsterTradingCardsGameServer.Routing
 {
     /// <summary>
-    /// Sets up the repositorys and managers
+    ///     Sets up the repositorys and managers
     /// </summary>
     public class MtcgDbSetup
     {
-        private HttpServer _httpServer;
+        private readonly HttpServer _httpServer;
+
         public MtcgDbSetup()
         {
             var userRepository = new InDatabaseUserRepository();
@@ -20,17 +21,17 @@ namespace MonsterTradingCardsGameServer.Routing
             var cardRepository = new InDatabaseCardRepository();
             var tradeRepository = new InDatabaseTradeRepository(cardRepository);
             var packageRepository = new InDatabasePackageRepository(cardRepository);
-            
+
             var userManager = new UserManager(userRepository);
             var battleManager = new BattleManager(userManager, battleRepository);
             var cardManager = new CardManager(cardRepository);
             var tradeManager = new TradeManager(tradeRepository, userManager, cardManager);
             var packageManager = new PackageManager(packageRepository);
-            
+
             var identityProvider = new UserIdentityProvider(userRepository);
             var routeParser = new AppendixRouteParser();
             var router = new Router(routeParser, identityProvider);
-            
+
             Routes.RegisterUserRoutes(router, userManager);
             Routes.RegisterBattleRoutes(router, battleManager);
             Routes.RegisterCardRoutes(router, cardManager);
@@ -39,9 +40,9 @@ namespace MonsterTradingCardsGameServer.Routing
 
             _httpServer = new HttpServer(IPAddress.Any, 10001, router);
         }
-        
+
         /// <summary>
-        /// Starts the server
+        ///     Starts the server
         /// </summary>
         public void Start()
         {
