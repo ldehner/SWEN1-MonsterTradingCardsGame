@@ -51,7 +51,7 @@ namespace MonsterTradingCardsGameServer.Manager
             return !cardInDeck && tradingCard is not null &&
                    _tradeRepository.CreateTrade(username, tradingCard, userRequestTrade.MinimumDamage,
                        userRequestTrade.Id,
-                       userRequestTrade.Type.Equals("Monster") ? 1 : 0) && _cardManager.SetStack(user);
+                       userRequestTrade.Type.Equals("monster") ? 1 : 0) && _cardManager.SetStack(user);
         }
 
         /// <summary>

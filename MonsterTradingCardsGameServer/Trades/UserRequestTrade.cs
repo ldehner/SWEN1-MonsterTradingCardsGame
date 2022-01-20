@@ -11,7 +11,7 @@ namespace MonsterTradingCardsGameServer.Trades
         {
             Id = id;
             CardToTrade = cardToTrade;
-            Type = type;
+            Type = type.ToLower();
             MinimumDamage = minimumDamage;
         }
     }
